@@ -1,0 +1,59 @@
+package engineTester;
+
+import models.TexturedModel;
+import org.lwjgl.opengl.Display;
+import renderEngine.DisplayManager;
+import renderEngine.Loader;
+import models.RawModel;
+import renderEngine.Renderer;
+import shaders.StaticShader;
+import textures.ModelTexture;
+
+public class MainGameLoop {
+
+    public static void main(String[] args) {
+
+        DisplayManager.createDisplay();
+
+        Loader loader = new Loader();
+        Renderer renderer = new Renderer();
+        StaticShader shader = new StaticShader();
+
+        float[] vertices = {
+                -0.5f, 0.5f, 0f,
+                -0.5f, -0.5f, 0f,
+                0.5f, -0.5f, 0f,
+                0.5f, 0.5f, 0f,
+        };
+
+        int[] indeces = {
+                0, 1, 3,
+                3, 1, 2
+        };
+
+        float[] textureCoords = {
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
+        };
+
+        RawModel model = loader.loadToVAO(vertices, textureCoords, indeces);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("texture"));
+        TexturedModel texturedModel = new TexturedModel(model, texture);
+
+        while (!Display.isCloseRequested()) {
+            renderer.prepare();
+
+            shader.start();
+            renderer.render(texturedModel);
+            shader.start();
+
+            DisplayManager.updateDisplay();
+        }
+
+        shader.cleanUp();
+        loader.cleanUp();
+        DisplayManager.closeDisplay();
+    }
+}
