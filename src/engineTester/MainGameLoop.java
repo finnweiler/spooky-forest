@@ -13,6 +13,8 @@ import models.RawModel;
 import shaders.StaticShader;
 import terrain.Terrain;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 
 public class MainGameLoop {
 
@@ -22,9 +24,19 @@ public class MainGameLoop {
 
         Loader loader = new Loader();
 
-        ModelTexture terrainTexture = new ModelTexture(loader.loadTexture("grass"));
-        Terrain terrain = new Terrain(0,-1, loader, terrainTexture);
-        Terrain terrain2 = new Terrain(-1,-1, loader, terrainTexture);
+        /** Terrain Stuff Start */
+
+        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grass"));
+        TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("mud"));
+        TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("grassFlowers"));
+        TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
+
+        TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+
+        Terrain terrain = new Terrain(0,-1, loader, texturePack, blendMap);
+        Terrain terrain2 = new Terrain(-1,-1, loader, texturePack, blendMap);
+        /** Terrain Stuff End */
 
         RawModel fernRawModel = OBJFileLoader.loadObjModel("fern", loader);
         ModelTexture fernTexture = new ModelTexture(loader.loadTexture("fern"));

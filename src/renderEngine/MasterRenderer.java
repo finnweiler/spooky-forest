@@ -69,7 +69,7 @@ public class MasterRenderer {
 
         terrainShader.start();
         terrainShader.loadSkyColor(SKY_R, SKY_B, SKY_G);
-        shader.loadFog(FOG_DENSITY, FOG_GRADIENT);
+        terrainShader.loadFog(FOG_DENSITY, FOG_GRADIENT);
         terrainShader.loadLight(sun);
         terrainShader.loadViewMatrix(camera);
         terrainRenderer.render(terrains);

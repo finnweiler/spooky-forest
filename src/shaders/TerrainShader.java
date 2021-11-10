@@ -29,6 +29,11 @@ public class TerrainShader extends ShaderProgram {
     private int locationSkyColor;
     private int locationFogDensity;
     private int locationFogGradient;
+    private int locationBackgroundTexture;
+    private int locationRTexture;
+    private int locationGTexture;
+    private int locationBTexture;
+    private int locationBlendMap;
 
     public TerrainShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -53,6 +58,20 @@ public class TerrainShader extends ShaderProgram {
         locationSkyColor = super.getUniformLocation("skyColor");
         locationFogDensity = super.getUniformLocation("density");
         locationFogGradient = super.getUniformLocation("gradient");
+        locationBackgroundTexture = super.getUniformLocation("backgroundTexture");
+        locationRTexture = super.getUniformLocation("rTexture");
+        locationGTexture = super.getUniformLocation("gTexture");
+        locationBTexture = super.getUniformLocation("bTexture");
+        locationBlendMap = super.getUniformLocation("blendMap");
+    }
+
+    public void connectTextureUnits() {
+        super.loadInt(locationBackgroundTexture, 0);
+        super.loadInt(locationRTexture, 1);
+        super.loadInt(locationGTexture, 2);
+        super.loadInt(locationBTexture, 3);
+        super.loadInt(locationBlendMap, 4);
+
     }
 
     public void loadFog(float density, float gradient) {
