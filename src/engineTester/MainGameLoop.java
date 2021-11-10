@@ -4,6 +4,7 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import models.TexturedModel;
+import objConverter.OBJFileLoader;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
@@ -25,6 +26,13 @@ public class MainGameLoop {
         Terrain terrain = new Terrain(0,-1, loader, terrainTexture);
         Terrain terrain2 = new Terrain(-1,-1, loader, terrainTexture);
 
+        RawModel fernRawModel = OBJFileLoader.loadObjModel("fern", loader);
+        ModelTexture fernTexture = new ModelTexture(loader.loadTexture("fern"));
+        fernTexture.setTransparent(true);
+        //fernTexture.setFakeLit(true);
+        TexturedModel fernTexturedModel = new TexturedModel(fernRawModel, fernTexture);
+        Entity fernEntity = new Entity(fernTexturedModel, new Vector3f(-10,0,-17),0,0,0,1);
+
         RawModel model = OBJLoader.loadObjModel("dragon", loader);
         ModelTexture texture = new ModelTexture(loader.loadTexture("blue"));
         texture.setShineDamper(15);
@@ -32,7 +40,7 @@ public class MainGameLoop {
         TexturedModel texturedModel = new TexturedModel(model, texture);
         Entity entity = new Entity(texturedModel, new Vector3f(0,0.1f,-25),0,0,0,1);
 
-        Light light = new Light(new Vector3f(10,10, -10), new Vector3f(1,1,1));
+        Light light = new Light(new Vector3f(10,100, -10), new Vector3f(1,1,1));
 
         Camera camera = new Camera();
 
@@ -47,6 +55,7 @@ public class MainGameLoop {
             renderer.processTerrain(terrain);
             renderer.processTerrain(terrain2);
             renderer.processEntity(entity);
+            renderer.processEntity(fernEntity);
             renderer.render(light, camera);
 
             DisplayManager.updateDisplay();

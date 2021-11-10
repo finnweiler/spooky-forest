@@ -13,6 +13,8 @@ import java.util.List;
 
 public class OBJLoader {
 
+    // improved version 16!
+
     public static RawModel loadObjModel(String fileName, Loader loader) {
         FileReader fr = null;
         try {
