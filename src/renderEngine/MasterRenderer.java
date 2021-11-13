@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import shaders.StaticShader;
 import shaders.TerrainShader;
+import skybox.SkyboxRenderer;
 import terrain.Terrain;
 
 import java.util.ArrayList;
@@ -22,9 +23,9 @@ public class MasterRenderer {
     private static final float NEAR_PLANE = 0.1f;
     private static final float FAR_PLANE = 1000f;
 
-    private static final float SKY_R = 0.2f;
-    private static final float SKY_G = 0.2f;
-    private static final float SKY_B = 0.2f;
+    private static final float SKY_R = 0.4f;
+    private static final float SKY_G = 0.4f;
+    private static final float SKY_B = 0.5f;
 
     private static final float FOG_DENSITY = 0.007f;
     private static final float FOG_GRADIENT = 1.5f;
@@ -40,11 +41,14 @@ public class MasterRenderer {
     private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
     private List<Terrain> terrains = new ArrayList<Terrain>();
 
-    public MasterRenderer() {
+    private SkyboxRenderer skyboxRenderer;
+
+    public MasterRenderer(Loader loader) {
         enableCulling();
         createProjectionMatrix();
         renderer = new EntityRenderer(shader, projectionMatrix);
         terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+        skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
     }
 
     public static void enableCulling() {
@@ -75,6 +79,8 @@ public class MasterRenderer {
         terrainRenderer.render(terrains);
         terrainShader.stop();
 
+        skyboxRenderer.render(camera);
+
         terrains.clear();
         entities.clear();
     }
@@ -98,6 +104,7 @@ public class MasterRenderer {
     public void cleanUp() {
         shader.cleanUp();
         terrainShader.cleanUp();
+        skyboxRenderer.getShader().cleanUp();
     }
 
     public void prepare() {
