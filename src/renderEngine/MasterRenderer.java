@@ -22,9 +22,9 @@ public class MasterRenderer {
     private static final float NEAR_PLANE = 0.1f;
     private static final float FAR_PLANE = 1000f;
 
-    private static final float SKY_R = 1f;
-    private static final float SKY_G = 0f;
-    private static final float SKY_B = 0f;
+    private static final float SKY_R = 0.2f;
+    private static final float SKY_G = 0.2f;
+    private static final float SKY_B = 0.2f;
 
     private static final float FOG_DENSITY = 0.007f;
     private static final float FOG_GRADIENT = 1.5f;
