@@ -57,12 +57,21 @@ public class MainGameLoop {
         TexturedModel fernTexturedModel = new TexturedModel(fernRawModel, fernTexture);
         Entity fernEntity = new Entity(fernTexturedModel, new Vector3f(-10,0,-17),0,0,0,1);
 
-        RawModel model = OBJLoader.loadObjModel("dragon", loader);
-        ModelTexture texture = new ModelTexture(loader.loadTexture("blue"));
+        RawModel model = OBJLoader.loadObjModel("cavefinal", loader);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("cavefinal"));
+
         texture.setShineDamper(15);
         texture.setReflectivity(1);
         TexturedModel texturedModel = new TexturedModel(model, texture);
-        Entity entity = new Entity(texturedModel, new Vector3f(0,0.1f,-25),0,0,0,1);
+        Entity entity = new Entity(texturedModel, new Vector3f(80,20,-100),0,0,0,1);
+
+        RawModel dickeCave = OBJLoader.loadObjModel("dickemap", loader);
+        ModelTexture dickeCavetexture = new ModelTexture(loader.loadTexture("dickemap"));
+        dickeCavetexture.setShineDamper(15);
+        dickeCavetexture.setReflectivity(1);
+        TexturedModel dickeCaveModel = new TexturedModel(dickeCave, dickeCavetexture);
+        Entity dickeCaveEnt = new Entity(dickeCaveModel, new Vector3f(65,25,-105),0,0,0,1);
+
 
         List<Light> lights = new ArrayList<>();
         lights.add(new Light(new Vector3f(0,0,0), new Vector3f(1,1,1), new Vector3f(1, 0.01f, 0.001f)));
@@ -77,12 +86,14 @@ public class MainGameLoop {
             camera.update();
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
             //entity.increasePosition(0, 0,-0.01f);
-            entity.increaseRotation(0,0.5f,0);
+            // entity.increaseRotation(0,0.5f,0);
 
 
             renderer.processTerrain(terrain);
             //renderer.processTerrain(terrain2);
             renderer.processEntity(entity);
+            // Gut kick
+            renderer.processEntity(dickeCaveEnt);
             renderer.processEntity(fernEntity);
             renderer.processEntity(player);
             renderer.render(lights, camera);
