@@ -13,6 +13,7 @@ public class Player extends Entity {
     private static final float SIDEWARDS_SPEED = 0.02f;
     private static final float GRAVITY = -0.00015f;
     private static final float JUMP_POWER = 0.04f;
+    private static final float DOWN_WALK_DISTANCE = 0.04f;
 
     private float currentForwardsSpeed = 0;
     private float currentSidewardsSpeed = 0;
@@ -52,6 +53,9 @@ public class Player extends Entity {
         if (getPosition().getY() < terrainHeight) {
             verticalSpeed = 0;
             flying = false;
+            super.getPosition().setY(terrainHeight);
+        } else if (flying == false || getPosition().getY() < terrainHeight + DOWN_WALK_DISTANCE) {
+            verticalSpeed = 0;
             super.getPosition().setY(terrainHeight);
         }
     }

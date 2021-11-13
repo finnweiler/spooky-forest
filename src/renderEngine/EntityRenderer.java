@@ -43,6 +43,7 @@ public class EntityRenderer {
         GL20.glEnableVertexAttribArray(2);
 
         ModelTexture texture = texturedModel.getTexture();
+        shader.loadNumberOfRows(texture.getNumberOfRows());
         if (texture.isTransparent()) {
             MasterRenderer.disableCulling();
         }
@@ -64,5 +65,6 @@ public class EntityRenderer {
     private void prepareInstance(Entity entity) {
         Matrix4f transformationMatrix = entity.getTransformationMatrix();
         shader.loadTransformationMatrix(transformationMatrix);
+        shader.loadOffset(entity.getTextureOffset());
     }
 }

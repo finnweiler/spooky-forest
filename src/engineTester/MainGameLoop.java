@@ -18,6 +18,9 @@ import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainGameLoop {
 
     public static void main(String[] args) {
@@ -61,7 +64,9 @@ public class MainGameLoop {
         TexturedModel texturedModel = new TexturedModel(model, texture);
         Entity entity = new Entity(texturedModel, new Vector3f(0,0.1f,-25),0,0,0,1);
 
-        Light light = new Light(new Vector3f(10,100, -10), new Vector3f(1,1,1));
+        List<Light> lights = new ArrayList<>();
+        lights.add(new Light(new Vector3f(10,100, -10), new Vector3f(1,0,1)));
+        lights.add(new Light(new Vector3f(10,100, 50), new Vector3f(0,1,1)));
 
         Camera camera = new Camera(player);
 
@@ -79,7 +84,7 @@ public class MainGameLoop {
             renderer.processEntity(entity);
             renderer.processEntity(fernEntity);
             renderer.processEntity(player);
-            renderer.render(light, camera);
+            renderer.render(lights, camera);
 
             DisplayManager.updateDisplay();
         }
