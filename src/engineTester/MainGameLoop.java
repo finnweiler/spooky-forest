@@ -65,8 +65,8 @@ public class MainGameLoop {
         Entity entity = new Entity(texturedModel, new Vector3f(0,0.1f,-25),0,0,0,1);
 
         List<Light> lights = new ArrayList<>();
-        lights.add(new Light(new Vector3f(10,100, -10), new Vector3f(1,0,1)));
-        lights.add(new Light(new Vector3f(10,100, 50), new Vector3f(0,1,1)));
+        lights.add(new Light(new Vector3f(0,0,0), new Vector3f(1,1,1), new Vector3f(1, 0.01f, 0.001f)));
+        lights.add(new Light(new Vector3f(0,200, -0), new Vector3f(0.0f,0.0f,0.0f)));
 
         Camera camera = new Camera(player);
 
@@ -75,6 +75,7 @@ public class MainGameLoop {
         while (!Display.isCloseRequested()) {
             player.move(terrain);
             camera.update();
+            lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
             //entity.increasePosition(0, 0,-0.01f);
             entity.increaseRotation(0,0.5f,0);
 
