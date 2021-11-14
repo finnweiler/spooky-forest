@@ -60,6 +60,13 @@ public class Loader {
         }
     }
 
+    public RawModel loadToVAO(float[] positions) {
+        int vaoId = createVAO();
+        this.storeDataInAttributeList(0, 2, positions);
+        unbindVAO();
+        return new RawModel(vaoId, positions.length / 2);
+    }
+
     private int createVAO() {
         int vaoId = GL30.glGenVertexArrays();
         vaos.add(vaoId);

@@ -4,19 +4,30 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import gui.GuiRenderer;
+import gui.GuiTexture;
 import models.TexturedModel;
 import objConverter.OBJFileLoader;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.AL11;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 import org.w3c.dom.Text;
 import renderEngine.*;
 import models.RawModel;
 import shaders.StaticShader;
+import sound.AudioMaster;
+import sound.Source;
 import terrain.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+import toolbox.MousePicker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +54,10 @@ public class MainGameLoop {
         //Terrain terrain2 = new Terrain(-1,-1, loader, texturePack, blendMap, "heightmap");
         /** Terrain Stuff End */
 
-        RawModel playerModel = OBJFileLoader.loadObjModel("fern", loader);
-        ModelTexture playerTexture = new ModelTexture(loader.loadTexture("fern"));
+        RawModel playerModel = OBJFileLoader.loadObjModel("futuremen", loader);
+        ModelTexture playerTexture = new ModelTexture(loader.loadTexture("futuremen"));
         TexturedModel texturedPlayerModel = new TexturedModel(playerModel, playerTexture);
-        Player player = new Player(texturedPlayerModel, new Vector3f(-10, 0, -20), 0,0,0,1);
+        Player player = new Player(texturedPlayerModel, new Vector3f(-10, 0, -20), 0,0,0,3);
 
         /** Player */
 
@@ -81,13 +92,34 @@ public class MainGameLoop {
 
         MasterRenderer renderer = new MasterRenderer();
 
+        MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
+
+        List<GuiTexture> guis = new ArrayList<GuiTexture>();
+        GuiTexture gui = new GuiTexture(loader.loadTexture("forest"), new Vector2f(0.5f, -0.2f), new Vector2f(1.5f, 1.5f));
+        guis.add(gui);
+
+        GuiRenderer guiRenderer = new GuiRenderer(loader);
+
+        // 3D Sound
+        AudioMaster.init();
+        int buffer = AudioMaster.loadSound("engineTester/horrorsound.wav");
+        Source source = new Source();
+        source.setLooping(true);
+        source.setPosition(65,25,-105);
+        source.play(buffer);
+
+
+        int counter = 0;
+
         while (!Display.isCloseRequested()) {
             player.move(terrain);
             camera.update();
+
+            // AudioMaster.setListenerData(10000,10000,10000);
+
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
             //entity.increasePosition(0, 0,-0.01f);
             // entity.increaseRotation(0,0.5f,0);
-
 
             renderer.processTerrain(terrain);
             //renderer.processTerrain(terrain2);
@@ -98,9 +130,26 @@ public class MainGameLoop {
             renderer.processEntity(player);
             renderer.render(lights, camera);
 
+            picker.update();
+            Vector3f terrainPoint = picker.getCurrentTerrainPoint();
+            if (terrainPoint != null && Mouse.isButtonDown(0)) {
+                fernEntity.setPosition(terrainPoint);
+            }
+
+            if (counter > 500) {
+                guis.remove(gui);
+            }
+
+            guiRenderer.render(guis);
+            counter++;
+
+
             DisplayManager.updateDisplay();
         }
 
+        source.delete();
+        AudioMaster.cleanUp();
+        guiRenderer.cleanUp();
         renderer.cleanUp();
         loader.cleanUp();
         DisplayManager.closeDisplay();
