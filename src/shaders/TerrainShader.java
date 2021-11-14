@@ -2,17 +2,10 @@ package shaders;
 
 import entities.Camera;
 import entities.Light;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import toolbox.Maths;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.FloatBuffer;
 import java.util.List;
 
 public class TerrainShader extends ShaderProgram {
@@ -116,8 +109,8 @@ public class TerrainShader extends ShaderProgram {
     }
 
     public void loadViewMatrix(Camera camera) {
-        Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-        super.loadMatrix(locationViewMatrix, viewMatrix);
+        // Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+        // super.loadMatrix(locationViewMatrix, viewMatrix);
     }
 
     public void loadProjectionMatrix(Matrix4f matrix) {

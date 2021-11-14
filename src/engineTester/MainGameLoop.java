@@ -1,6 +1,5 @@
 package engineTester;
 
-import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
@@ -8,15 +7,18 @@ import models.TexturedModel;
 import objConverter.OBJFileLoader;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.slick.opengl.Texture;
-import org.w3c.dom.Text;
 import renderEngine.*;
 import models.RawModel;
-import shaders.StaticShader;
+// import shaders.StaticShader;
 import terrain.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+
+import entities.Scene;
+import Animation.GeneralSettings;
+
+import entities.Camera;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class MainGameLoop {
         DisplayManager.createDisplay();
 
         Loader loader = new Loader();
+
 
         /** Terrain Stuff Start */
 
@@ -85,12 +88,12 @@ public class MainGameLoop {
             player.move(terrain);
             camera.update();
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
-            //entity.increasePosition(0, 0,-0.01f);
-            // entity.increaseRotation(0,0.5f,0);
+            entity.increasePosition(0, 0,-0.01f);
+            entity.increaseRotation(0,0.5f,0);
 
 
             renderer.processTerrain(terrain);
-            //renderer.processTerrain(terrain2);
+            // renderer.processTerrain(terrain2);
             renderer.processEntity(entity);
             // Gut kick
             renderer.processEntity(dickeCaveEnt);
