@@ -4,9 +4,12 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import gui.GuiRenderer;
+import gui.GuiTexture;
 import models.TexturedModel;
 import objConverter.OBJFileLoader;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 import org.w3c.dom.Text;
@@ -64,6 +67,24 @@ public class MainGameLoop {
         TexturedModel texturedModel = new TexturedModel(model, texture);
         Entity entity = new Entity(texturedModel, new Vector3f(0,0.1f,-25),0,0,0,1);
 
+
+
+        RawModel cave = OBJLoader.loadObjModel("cavefinal", loader);
+        ModelTexture caveTexture = new ModelTexture(loader.loadTexture("cavefinal"));
+
+        texture.setShineDamper(15);
+        texture.setReflectivity(1);
+        TexturedModel caveTexturedModel = new TexturedModel(cave, caveTexture);
+        Entity caveModel = new Entity(caveTexturedModel, new Vector3f(80,20,-100),0,0,0,1);
+
+        RawModel dickeCave = OBJLoader.loadObjModel("dickemap", loader);
+        ModelTexture dickeCavetexture = new ModelTexture(loader.loadTexture("dickemap"));
+        dickeCavetexture.setShineDamper(15);
+        dickeCavetexture.setReflectivity(1);
+        TexturedModel dickeCaveModel = new TexturedModel(dickeCave, dickeCavetexture);
+        Entity dickeCaveEnt = new Entity(dickeCaveModel, new Vector3f(65,25,-105),0,0,0,1);
+
+
         List<Light> lights = new ArrayList<>();
         lights.add(new Light(new Vector3f(0,0,0), new Vector3f(0,0,0), new Vector3f(1, 0.01f, 0.001f)));
         lights.add(new Light(new Vector3f(+600,3000, -500), new Vector3f(1.0f,1.0f,1.0f)));
@@ -71,6 +92,14 @@ public class MainGameLoop {
         Camera camera = new Camera(player);
 
         MasterRenderer renderer = new MasterRenderer(loader);
+
+        List<GuiTexture> guis = new ArrayList<GuiTexture>();
+        GuiTexture gui = new GuiTexture(loader.loadTexture("forest"), new Vector2f(0.5f, -0.2f), new Vector2f(1.5f, 1.5f));
+        guis.add(gui);
+
+        GuiRenderer guiRenderer = new GuiRenderer(loader);
+
+        int counter = 0;
 
         while (!Display.isCloseRequested()) {
             player.move(terrain);
@@ -85,7 +114,18 @@ public class MainGameLoop {
             renderer.processEntity(entity);
             renderer.processEntity(fernEntity);
             renderer.processEntity(player);
+            renderer.processEntity(caveModel);
+            renderer.processEntity(dickeCaveEnt);
+
+
             renderer.render(lights, camera);
+
+            if (counter > 500) {
+                guis.remove(gui);
+            }
+
+            guiRenderer.render(guis);
+            counter++;
 
             DisplayManager.updateDisplay();
         }
