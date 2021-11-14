@@ -39,23 +39,38 @@ public class MainGameLoop {
         TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
 
-        Terrain terrain = new Terrain(0,-1, loader, texturePack, blendMap, "heightmap");
+        Terrain terrain = new Terrain(0,0, loader, texturePack, blendMap, "heightmap");
         //Terrain terrain2 = new Terrain(-1,-1, loader, texturePack, blendMap, "heightmap");
         /** Terrain Stuff End */
 
         RawModel playerModel = OBJFileLoader.loadObjModel("fern", loader);
         ModelTexture playerTexture = new ModelTexture(loader.loadTexture("fern"));
         TexturedModel texturedPlayerModel = new TexturedModel(playerModel, playerTexture);
-        Player player = new Player(texturedPlayerModel, new Vector3f(-10, 0, -20), 0,0,0,1);
+        Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0,0,0,1);
 
         /** Player */
+
+        /** Vegetation Start */
+        ArrayList<Entity> vegetation = new ArrayList<>();
+
+
 
         RawModel fernRawModel = OBJFileLoader.loadObjModel("fern", loader);
         ModelTexture fernTexture = new ModelTexture(loader.loadTexture("fern"));
         fernTexture.setTransparent(true);
-        //fernTexture.setFakeLit(true);
-        TexturedModel fernTexturedModel = new TexturedModel(fernRawModel, fernTexture);
-        Entity fernEntity = new Entity(fernTexturedModel, new Vector3f(-10,0,-17),0,0,0,1);
+        for (int i = 0; i < 2000; i++) {
+            //fernTexture.setFakeLit(true);
+            TexturedModel fernTexturedModel = new TexturedModel(fernRawModel, fernTexture);
+            float x = (float) Math.random() * 800;
+            float z = (float) Math.random() * 800;
+            float y = terrain.getHeight(x, z);
+            Vector3f n = terrain.getNormal(x, z);
+            Entity fernEntity = new Entity(fernTexturedModel, new Vector3f(x,y,z),0,0,0,1);
+            vegetation.add(fernEntity);
+        }
+
+        /** Vegetation End */
+
 
         RawModel model = OBJLoader.loadObjModel("dragon", loader);
         ModelTexture texture = new ModelTexture(loader.loadTexture("blue"));
@@ -83,7 +98,9 @@ public class MainGameLoop {
             renderer.processTerrain(terrain);
             //renderer.processTerrain(terrain2);
             renderer.processEntity(entity);
-            renderer.processEntity(fernEntity);
+            for (Entity vegetationEntity: vegetation) {
+                renderer.processEntity(vegetationEntity);
+            }
             renderer.processEntity(player);
             renderer.render(lights, camera);
 

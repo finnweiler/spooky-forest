@@ -23,12 +23,12 @@ public class MasterRenderer {
     private static final float NEAR_PLANE = 0.1f;
     private static final float FAR_PLANE = 1000f;
 
-    private static final float SKY_R = 0.4f;
-    private static final float SKY_G = 0.4f;
-    private static final float SKY_B = 0.5f;
+    private static final float SKY_R = 0.7f;
+    private static final float SKY_G = 0.7f;
+    private static final float SKY_B = 0.8f;
 
-    private static final float FOG_DENSITY = 0.007f;
-    private static final float FOG_GRADIENT = 1.5f;
+    private static final float FOG_DENSITY = 0.003f;
+    private static final float FOG_GRADIENT = 3.5f;
 
     private Matrix4f projectionMatrix;
 
@@ -64,7 +64,7 @@ public class MasterRenderer {
         prepare();
 
         shader.start();
-        shader.loadSkyColor(SKY_R, SKY_B, SKY_G);
+        shader.loadSkyColor(SKY_R, SKY_G, SKY_B);
         shader.loadFog(FOG_DENSITY, FOG_GRADIENT);
         shader.loadLights(lights);
         shader.loadViewMatrix(camera);
@@ -72,14 +72,14 @@ public class MasterRenderer {
         shader.stop();
 
         terrainShader.start();
-        terrainShader.loadSkyColor(SKY_R, SKY_B, SKY_G);
+        terrainShader.loadSkyColor(SKY_R, SKY_G, SKY_B);
         terrainShader.loadFog(FOG_DENSITY, FOG_GRADIENT);
         terrainShader.loadLights(lights);
         terrainShader.loadViewMatrix(camera);
         terrainRenderer.render(terrains);
         terrainShader.stop();
 
-        skyboxRenderer.render(camera);
+        skyboxRenderer.render(camera, SKY_R, SKY_G, SKY_B);
 
         terrains.clear();
         entities.clear();

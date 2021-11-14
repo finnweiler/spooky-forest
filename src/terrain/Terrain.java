@@ -17,8 +17,7 @@ import java.io.IOException;
 public class Terrain {
 
     private static final float SIZE = 800;
-    private static final float MAX_HEIGHT = 40;
-    private static final float MIN_HEIGHT = 0;
+    private static final float MAX_HEIGHT = 20;
     private static final float MAX_PIXEL_COLOR = (float) Math.pow(256, 3);
 
     private float x;
@@ -28,6 +27,7 @@ public class Terrain {
     private TerrainTexture blendMap;
 
     private float heights[][];
+    private Vector3f normals[][];
 
     public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightMapFile) {
         this.texturePack = texturePack;
@@ -68,6 +68,7 @@ public class Terrain {
 
         int VERTEX_COUNT = heightMapImage.getHeight();
         heights = new float[VERTEX_COUNT][VERTEX_COUNT];
+        this.normals = new Vector3f[VERTEX_COUNT][VERTEX_COUNT];
 
         int count = VERTEX_COUNT * VERTEX_COUNT;
         float[] vertices = new float[count * 3];
@@ -83,6 +84,7 @@ public class Terrain {
                 vertices[vertexPointer*3+1] = height;
                 vertices[vertexPointer*3+2] = (float)i/((float)VERTEX_COUNT - 1) * SIZE;
                 Vector3f normal = calculateNormal(j, i, heightMapImage);
+                this.normals[j][i] = normal;
                 normals[vertexPointer*3] = normal.x;
                 normals[vertexPointer*3+1] = normal.y;
                 normals[vertexPointer*3+2] = normal.z;
@@ -127,6 +129,18 @@ public class Terrain {
         height /= MAX_PIXEL_COLOR;
         height *= MAX_HEIGHT;
         return height;
+    }
+
+    public Vector3f getNormal(float worldX, float worldZ) {
+        float terrainX = worldX - this.x;
+        float terrainZ = worldZ - this.z;
+        float gridSquareSize = SIZE / ((float) heights.length - 1);
+        int gridX = (int) Math.floor(terrainX / gridSquareSize);
+        int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
+        if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
+            return new Vector3f(0, 1, 0);
+        }
+        return normals[gridX][gridZ];
     }
 
     public float getHeight(float worldX, float worldZ) {
