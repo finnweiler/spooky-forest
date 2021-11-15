@@ -72,12 +72,12 @@ public class MainGameLoop {
         /** Vegetation End */
 
 
-        RawModel model = OBJLoader.loadObjModel("dragon", loader);
+        RawModel model = OBJFileLoader.loadObjModel("dragon", loader);
         ModelTexture texture = new ModelTexture(loader.loadTexture("blue"));
         texture.setShineDamper(15);
         texture.setReflectivity(1);
         TexturedModel texturedModel = new TexturedModel(model, texture);
-        Entity entity = new Entity(texturedModel, new Vector3f(0,0.1f,-25),0,0,0,1);
+        Entity entity = new Entity(texturedModel, new Vector3f(400,terrain.getHeight(400, 400),400),0,0,0,1);
 
         List<Light> lights = new ArrayList<>();
         lights.add(new Light(new Vector3f(0,0,0), new Vector3f(0,0,0), new Vector3f(1, 0.01f, 0.001f)));

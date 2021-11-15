@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class MasterRenderer {
 
-    private static final float FOV = 80;
+    private static final float FOV = 70;
     private static final float NEAR_PLANE = 0.1f;
     private static final float FAR_PLANE = 1000f;
 
@@ -114,17 +114,17 @@ public class MasterRenderer {
     }
 
     private void createProjectionMatrix() {
-        float aspectRation = (float) Display.getWidth() / (float) Display.getHeight();
-        float yScale = (float) ((1f / Math.tan(Math.toRadians( FOV / 2f ))) * aspectRation);
-        float xScale = yScale / aspectRation;
-        float frustumLength = FAR_PLANE - NEAR_PLANE;
-
         projectionMatrix = new Matrix4f();
-        projectionMatrix.m00 = xScale;
-        projectionMatrix.m11 = yScale;
-        projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustumLength);
+        float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
+        float x_scale = y_scale / aspectRatio;
+        float frustum_length = FAR_PLANE - NEAR_PLANE;
+
+        projectionMatrix.m00 = x_scale;
+        projectionMatrix.m11 = y_scale;
+        projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
         projectionMatrix.m23 = -1;
-        projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustumLength);
+        projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
         projectionMatrix.m33 = 0;
     }
 }
