@@ -4,11 +4,15 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import gui.GuiRenderer;
+import gui.GuiTexture;
 import models.Loader;
 import models.OBJLoader;
 import models.TexturedModel;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
 import models.RawModel;
@@ -202,6 +206,21 @@ public class MainGameLoop {
         }
         /** Birds End */
 
+        /** GUI Start */
+        List<GuiTexture> guis = new ArrayList<GuiTexture>();
+        GuiTexture intro = new GuiTexture(loader.loadTexture("forest"), new Vector2f(0.5f, -0.2f), new Vector2f(1.5f, 1.5f));
+
+        GuiTexture startmenu = new GuiTexture(loader.loadTexture("caveoffailes_menu"), new Vector2f(0.4f, -0.2f), new Vector2f(1.5f, 1.5f));
+
+        GuiRenderer guiRenderer = new GuiRenderer(loader);
+        // Add Intro
+        // guis.add(intro);
+
+
+        int counter = 0;
+        boolean escaped = false;
+        /** GUI End */
+
         MasterRenderer renderer = new MasterRenderer(loader);
 
         float rotation = 0;
@@ -209,12 +228,18 @@ public class MainGameLoop {
         float nightFade = 0;
         int ticks = 0;
         int treeColor = 0;
+        boolean closeRequested = false;
 
-        while (!Display.isCloseRequested()) {
-            player.move(terrain);
+        while (!Display.isCloseRequested() && !closeRequested) {
+
+            if (!escaped) {
+                player.move(terrain);
+            }
+
             camera.update();
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
 
+            System.out.println(Mouse.getX());
 
             /** Dino Start */
             float dinoX = (float) Math.sin(rotation) * radius + 400;
@@ -288,6 +313,40 @@ public class MainGameLoop {
             } else if (source2.isPlaying()) {
                 source2.stop();
                 stepping = false;
+            }
+
+            // INTRO
+            // if (counter > 500) {
+            //    guis.clear();
+            //    guiRenderer.render(guis);
+            //    guis.add(startmenu);
+            //    counter++;
+            //}
+
+            // Render GUIs
+            guiRenderer.render(guis);
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+                escaped = true;
+                guis.add(startmenu);
+                guiRenderer.render(guis);
+                Mouse.setGrabbed(false); // Disable Mouse
+            }
+
+            if (escaped && Mouse.isButtonDown(0)) {
+                // Check if in Coords
+                int mouseX = Mouse.getX();
+                int mouseY = Mouse.getY();
+                if (mouseX < 1070 && mouseX > 860) {
+                    if (mouseY < 520 && mouseY > 460) {
+                        escaped = false;
+                        guis.clear();
+                        Mouse.setGrabbed(true); // Enable mouse
+                    } else if (mouseY < 360 && mouseY > 285) {
+                        closeRequested = true;
+                    }
+                    guis.remove(startmenu);
+                }
             }
 
             ticks++;
