@@ -52,27 +52,37 @@ public class MainGameLoop {
         RawModel flowerModel = OBJLoader.loadObjModel("trees/flower", loader);
         ModelTexture flowerTexture = new ModelTexture(loader.loadTexture("trees/flower"));
 
-        int vertexPointer = 0;
         for(int i=0;i<squareCount;i++){
             for(int j=0;j<squareCount;j++){
                 float percentage = getPercentage(j, i, vegetationMapImage);
-                if (percentage > Math.random()) {
-                    System.out.println(percentage);
+                if ((1 - percentage) * density > Math.random()) {
 
-                    TexturedModel texturedModel = new TexturedModel(tree1Model, tree1Texture);
+                    TexturedModel texturedModel = null;
+                    float scale = 1;
+                    float object = (float) Math.random();
+                    if (object < 0.3) {
+                        texturedModel = new TexturedModel(tree1Model, tree1Texture);
+                        scale = (float) Math.random() * 2 + 2;
+                    } else if (object < 0.6) {
+                        texturedModel = new TexturedModel(tree2Model, tree2Texture);
+                        scale = (float) Math.random() * 3 + 4;
+                    } else {
+                        texturedModel = new TexturedModel(flowerModel, flowerTexture);
+                        scale = (float) Math.random() * 4 + 15;
+                    }
 
                     float offsetX = (float) Math.random() * 5 - 2.5f;
                     float offsetZ = (float) Math.random() * 5 - 2.5f;
 
-                    float worldX = (float) scalingFactor * j + offsetX;
-                    float worldZ = (float) scalingFactor * i + offsetZ;
+                    float worldX = scalingFactor * j + offsetX;
+                    float worldZ = scalingFactor * i + offsetZ;
 
                     float y = terrain.getHeight(worldX, worldZ);
                     Entity treeEntity = new Entity(texturedModel,
                             new Vector3f(worldX, y, worldZ),
                             0, (float) Math.random() * 360, 0,
-                            (float) Math.random() * 2 + 2);
-                    //vegetation.add(treeEntity);
+                            scale);
+                    vegetation.add(treeEntity);
                 }
             }
         }
@@ -100,7 +110,7 @@ public class MainGameLoop {
         AudioMaster.init();
         AudioMaster.setListenerData(0, 0, 0);
 
-        int bufferBackgroundMusic = AudioMaster.loadSound("sound/music_short.wav");
+        int bufferBackgroundMusic = AudioMaster.loadSound("sound/music_short_short.wav");
         Source source = new Source();
         source.setVolume(0.4f);
         source.setLooping(true);
@@ -145,12 +155,12 @@ public class MainGameLoop {
         /** Lights End */
 
         /** Dino Start */
-        RawModel model = OBJLoader.loadObjModel("dragon", loader);
-        ModelTexture texture = new ModelTexture(loader.loadTexture("blue"));
+        RawModel model = OBJLoader.loadObjModel("assets/unsafedino", loader);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("assets/unsafedino"));
         texture.setShineDamper(15);
         texture.setReflectivity(1);
         TexturedModel texturedModel = new TexturedModel(model, texture);
-        Entity dino = new Entity(texturedModel, new Vector3f(400, terrain.getHeight(400, 400), 400), 0, 0, 0, 1);
+        Entity dino = new Entity(texturedModel, new Vector3f(400, terrain.getHeight(400, 400), 400), 0, 0, 0, 18);
         /** Dino End */
 
         /** Birds Start */
@@ -188,7 +198,7 @@ public class MainGameLoop {
             float dinoZ = (float) Math.cos(rotation) * radius + 400;
             float dinoY = terrain.getHeight(dinoX, dinoZ);
             dino.setPosition(new Vector3f(dinoX, dinoY, dinoZ));
-            dino.setRotY(rotation);
+            dino.setRotY((float) Math.toDegrees(rotation) + 90);
             rotation += 0.002f;
             lights.get(1).setPosition(new Vector3f(dino.getPosition().getX(), dino.getPosition().getY() + 7, dino.getPosition().getZ()));
             /** Dino End */
