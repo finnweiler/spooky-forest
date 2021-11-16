@@ -50,7 +50,7 @@ public class Entity {
 
     /**
      * Diese Funktion gibt den Texture Offset für ein Object zurück.
-     * Dieser wird benötigt wenn mehrere Texturen für das gleiche Model in einem einzelnen PNG hinterlegt sind.
+     * Dieser wird benötigt, wenn mehrere Texturen für das gleiche Model in einem einzelnen PNG hinterlegt sind.
      * @return Texture Offset
      */
     public Vector2f getTextureOffset() {
@@ -63,7 +63,7 @@ public class Entity {
 
     /**
      * Diese Funktion gibt die Transformationsmatrix des Entities zurück,
-     * die zur Verarbeitung im Shader benötig wird.
+     * die zur Verarbeitung im Shader benötigt wird.
      * @return Transformationsmatrix
      */
     public Matrix4f getTransformationMatrix() {

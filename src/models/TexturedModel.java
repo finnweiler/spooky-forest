@@ -2,6 +2,9 @@ package models;
 
 import textures.ModelTexture;
 
+/**
+ * Diese Klasse repräsentiert ein in OpenGL geladenes Vertex Array Buffer (VAO) inkl. dessen Textur.
+ */
 public class TexturedModel {
 
     private RawModel rawModel;

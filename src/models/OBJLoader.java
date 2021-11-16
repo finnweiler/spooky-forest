@@ -10,11 +10,20 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Diese Klasse kann Daten aus dem OBJ Format in die Model-Klassen übersetzen.
+ */
 public class OBJLoader {
 
-    // improved version 16!
-
+    /**
+     * Diese Funktion läd ein OBJ Objekt aus einer Datei in OpenGL und gibt ein RawModel Objekt zurück,
+     * dass die in OpenGL geladenen Daten repräsentiert.
+     * @param fileName
+     * @param loader
+     * @return
+     */
     public static RawModel loadObjModel(String fileName, Loader loader) {
+        // Auslesen der Datei aus dem Speicher
         FileReader fr = null;
         try {
             fr = new FileReader(new File("res/"+fileName+".obj"));
@@ -38,6 +47,7 @@ public class OBJLoader {
         try {
 
             while (true) {
+                // Liest alle Vertex-, Texturkoordinaten und Normalenvektoren aus.
                 line = reader.readLine();
                 String[] currentLine = line.split(" ");
 

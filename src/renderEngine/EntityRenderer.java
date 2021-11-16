@@ -12,9 +12,12 @@ import toolbox.Maths;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Diese Klasse beinhaltet die Renderlogik für alle Enitity Objekte
+ */
 public class EntityRenderer {
 
-    private StaticShader shader;
+    private StaticShader shader; // Der shader, der die Logik zum Rendern der Entities enthält.
 
     public EntityRenderer(StaticShader shader, Matrix4f projectionMatrix) {
         this.shader = shader;
@@ -23,11 +26,18 @@ public class EntityRenderer {
         shader.stop();
     }
 
+    /**
+     * Diese Funktion rendert eine Hashmap gefüllt Listen von Entities. Entities sind hier nach Ihren TexturedModels gehashed, um diese
+     * nur einmal Modell- und Texturendaten nur einmal pro Textur- und Modell zu Binden und Unbinden.
+     * @param entities Entities in Hashmap
+     */
     public void render(Map<TexturedModel, List<Entity>> entities) {
         for(TexturedModel model: entities.keySet()) {
+            // Binded die Modelldaten und Texturen für ein Textured Modell
             prepareTexturedModel(model);
             List<Entity> batch = entities.get(model);
             for(Entity entity: batch) {
+                // Rendert alle Entities in Ihrer individuellen Transformation
                 prepareInstance(entity);
                 GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
             }
@@ -35,6 +45,10 @@ public class EntityRenderer {
         }
     }
 
+    /**
+     * Binded die Modell- und Texturdaten für ein TexturedModel Objekt in OpenGl um dieses danach rendern zu können.
+     * @param texturedModel Texturiertes Modell
+     */
     private void prepareTexturedModel(TexturedModel texturedModel) {
         RawModel model = texturedModel.getRawModel();
         GL30.glBindVertexArray(model.getVaoID());
@@ -54,6 +68,10 @@ public class EntityRenderer {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturedModel.getTexture().getId());
     }
 
+    /**
+     * Unbindend die Modell- und Texturdaten für ein TexturedModel Objekt in OpenGL,
+     * wenn diese nach dem Rendern nicht mehr benötigt werden.
+     */
     private void unbindTexturedModel() {
         MasterRenderer.enableCulling();
         GL20.glDisableVertexAttribArray(0);
@@ -62,6 +80,10 @@ public class EntityRenderer {
         GL30.glBindVertexArray(0);
     }
 
+    /**
+     * Läd die Transformationsmatrix für ein Entity Object in den Shader.
+     * @param entity Entity
+     */
     private void prepareInstance(Entity entity) {
         Matrix4f transformationMatrix = entity.getTransformationMatrix();
         shader.loadTransformationMatrix(transformationMatrix);
