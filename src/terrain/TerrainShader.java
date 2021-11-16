@@ -18,9 +18,11 @@ import java.util.List;
 
 public class TerrainShader extends ShaderProgram {
 
+    // Referenz auf die Shader Datei
     private static final String VERTEX_FILE = "src/terrain/terrainVertexShader";
     private static final String FRAGMENT_FILE = "src/terrain/terrainFragmentShader";
 
+    // Ids zur Referenz auf die Shader uniform variablen
     private int locationTransformationMatrix;
     private int locationProjectionMatrix;
     private int locationViewMatrix;

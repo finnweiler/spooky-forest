@@ -14,6 +14,7 @@ public class StaticShader extends ShaderProgram {
     private static final String VERTEX_FILE = "src/shaders/vertexShader";
     private static final String FRAGMENT_FILE = "src/shaders/fragmentShader";
 
+    // Ids zur Referenz auf die Shader uniform variablen
     private int locationTransformationMatrix;
     private int locationProjectionMatrix;
     private int locationViewMatrix;

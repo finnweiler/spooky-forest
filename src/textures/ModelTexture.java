@@ -2,15 +2,16 @@ package textures;
 
 public class ModelTexture {
 
-    private int textureId;
+    private int textureId;                  // Referenz zur geladenen Textur
 
-    private float shineDamper = 1;
-    private float reflectivity = 0;
+    private float shineDamper = 1;          // Dämpung des Scheins
+    private float reflectivity = 0;         // Reflektivität eines Objekts
 
-    private boolean isTransparent = false;
-    private boolean isFakeLit = false;
+    private boolean isTransparent = false;  // Gibt an, ob das PNG transparent gerendert werden soll
+    private boolean isFakeLit = false;      // Gibt an, ob alle Normalenvektoren des Models nach oben zeigen sollen
 
-    private int numberOfRows = 1;
+    private int numberOfRows = 1;           // Falls eine Texturdatei mehrere Texturen für das gleiche Modell enthält,
+                                            // kann dies hier angegeben werden
 
     public ModelTexture(int id) {
         this.textureId = id;

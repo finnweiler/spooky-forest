@@ -20,24 +20,24 @@ import java.util.Map;
 
 public class MasterRenderer {
 
-    private static final float FOV = 70;
-    private static final float NEAR_PLANE = 0.1f;
-    private static final float FAR_PLANE = 1000f;
+    private static final float FOV = 70;            // Sichtfeld der Kamera
+    private static final float NEAR_PLANE = 0.1f;   // Minimale Darstellungsdistanz
+    private static final float FAR_PLANE = 1000f;   // Maximale Darstellungsdistanz
 
-    private static final float SKY_R_N = 0.1f;
-    private static final float SKY_G_N = 0.1f;
-    private static final float SKY_B_N = 0.15f;
+    private static final float SKY_R_N = 0.1f;  // Nebelfrabe bei Nacht (R-Komponente)
+    private static final float SKY_G_N = 0.1f;  // Nebelfrabe bei Nacht (G-Komponente)
+    private static final float SKY_B_N = 0.15f; // Nebelfrabe bei Nacht (B-Komponente)
 
-    private static final float SKY_R = 0.5f;
-    private static final float SKY_G = 0.5f;
-    private static final float SKY_B = 0.6f;
+    private static final float SKY_R = 0.5f;    // Nebelfrabe bei Tag (R-Komponente)
+    private static final float SKY_G = 0.5f;    // Nebelfrabe bei Tag (G-Komponente)
+    private static final float SKY_B = 0.6f;    // Nebelfrabe bei Tag (B-Komponente)
 
-    private static final float FOG_DENSITY = 0.003f;
-    private static final float FOG_GRADIENT = 3.5f;
+    private static final float FOG_DENSITY = 0.003f;    // Nebeldichte
+    private static final float FOG_GRADIENT = 3.5f;     // Nebelübergang
 
-    private float nightFade = 0;
+    private float nightFade = 0;    // Tag/Nacht Übergang | 0 = Tag und 1 = Nacht
 
-    private Matrix4f projectionMatrix;
+    private Matrix4f projectionMatrix; // Projektionsmatrix
 
     private StaticShader shader = new StaticShader();
     private EntityRenderer renderer;
@@ -58,22 +58,36 @@ public class MasterRenderer {
         skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
     }
 
+    /**
+     * Überspringe das Rendern der Rückseiten von Polygonen, um Ressourcen zu sparen
+     */
     public static void enableCulling() {
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glCullFace(GL11.GL_BACK);
     }
 
+    /**
+     * Aktiviere das Rendern der Rückseiten von Polygonen, um flache Objekte zu rendern
+     * z.B. Gras
+     */
     public static void disableCulling() {
         GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
+    /**
+     * Dies ist die Haupt-Render-Funktion und ruft alle anderen Renderer auf. Sie muss jeden Frame aufgerufen werden.
+     * @param lights Alle Lichter in der Szene. Vom Shader werden aktuell bis zu vier Lichter berücksichtigt.
+     * @param camera Die Kamera, die die Szene rendern soll.
+     */
     public void render(List<Light> lights, Camera camera) {
         prepare();
 
+        // Bestimme die aktuelle Nebenfarbe
         float skyR = SKY_R * (1 - nightFade) + SKY_R_N * nightFade;
         float skyG = SKY_G * (1 - nightFade) + SKY_G_N * nightFade;
         float skyB = SKY_B * (1 - nightFade) + SKY_B_N * nightFade;
 
+        // Render alle Entities
         shader.start();
         shader.loadSkyColor(skyR, skyG, skyB);
         shader.loadFog(FOG_DENSITY, FOG_GRADIENT);
@@ -82,6 +96,7 @@ public class MasterRenderer {
         renderer.render(entities);
         shader.stop();
 
+        // Render den Boden
         terrainShader.start();
         terrainShader.loadSkyColor(skyR, skyG, skyB);
         terrainShader.loadFog(FOG_DENSITY, FOG_GRADIENT);
@@ -90,8 +105,11 @@ public class MasterRenderer {
         terrainRenderer.render(terrains);
         terrainShader.stop();
 
+        // Render die Skybox
         skyboxRenderer.render(camera, skyR, skyG, skyB);
 
+        // Entferne die gerenderten Objekte,
+        // da diese nächsten Frame wieder hinzugefügt werden
         terrains.clear();
         entities.clear();
     }

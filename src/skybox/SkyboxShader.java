@@ -14,6 +14,7 @@ public class SkyboxShader extends ShaderProgram {
 
     private static final float ROTATE_SPEED = 0.0001f;
 
+    // Ids zur Referenz auf die Shader uniform variablen
     private int locationProjectionMatrix;
     private int locationViewMatrix;
     private int locationFogColor;

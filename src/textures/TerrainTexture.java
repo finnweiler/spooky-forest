@@ -1,5 +1,8 @@
 package textures;
 
+/**
+ * Diese Klasse repräsentiert eine Textur für das TerrainTexturePack.
+ */
 public class TerrainTexture {
 
     private int textureId;
