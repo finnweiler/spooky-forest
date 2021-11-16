@@ -7,13 +7,11 @@ import entities.Player;
 import models.Loader;
 import models.OBJLoader;
 import models.TexturedModel;
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
 import models.RawModel;
-import skybox.SkyboxRenderer;
 import sound.AudioMaster;
 import sound.Source;
 import terrain.Terrain;
@@ -149,11 +147,7 @@ public class MainGameLoop {
         RawModel playerModel = OBJLoader.loadObjModel("assets/player", loader);
         ModelTexture playerTexture = new ModelTexture(loader.loadTexture("assets/player"));
         TexturedModel texturedPlayerModel = new TexturedModel(playerModel, playerTexture);
-<<<<<<< Updated upstream
         Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0, 180, 0, 8);
-=======
-        Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0, 90, 0, 8);
->>>>>>> Stashed changes
         Camera camera = new Camera(player);
         /** Player End */
 
@@ -236,7 +230,7 @@ public class MainGameLoop {
             for (Entity bird : birds) {
                 float dx = (float) Math.sin(Math.toRadians(bird.getRotY())) * DisplayManager.getFrameTime() * 0.023f;
                 float dz = (float) Math.cos(Math.toRadians(bird.getRotY())) * DisplayManager.getFrameTime() * 0.023f;
-                bird.increasePosition(dx, 0, dz);
+                bird.translate(dx, 0, dz);
                 Vector3f birdPos = bird.getPosition();
                 if (birdPos.getX() > 800) {
                     birdPos.setX(0);
@@ -265,7 +259,7 @@ public class MainGameLoop {
                         treeColor % 3 == 0 ? 1f : 0f,
                         treeColor % 3 == 1 ? 1f : 0f,
                         treeColor % 3 == 2 ? 1f : 0f
-                        ));
+                ));
             } else if (nightFade > 0) {
                 nightFade += 0.0003f;
                 nightFade = (float) Math.min(nightFade, 1);
