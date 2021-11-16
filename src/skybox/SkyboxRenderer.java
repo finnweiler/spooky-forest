@@ -111,6 +111,6 @@ public class SkyboxRenderer {
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture);
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, textureNight);
-        shader.loadBlendFactor(0f);
+        shader.loadBlendFactor(1f);
     }
 }

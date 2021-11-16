@@ -4,6 +4,7 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import models.OBJLoader;
 import models.TexturedModel;
 import objConverter.OBJFileLoader;
 import org.lwjgl.opengl.Display;
@@ -26,10 +27,9 @@ public class MainGameLoop {
     public static void main(String[] args) {
 
         DisplayManager.createDisplay();
-
         Loader loader = new Loader();
 
-        /** Terrain Stuff Start */
+        /** Terrain Start */
 
         TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grass"));
         TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("mud"));
@@ -40,36 +40,57 @@ public class MainGameLoop {
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
 
         Terrain terrain = new Terrain(0,0, loader, texturePack, blendMap, "heightmap");
-        //Terrain terrain2 = new Terrain(-1,-1, loader, texturePack, blendMap, "heightmap");
-        /** Terrain Stuff End */
-
-        RawModel playerModel = OBJFileLoader.loadObjModel("fern", loader);
-        ModelTexture playerTexture = new ModelTexture(loader.loadTexture("fern"));
-        TexturedModel texturedPlayerModel = new TexturedModel(playerModel, playerTexture);
-        Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0,0,0,1);
-
-        /** Player */
+        /** Terrain End */
 
         /** Vegetation Start */
         ArrayList<Entity> vegetation = new ArrayList<>();
 
-
-
-        RawModel fernRawModel = OBJFileLoader.loadObjModel("fern", loader);
-        ModelTexture fernTexture = new ModelTexture(loader.loadTexture("fern"));
-        fernTexture.setTransparent(true);
-        for (int i = 0; i < 2000; i++) {
-            //fernTexture.setFakeLit(true);
-            TexturedModel fernTexturedModel = new TexturedModel(fernRawModel, fernTexture);
+        RawModel tree1Model = OBJLoader.loadObjModel("trees/bigtree1", loader);
+        ModelTexture tree1Texture = new ModelTexture(loader.loadTexture("trees/bigtree1"));
+        //fernTexture.setFakeLit(true);
+        for (int i = 0; i < 1000; i++) {
+            TexturedModel tree1TexturedModel = new TexturedModel(tree1Model, tree1Texture);
             float x = (float) Math.random() * 800;
             float z = (float) Math.random() * 800;
             float y = terrain.getHeight(x, z);
             Vector3f n = terrain.getNormal(x, z);
-            Entity fernEntity = new Entity(fernTexturedModel, new Vector3f(x,y,z),0,0,0,1);
-            vegetation.add(fernEntity);
+            Entity treeEntity = new Entity(tree1TexturedModel,
+                    new Vector3f(x,y,z),
+                    0,(float) i,0,
+                    (float) Math.random() * 2 + 2 );
+            vegetation.add(treeEntity);
         }
 
+        RawModel tree2Model = OBJLoader.loadObjModel("trees/oak1", loader);
+        ModelTexture tree2Texture = new ModelTexture(loader.loadTexture("trees/oak1"));
+        //fernTexture.setFakeLit(true);
+        for (int i = 0; i < 500; i++) {
+            TexturedModel tree2TexturedModel = new TexturedModel(tree2Model, tree2Texture);
+            float x = (float) Math.random() * 800;
+            float z = (float) Math.random() * 800;
+            float y = terrain.getHeight(x, z);
+            Vector3f n = terrain.getNormal(x, z);
+            Entity treeEntity = new Entity(tree2TexturedModel,
+                    new Vector3f(x,y,z),
+                    0,(float) i,0,
+                    (float) Math.random() * 2 + 4 );
+            vegetation.add(treeEntity);
+        }
         /** Vegetation End */
+
+        /** Player Start */
+        RawModel playerModel = OBJFileLoader.loadObjModel("fern", loader);
+        ModelTexture playerTexture = new ModelTexture(loader.loadTexture("fern"));
+        TexturedModel texturedPlayerModel = new TexturedModel(playerModel, playerTexture);
+        Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0,0,0,1);
+        Camera camera = new Camera(player);
+        /** Player End */
+
+        /** Lights Start */
+        List<Light> lights = new ArrayList<>();
+        lights.add(new Light(new Vector3f(0,0,0), new Vector3f(1,1,1), new Vector3f(1, 0.01f, 0.001f)));
+        lights.add(new Light(new Vector3f(+600,3000, -500), new Vector3f(0f,0f,0f)));
+        /** Lights End */
 
 
         RawModel model = OBJFileLoader.loadObjModel("dragon", loader);
@@ -78,12 +99,6 @@ public class MainGameLoop {
         texture.setReflectivity(1);
         TexturedModel texturedModel = new TexturedModel(model, texture);
         Entity entity = new Entity(texturedModel, new Vector3f(400,terrain.getHeight(400, 400),400),0,0,0,1);
-
-        List<Light> lights = new ArrayList<>();
-        lights.add(new Light(new Vector3f(0,0,0), new Vector3f(0,0,0), new Vector3f(1, 0.01f, 0.001f)));
-        lights.add(new Light(new Vector3f(+600,3000, -500), new Vector3f(1.0f,1.0f,1.0f)));
-
-        Camera camera = new Camera(player);
 
         MasterRenderer renderer = new MasterRenderer(loader);
 
@@ -96,7 +111,6 @@ public class MainGameLoop {
 
 
             renderer.processTerrain(terrain);
-            //renderer.processTerrain(terrain2);
             renderer.processEntity(entity);
             for (Entity vegetationEntity: vegetation) {
                 renderer.processEntity(vegetationEntity);
