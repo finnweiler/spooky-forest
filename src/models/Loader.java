@@ -18,12 +18,24 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Diese Klasse läd die 3D Objekt-Modelle und Texturen in die Vertex Array Buffers (VAO)
+ * bzw. Vertex Buffer Object (VBO), damit diese von der GPU verwendet werden können.
+ */
 public class Loader {
 
     private List<Integer> vaos = new ArrayList<Integer>();
     private List<Integer> vbos = new ArrayList<Integer>();
     private List<Integer> textures = new ArrayList<Integer>();
 
+    /**
+     *
+     * @param positions Vertex Positionen des 3D Modells
+     * @param textureCoordinate Textur Koordinaten des 3D Modells
+     * @param normals Normalenvektoren des 3D Modells
+     * @param indices Indizes des
+     * @return
+     */
     public RawModel loadToVAO(float[] positions, float[] textureCoordinate, float[] normals, int[] indices) {
         int vaoId = createVAO();
         bindIndicesBuffer(indices);
@@ -59,6 +71,9 @@ public class Loader {
         return textureId;
     }
 
+    /**
+     * Nachdem die Anwendung beendet wurde, sollten die gebundenen Ressourcen wieder freigegeben werden.
+     */
     public void cleanUp() {
         for(int vao: vaos) {
             GL30.glDeleteVertexArrays(vao);
@@ -71,6 +86,12 @@ public class Loader {
         }
     }
 
+    /**
+     * Diese Funktion läd eine CubeMap Textur, bestehend aus mehreren Texturdateien in den Texturspeicher.
+     * CubeMaps werden für die Quadratische Skybox benötigt.
+     * @param textureFiles Name der Texturen
+     * @return Id zur Referenz auf die geladenen Texturen.
+     */
     public int loadCubeMap(String[] textureFiles) {
         int texId = GL11.glGenTextures();
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -98,6 +119,11 @@ public class Loader {
         return texId;
     }
 
+    /**
+     * Diese Funktion läd mithilfe einer PNG-Decoder-Library PNG Daten in ein Buffer Objekt.
+     * @param fileName Dateiname der Textur, die dekodiert werden soll.
+     * @return Texturdaten
+     */
     private TextureData decodeTextureFile(String fileName) {
         int width = 0;
         int height = 0;
@@ -119,6 +145,10 @@ public class Loader {
         return new TextureData(width, height, buffer);
     }
 
+    /**
+     * Erstellt einen neuen Vertex Array Buffer und gibt dessen Id zurück.
+     * @return VAO Id
+     */
     private int createVAO() {
         int vaoId = GL30.glGenVertexArrays();
         vaos.add(vaoId);
@@ -126,6 +156,13 @@ public class Loader {
         return vaoId;
     }
 
+    /**
+     * Speichert ein Float Array, welches Vektoren variabler Größe repräsentiert in einem Vertex Buffer Object (VBO) und legt diese unter eine Attribut-Nummer ab.
+     * Die AttributNummer repräsentiert hierbei um welche Daten es sich handelt. Z.B.: Vertex Positionen, Texturkoordinaten, o.Ä.
+     * @param attributeNumber Unter welchem Index im Vertex Array Object (VAO), das Vertex Buffer Object (VBO) gespeichert werden soll.
+     * @param coordinateSize Dimensionen der Vektoren im Float Array.
+     * @param data Daten, z.B. Vertex Positionen, Texturkoordinaten, o.Ä.
+     */
     private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
         int vboId = GL15.glGenBuffers();
         vbos.add(vboId);
@@ -148,6 +185,11 @@ public class Loader {
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
     }
 
+    /**
+     * Erstellt aus einem Integer Array ein Buffer mit den Daten aus dem Array.
+     * @param data
+     * @return Buffer Objekt
+     */
     private IntBuffer storeDataInIntBuffer(int[] data) {
         IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
         buffer.put(data);
@@ -155,6 +197,11 @@ public class Loader {
         return buffer;
     }
 
+    /**
+     * Erstellt aus einem Float Array ein Buffer mit den Daten aus dem Array.
+     * @param data
+     * @return Buffer Objekt
+     */
     private FloatBuffer storeDataInFloatBuffer(float[] data) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
         buffer.put(data);

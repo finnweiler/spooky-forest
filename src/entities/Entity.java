@@ -8,10 +8,10 @@ import toolbox.Maths;
 
 public class Entity {
 
-    private TexturedModel model;
-    private Vector3f position;
-    private float rotX, rotY, rotZ;
-    private float scale;
+    private TexturedModel model;        // Texturiertes 3D Modell des Entities
+    private Vector3f position;          // Die globale Position des Entities
+    private float rotX, rotY, rotZ;     // Die Rotation des Entities in Grad
+    private float scale;                // Die Skalierung des Entities
 
     private int textureIndex = 0;
 
@@ -24,18 +24,35 @@ public class Entity {
         this.scale = scale;
     }
 
-    public void increasePosition(float dx, float dy, float dz) {
+    /**
+     * Diese Funktion verschiebt die Koordinaten des Entities um die übergebene Translation
+     * @param dx Translation um die x-Achse
+     * @param dy Translation um die y-Achse
+     * @param dz Translation um die z-Achse
+     */
+    public void translate(float dx, float dy, float dz) {
         this.position.x += dx;
         this.position.y += dy;
         this.position.z += dz;
     }
 
-    public void increaseRotation(float dx, float dy, float dz) {
+    /**
+     * Diese Funktion rotiert die Koordinaten des Entities um die übergebene Rotations
+     * @param dx
+     * @param dy
+     * @param dz
+     */
+    public void rotate(float dx, float dy, float dz) {
         this.rotX += dx;
         this.rotY += dy;
         this.rotZ += dz;
     }
 
+    /**
+     * Diese Funktion gibt den Texture Offset für ein Object zurück.
+     * Dieser wird benötigt wenn mehrere Texturen für das gleiche Model in einem einzelnen PNG hinterlegt sind.
+     * @return Texture Offset
+     */
     public Vector2f getTextureOffset() {
         int column = textureIndex % model.getTexture().getNumberOfRows();
         float x = (float) column / (float) model.getTexture().getNumberOfRows();
@@ -44,6 +61,11 @@ public class Entity {
         return new Vector2f(x, y);
     }
 
+    /**
+     * Diese Funktion gibt die Transformationsmatrix des Entities zurück,
+     * die zur Verarbeitung im Shader benötig wird.
+     * @return Transformationsmatrix
+     */
     public Matrix4f getTransformationMatrix() {
         return Maths.createTransformationMatrix(position, rotX, rotY, rotZ, scale);
     }
@@ -51,7 +73,6 @@ public class Entity {
     public TexturedModel getModel() {
         return model;
     }
-
 
     public Vector3f getPosition() {
         return position;

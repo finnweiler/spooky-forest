@@ -5,18 +5,22 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
 
-    private final float HEIGHT = 7;
+    private final float HEIGHT = 7;                           // Höhe der Kamera über dem Boden
 
-    private Vector3f position = new Vector3f(0,1,0);
-    private float pitch;
-    private float yaw;
+    private Vector3f position = new Vector3f(0,1,0); // Globale Position der Kamera
+    private float pitch;                                      // Neigung der Kamera nach oben / unten
+    private float yaw;                                        // Rotation der Kamera um die Y Achse
 
-    private Player player;
+    private Player player;                                    // Player object, dass mit der Kamera verbunden ist.
 
     public Camera(Player player) {
         this.player = player;
     }
 
+    /**
+     * Diese Funktion syncronisiert die Position und Rotation des verbundenen Players mit der Kamera.
+     * Sie muss jeden Frame neu aufgerufen werden.
+     */
     public void update() {
         this.pitch = player.getHeadPitch();
         this.yaw = -player.getRotY() + 180;
