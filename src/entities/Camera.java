@@ -10,7 +10,6 @@ public class Camera {
     private Vector3f position = new Vector3f(0,1,0);
     private float pitch;
     private float yaw;
-    private float roll;
 
     private Player player;
 
@@ -36,9 +35,5 @@ public class Camera {
 
     public float getYaw() {
         return yaw;
-    }
-
-    public float getRoll() {
-        return roll;
     }
 }

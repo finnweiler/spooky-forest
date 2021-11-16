@@ -20,10 +20,6 @@ public class ModelTexture {
         return numberOfRows;
     }
 
-    public void setNumberOfRows(int numberOfRows) {
-        this.numberOfRows = numberOfRows;
-    }
-
     public int getId() {
         return textureId;
     }

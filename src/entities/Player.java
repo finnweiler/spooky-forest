@@ -9,8 +9,8 @@ import terrain.Terrain;
 
 public class Player extends Entity {
 
-    private static final float FORWARDS_SPEED = 0.03f;
-    private static final float SIDEWARDS_SPEED = 0.02f;
+    private static final float FORWARDS_SPEED = 0.015f;
+    private static final float SIDEWARDS_SPEED = 0.01f;
     private static final float GRAVITY = -0.00015f;
     private static final float JUMP_POWER = 0.04f;
     private static final float DOWN_WALK_DISTANCE = 0.04f;
@@ -92,7 +92,10 @@ public class Player extends Entity {
     private void checkMouse() {
         float dx = -Mouse.getDX() * 0.1f;
         increaseRotation(0,dx,0);
-
         headPitch -= Mouse.getDY() * 0.1f;
+    }
+
+    public float getWalkingSpeed() {
+        return Math.abs(currentForwardsSpeed) + Math.abs(currentSidewardsSpeed);
     }
 }

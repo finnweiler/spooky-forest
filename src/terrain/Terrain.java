@@ -3,8 +3,7 @@ package terrain;
 import models.RawModel;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import renderEngine.Loader;
-import textures.ModelTexture;
+import models.Loader;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import toolbox.Maths;
@@ -17,7 +16,7 @@ import java.io.IOException;
 public class Terrain {
 
     private static final float SIZE = 800;
-    private static final float MAX_HEIGHT = 20;
+    private static final float MAX_HEIGHT = 30;
     private static final float MAX_PIXEL_COLOR = (float) Math.pow(256, 3);
 
     private float x;

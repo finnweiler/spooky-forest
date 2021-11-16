@@ -1,17 +1,14 @@
 package renderEngine;
 
-import entities.Entity;
 import models.RawModel;
-import models.TexturedModel;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import shaders.TerrainShader;
+import terrain.TerrainShader;
 import terrain.Terrain;
-import textures.ModelTexture;
 import textures.TerrainTexturePack;
 import toolbox.Maths;
 

@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
-import renderEngine.Loader;
+import models.Loader;
 
 public class SkyboxRenderer {
 
@@ -78,6 +78,8 @@ public class SkyboxRenderer {
     private int textureNight;
     private SkyboxShader shader;
 
+    private float fade = 0;
+
     public SkyboxRenderer(Loader loader, Matrix4f projectionMatrix) {
         cube = loader.loadToVAO(VERTICES, 3);
         texture = loader.loadCubeMap(TEXTURE_FILES);
@@ -111,6 +113,10 @@ public class SkyboxRenderer {
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture);
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, textureNight);
-        shader.loadBlendFactor(1f);
+        shader.loadBlendFactor(fade);
+    }
+
+    public void setFade(float fade) {
+        this.fade = fade;
     }
 }

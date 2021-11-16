@@ -3,12 +3,13 @@ package renderEngine;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import models.Loader;
 import models.TexturedModel;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import shaders.StaticShader;
-import shaders.TerrainShader;
+import terrain.TerrainShader;
 import skybox.SkyboxRenderer;
 import terrain.Terrain;
 
@@ -23,12 +24,18 @@ public class MasterRenderer {
     private static final float NEAR_PLANE = 0.1f;
     private static final float FAR_PLANE = 1000f;
 
-    private static final float SKY_R = 0.3f;
-    private static final float SKY_G = 0.3f;
-    private static final float SKY_B = 0.4f;
+    private static final float SKY_R_N = 0.1f;
+    private static final float SKY_G_N = 0.1f;
+    private static final float SKY_B_N = 0.15f;
+
+    private static final float SKY_R = 0.5f;
+    private static final float SKY_G = 0.5f;
+    private static final float SKY_B = 0.6f;
 
     private static final float FOG_DENSITY = 0.003f;
     private static final float FOG_GRADIENT = 3.5f;
+
+    private float nightFade = 0;
 
     private Matrix4f projectionMatrix;
 
@@ -63,8 +70,12 @@ public class MasterRenderer {
     public void render(List<Light> lights, Camera camera) {
         prepare();
 
+        float skyR = SKY_R * (1 - nightFade) + SKY_R_N * nightFade;
+        float skyG = SKY_G * (1 - nightFade) + SKY_G_N * nightFade;
+        float skyB = SKY_B * (1 - nightFade) + SKY_B_N * nightFade;
+
         shader.start();
-        shader.loadSkyColor(SKY_R, SKY_G, SKY_B);
+        shader.loadSkyColor(skyR, skyG, skyB);
         shader.loadFog(FOG_DENSITY, FOG_GRADIENT);
         shader.loadLights(lights);
         shader.loadViewMatrix(camera);
@@ -72,14 +83,14 @@ public class MasterRenderer {
         shader.stop();
 
         terrainShader.start();
-        terrainShader.loadSkyColor(SKY_R, SKY_G, SKY_B);
+        terrainShader.loadSkyColor(skyR, skyG, skyB);
         terrainShader.loadFog(FOG_DENSITY, FOG_GRADIENT);
         terrainShader.loadLights(lights);
         terrainShader.loadViewMatrix(camera);
         terrainRenderer.render(terrains);
         terrainShader.stop();
 
-        skyboxRenderer.render(camera, SKY_R, SKY_G, SKY_B);
+        skyboxRenderer.render(camera, skyR, skyG, skyB);
 
         terrains.clear();
         entities.clear();
@@ -126,5 +137,10 @@ public class MasterRenderer {
         projectionMatrix.m23 = -1;
         projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
         projectionMatrix.m33 = 0;
+    }
+
+    public void setNightFade(float nightFade) {
+        this.nightFade = nightFade;
+        skyboxRenderer.setFade(nightFade);
     }
 }
