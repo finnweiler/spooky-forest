@@ -149,7 +149,11 @@ public class MainGameLoop {
         RawModel playerModel = OBJLoader.loadObjModel("assets/player", loader);
         ModelTexture playerTexture = new ModelTexture(loader.loadTexture("assets/player"));
         TexturedModel texturedPlayerModel = new TexturedModel(playerModel, playerTexture);
+<<<<<<< Updated upstream
         Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0, 180, 0, 8);
+=======
+        Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0, 90, 0, 8);
+>>>>>>> Stashed changes
         Camera camera = new Camera(player);
         /** Player End */
 
