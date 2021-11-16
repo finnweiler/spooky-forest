@@ -60,12 +60,12 @@ public class MainGameLoop {
         TexturedModel fernTexturedModel = new TexturedModel(fernRawModel, fernTexture);
         Entity fernEntity = new Entity(fernTexturedModel, new Vector3f(-10,0,-17),0,0,0,1);
 
-        RawModel model = OBJLoader.loadObjModel("dragon", loader);
-        ModelTexture texture = new ModelTexture(loader.loadTexture("blue"));
+        RawModel model = OBJLoader.loadObjModel("christmastreelights", loader);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("christmastreelights"));
         texture.setShineDamper(15);
         texture.setReflectivity(1);
         TexturedModel texturedModel = new TexturedModel(model, texture);
-        Entity entity = new Entity(texturedModel, new Vector3f(0,0.1f,-25),0,0,0,1);
+        Entity entity = new Entity(texturedModel, new Vector3f(80,30,-250),0,0,0,10);
 
 
 
@@ -106,7 +106,7 @@ public class MainGameLoop {
             camera.update();
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
             //entity.increasePosition(0, 0,-0.01f);
-            entity.increaseRotation(0,0.5f,0);
+            // entity.increaseRotation(0,0.5f,0);
 
 
             renderer.processTerrain(terrain);
@@ -120,6 +120,7 @@ public class MainGameLoop {
 
             renderer.render(lights, camera);
 
+            guis.remove(gui);
             if (counter > 500) {
                 guis.remove(gui);
             }
