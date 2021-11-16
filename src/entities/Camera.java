@@ -19,7 +19,7 @@ public class Camera {
 
     public void update() {
         this.pitch = player.getHeadPitch();
-        this.yaw = -player.getRotY();
+        this.yaw = -player.getRotY() + 180;
         this.position.setZ(player.getPosition().getZ());
         this.position.setY(player.getPosition().getY() + HEIGHT);
         this.position.setX(player.getPosition().getX());

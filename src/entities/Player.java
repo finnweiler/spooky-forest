@@ -72,17 +72,17 @@ public class Player extends Entity {
             }
 
             if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-                this.currentForwardsSpeed = FORWARDS_SPEED;
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
                 this.currentForwardsSpeed = -FORWARDS_SPEED;
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+                this.currentForwardsSpeed = FORWARDS_SPEED;
             } else {
                 this.currentForwardsSpeed = 0;
             }
 
             if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                this.currentSidewardsSpeed = -SIDEWARDS_SPEED;
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
                 this.currentSidewardsSpeed = SIDEWARDS_SPEED;
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                this.currentSidewardsSpeed = -SIDEWARDS_SPEED;
             } else {
                 this.currentSidewardsSpeed = 0;
             }

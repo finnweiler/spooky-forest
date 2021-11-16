@@ -49,6 +49,9 @@ public class MainGameLoop {
         RawModel tree2Model = OBJLoader.loadObjModel("trees/oak1", loader);
         ModelTexture tree2Texture = new ModelTexture(loader.loadTexture("trees/oak1"));
 
+        RawModel tree3Model = OBJLoader.loadObjModel("trees/christmastree", loader);
+        ModelTexture tree3Texture = new ModelTexture(loader.loadTexture("trees/christmastree"));
+
         RawModel flowerModel = OBJLoader.loadObjModel("trees/flower", loader);
         ModelTexture flowerTexture = new ModelTexture(loader.loadTexture("trees/flower"));
 
@@ -66,6 +69,9 @@ public class MainGameLoop {
                     } else if (object < 0.6) {
                         texturedModel = new TexturedModel(tree2Model, tree2Texture);
                         scale = (float) Math.random() * 3 + 4;
+                    } else if (object < 0.65) {
+                        texturedModel = new TexturedModel(tree3Model, tree3Texture);
+                        scale = (float) Math.random() * 1 + 25;
                     } else {
                         texturedModel = new TexturedModel(flowerModel, flowerTexture);
                         scale = (float) Math.random() * 4 + 15;
@@ -140,10 +146,10 @@ public class MainGameLoop {
         /** Vegetation End */
 
         /** Player Start */
-        RawModel playerModel = OBJLoader.loadObjModel("fern", loader);
-        ModelTexture playerTexture = new ModelTexture(loader.loadTexture("fern"));
+        RawModel playerModel = OBJLoader.loadObjModel("assets/player", loader);
+        ModelTexture playerTexture = new ModelTexture(loader.loadTexture("assets/player"));
         TexturedModel texturedPlayerModel = new TexturedModel(playerModel, playerTexture);
-        Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0, 0, 0, 1);
+        Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0, 180, 0, 8);
         Camera camera = new Camera(player);
         /** Player End */
 
@@ -152,7 +158,24 @@ public class MainGameLoop {
         lights.add(new Light(new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), new Vector3f(1, 0.01f, 0.001f)));
         lights.add(new Light(new Vector3f(0, 0, 0), new Vector3f(1, 1, 1), new Vector3f(1, 0.01f, 0.001f)));
         lights.add(new Light(new Vector3f(+600, 3000, -500), new Vector3f(1f, 1f, 1f)));
+        lights.add(new Light(new Vector3f(430, terrain.getHeight(430, 380) + 10, 380), new Vector3f(0, 0, 0), new Vector3f(1, 0.01f, 0.01f)));
         /** Lights End */
+
+        /** Christmas Tree Start */
+        RawModel christmasTreeModel = OBJLoader.loadObjModel("trees/christmastree", loader);
+        ModelTexture christmasTreeTexture = new ModelTexture(loader.loadTexture("trees/christmastree"));
+        TexturedModel texturedChristmasTreeModel = new TexturedModel(christmasTreeModel, christmasTreeTexture);
+        Entity christmasTree = new Entity(texturedChristmasTreeModel, new Vector3f(430, terrain.getHeight(430, 380), 380), 0, 0, 0, 18);
+        vegetation.add(christmasTree);
+
+        RawModel treeDecorationModel = OBJLoader.loadObjModel("trees/shinytree", loader);
+        ModelTexture treeDecorationTexture = new ModelTexture(loader.loadTexture("trees/shinytree"));
+        treeDecorationTexture.setShineDamper(15);
+        treeDecorationTexture.setReflectivity(1);
+        TexturedModel treeDecorationTexturedModel = new TexturedModel(treeDecorationModel, treeDecorationTexture);
+        Entity treeDecoration = new Entity(treeDecorationTexturedModel, new Vector3f(430, terrain.getHeight(430, 380), 380), 0, 0, 0, 18);
+        vegetation.add(treeDecoration);
+        /** Christmas Tree End */
 
         /** Dino Start */
         RawModel model = OBJLoader.loadObjModel("assets/unsafedino", loader);
@@ -160,7 +183,7 @@ public class MainGameLoop {
         texture.setShineDamper(15);
         texture.setReflectivity(1);
         TexturedModel texturedModel = new TexturedModel(model, texture);
-        Entity dino = new Entity(texturedModel, new Vector3f(400, terrain.getHeight(400, 400), 400), 0, 0, 0, 18);
+        Entity dino = new Entity(texturedModel, new Vector3f(0, 0, 0), 0, 0, 0, 18);
         /** Dino End */
 
         /** Birds Start */
@@ -186,6 +209,8 @@ public class MainGameLoop {
         float rotation = 0;
         float radius = 130;
         float nightFade = 0;
+        int ticks = 0;
+        int treeColor = 0;
 
         while (!Display.isCloseRequested()) {
             player.move(terrain);
@@ -228,7 +253,16 @@ public class MainGameLoop {
 
             /** Day / Night Start */
 
-            if (nightFade > 0) {
+            if (nightFade == 1) {
+                if (ticks % 100 == 0) {
+                    treeColor++;
+                }
+                lights.get(3).setColor(new Vector3f(
+                        treeColor % 3 == 0 ? 1f : 0f,
+                        treeColor % 3 == 1 ? 1f : 0f,
+                        treeColor % 3 == 2 ? 1f : 0f
+                        ));
+            } else if (nightFade > 0) {
                 nightFade += 0.0003f;
                 nightFade = (float) Math.min(nightFade, 1);
                 renderer.setNightFade(nightFade);
@@ -258,6 +292,7 @@ public class MainGameLoop {
                 stepping = false;
             }
 
+            ticks++;
             DisplayManager.updateDisplay();
         }
 
