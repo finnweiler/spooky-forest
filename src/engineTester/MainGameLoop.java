@@ -219,13 +219,13 @@ public class MainGameLoop {
         diamondTexture.setShineDamper(15);
         diamondTexture.setReflectivity(1);
         TexturedModel diamondTexturedModel = new TexturedModel(diamondModel, diamondTexture);
-        Entity diamond = new Entity(diamondTexturedModel, new Vector3f(400, terrain.getHeight(400, 400) + 10, 400), 0, -30, 0, 20);
+        Entity diamond = new Entity(diamondTexturedModel, new Vector3f(200, terrain.getHeight(200, 120) + 9, 120), 0, -30, 0, 20);
         vegetation.add(diamond);
 
         RawModel stativModel = OBJLoader.loadObjModel("assets/stativ", loader);
         ModelTexture stativTexture = new ModelTexture(loader.loadTexture("assets/stativ"));
         TexturedModel stativTexturedModel = new TexturedModel(stativModel, stativTexture);
-        Entity stativ = new Entity(stativTexturedModel, new Vector3f(400, terrain.getHeight(400, 400), 400), 0, -30, 0, 15);
+        Entity stativ = new Entity(stativTexturedModel, new Vector3f(200, terrain.getHeight(200, 120) - 1, 120), 0, -30, 0, 15);
         vegetation.add(stativ);
 
         /** End Diamond */
@@ -312,30 +312,9 @@ public class MainGameLoop {
                 camera.update();
             }
 
-<<<<<<< Updated upstream
-=======
+
             diamond.rotate(0, DisplayManager.getFrameTime() * 0.01f, 0);
-            Vector3f newPos = new Vector3f();
-            newPos.x = 400;
-            if (diaUp && diaHeight <= 5) {
-                diaHeight += 0.5;
-                if (diaHeight >= 5) {
-                    diaUp = false;
-                }
-            } else {
-                diaHeight -= 0.5;
-                if (diaHeight <= 0) {
-                    diaUp = true;
-                }
-            }
 
-            newPos.y = terrain.getHeight(400, 400) + 10 + diaHeight;
-            newPos.z = 400;
-            diamond.setPosition(newPos);
-
-            // System.out.println(player.getPosition());
-
->>>>>>> Stashed changes
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
 
             /** Dino Start */
@@ -381,11 +360,12 @@ public class MainGameLoop {
                         treeColor % 3 == 2 ? 1f : 0f
                 ));
             } else if (nightFade > 0) {
-                nightFade += 0.0003f;
-                nightFade = (float) Math.min(nightFade, 1);
+                nightFade += 0.00002f * DisplayManager.getFrameTime();
+                nightFade = Math.min(nightFade, 1);
                 renderer.setNightFade(nightFade);
                 lights.get(2).setColor(new Vector3f(1 - nightFade, 1 - nightFade, 1 - nightFade));
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_N) || player.getPosition().getX() > 600) {
+                // beginne die Nacht
                 nightFade = 0.0003f;
             }
 

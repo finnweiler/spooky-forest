@@ -9,10 +9,10 @@ import terrain.Terrain;
 
 public class Player extends Entity {
 
-    private static final float FORWARDS_SPEED = 0.215f; // Geschwindigkeit des Spielers bei der Vorwärtsbewegung
+    private static final float FORWARDS_SPEED = 0.015f; // Geschwindigkeit des Spielers bei der Vorwärtsbewegung
     private static final float SIDEWARDS_SPEED = 0.01f; // Geschwindigkeit des Spielers bei der Seitwärtsbewegung
     private static final float GRAVITY = -0.00015f; // Erdbeschleunigung, die auf den Spieler wirkt
-    private static final float JUMP_POWER = 0.24f;  // Sprungkraft des Spielers
+    private static final float JUMP_POWER = 0.04f;  // Sprungkraft des Spielers
     private static final float DOWN_WALK_DISTANCE = 0.04f; // Die Distanz, die ein Spieler pro Frame einen Hügel hinablaufen kann, ohne zu fallen.
 
     private float currentForwardsSpeed = 0; // Aktuelle Vorwärtsbewegung des Spielers
