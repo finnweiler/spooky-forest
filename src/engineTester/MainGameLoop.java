@@ -247,7 +247,7 @@ public class MainGameLoop {
 
         GuiRenderer guiRenderer = new GuiRenderer(loader);
         // Add Intro
-        // guis.add(intro);
+        guis.add(intro);
 
 
         int counter = 0;
@@ -276,15 +276,18 @@ public class MainGameLoop {
         int treeColor = 0;
         boolean closeRequested = false;
 
+        player.move(terrain);
+        camera.update();
+
         while (!Display.isCloseRequested() && !closeRequested) {
 
             if (!escaped) {
                 player.move(terrain);
+                camera.update();
             }
 
             System.out.println(player.getPosition());
 
-            camera.update();
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
 
 
@@ -366,7 +369,6 @@ public class MainGameLoop {
             if (counter < 200) {
                 counter++;
             } else if (counter == 200) {
-                player.move(terrain);
                 counter = 501;
                 guis.clear();
                 guis.add(startmenu);
