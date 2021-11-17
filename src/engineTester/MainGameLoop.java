@@ -170,7 +170,7 @@ public class MainGameLoop {
         RawModel playerModel = OBJLoader.loadObjModel("assets/player", loader);
         ModelTexture playerTexture = new ModelTexture(loader.loadTexture("assets/player"));
         TexturedModel texturedPlayerModel = new TexturedModel(playerModel, playerTexture);
-        Player player = new Player(texturedPlayerModel, new Vector3f(400, 0, 400), 0, 180, 0, 8);
+        Player player = new Player(texturedPlayerModel, new Vector3f(400, terrain.getHeight(400, 400), 400), 0, 180, 0, 8);
         Camera camera = new Camera(player);
         /** Player End */
 
@@ -211,6 +211,24 @@ public class MainGameLoop {
         Entity cave = new Entity(caveTexturedModel, new Vector3f(170, terrain.getHeight(185, 216) + 10, 210), 0, -30, 0, 1.8f);
         vegetation.add(cave);
         /** Cave End */
+
+        /** Start Diamond */
+
+        RawModel diamondModel = OBJLoader.loadObjModel("assets/diamond", loader);
+        ModelTexture diamondTexture = new ModelTexture(loader.loadTexture("assets/diamond"));
+        diamondTexture.setShineDamper(15);
+        diamondTexture.setReflectivity(1);
+        TexturedModel diamondTexturedModel = new TexturedModel(diamondModel, diamondTexture);
+        Entity diamond = new Entity(diamondTexturedModel, new Vector3f(400, terrain.getHeight(400, 400) + 10, 400), 0, -30, 0, 20);
+        vegetation.add(diamond);
+
+        RawModel stativModel = OBJLoader.loadObjModel("assets/stativ", loader);
+        ModelTexture stativTexture = new ModelTexture(loader.loadTexture("assets/stativ"));
+        TexturedModel stativTexturedModel = new TexturedModel(stativModel, stativTexture);
+        Entity stativ = new Entity(stativTexturedModel, new Vector3f(400, terrain.getHeight(400, 400), 400), 0, -30, 0, 15);
+        vegetation.add(stativ);
+
+        /** End Diamond */
 
         /** Dino Start */
         RawModel model = OBJLoader.loadObjModel("assets/unsafedino", loader);
@@ -284,6 +302,9 @@ public class MainGameLoop {
         player.move(terrain);
         camera.update();
 
+        int diaHeight = 0;
+        boolean diaUp = true;
+
         while (!Display.isCloseRequested() && !closeRequested) {
 
             if (!escaped) {
@@ -291,6 +312,30 @@ public class MainGameLoop {
                 camera.update();
             }
 
+<<<<<<< Updated upstream
+=======
+            diamond.rotate(0, DisplayManager.getFrameTime() * 0.01f, 0);
+            Vector3f newPos = new Vector3f();
+            newPos.x = 400;
+            if (diaUp && diaHeight <= 5) {
+                diaHeight += 0.5;
+                if (diaHeight >= 5) {
+                    diaUp = false;
+                }
+            } else {
+                diaHeight -= 0.5;
+                if (diaHeight <= 0) {
+                    diaUp = true;
+                }
+            }
+
+            newPos.y = terrain.getHeight(400, 400) + 10 + diaHeight;
+            newPos.z = 400;
+            diamond.setPosition(newPos);
+
+            // System.out.println(player.getPosition());
+
+>>>>>>> Stashed changes
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
 
             /** Dino Start */
