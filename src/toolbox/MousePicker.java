@@ -50,8 +50,8 @@ public class MousePicker {
     }
 
     private Vector3f calculateMouseRay() {
-        float mouseX = Mouse.getX();
-        float mouseY = Mouse.getY();
+        float mouseX = Display.getWidth() / 2;
+        float mouseY = Display.getHeight() / 2;
         Vector2f normalizedCoords = getNormalisedDeviceCoordinates(mouseX, mouseY);
         Vector4f clipCoords = new Vector4f(normalizedCoords.x, normalizedCoords.y, -1.0f, 1.0f);
         Vector4f eyeCoords = toEyeCoords(clipCoords);
@@ -120,7 +120,7 @@ public class MousePicker {
         Terrain terrain = getTerrain(testPoint.getX(), testPoint.getZ());
         float height = 0;
         if (terrain != null) {
-            height = terrain.getHeightOfTerrain(testPoint.getX(), testPoint.getZ());
+            height = terrain.getHeight(testPoint.getX(), testPoint.getZ());
         }
         if (testPoint.y < height) {
             return true;
