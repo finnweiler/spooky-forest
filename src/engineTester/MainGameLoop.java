@@ -400,6 +400,7 @@ public class MainGameLoop {
         guiRenderer.cleanUp();
         renderer.cleanUp();
         loader.cleanUp();
+        AudioMaster.cleanUp();
         DisplayManager.closeDisplay();
     }
 }
