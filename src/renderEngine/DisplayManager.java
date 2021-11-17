@@ -29,7 +29,7 @@ public class DisplayManager {
         try {
             Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
             Display.create(new PixelFormat(), attribs);
-            Display.setTitle("Lost In The Woods");
+            Display.setTitle("Cave of Fails");
         } catch (LWJGLException e) {
             e.printStackTrace();
         }
