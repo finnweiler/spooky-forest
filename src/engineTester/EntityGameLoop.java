@@ -177,6 +177,7 @@ public class EntityGameLoop {
         renderer.processEntity(house);
         renderer.processEntity(dino);
         renderer.processEntity(player);
+        renderer.processEntity(diamond);
         renderer.render(lights, camera);
 
         diamond.rotate(0, DisplayManager.getFrameTime() * 0.01f, 0);
