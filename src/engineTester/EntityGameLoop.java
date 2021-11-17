@@ -41,6 +41,8 @@ public class EntityGameLoop {
     private static Entity dino;
     private static Entity house;
 
+    private static Entity spawnTree;
+
     private static List<Entity> birds;
 
     private static boolean stepping = false;
@@ -128,6 +130,22 @@ public class EntityGameLoop {
         house = new Entity(texturedHouseModel,  new Vector3f(400, terrain.getHeight(400, 400), 400), 0, 180, 0, 18);
         /** House End */
 
+        /** FAILES Start */
+
+
+
+        /** FAILES End */
+
+        /** Spawn Tree Start */
+
+        RawModel spawnTreeModel = OBJLoader.loadObjModel("trees/parrottree", loader);
+        ModelTexture spawnTreeTexture = new ModelTexture(loader.loadTexture("trees/parrottree"));
+        TexturedModel texturedspawnTreeModel = new TexturedModel(spawnTreeModel, spawnTreeTexture);
+        spawnTree = new Entity(texturedspawnTreeModel,  new Vector3f(390, terrain.getHeight(390, 370), 370), 0, 0, 0, 18);
+
+        /** Spawn Tree End */
+
+
         /** Birds Start */
         birds = new ArrayList<>();
 
@@ -175,6 +193,7 @@ public class EntityGameLoop {
         renderer.processEntity(caveEntry);
         renderer.processEntity(stand);
         renderer.processEntity(house);
+        renderer.processEntity(spawnTree);
         renderer.processEntity(dino);
         renderer.processEntity(player);
         renderer.processEntity(diamond);
