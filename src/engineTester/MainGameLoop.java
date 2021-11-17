@@ -1,33 +1,19 @@
 package engineTester;
 
-import entities.Camera;
-import entities.Entity;
-import entities.Light;
-import entities.Player;
 import gui.GuiRenderer;
 import gui.GuiTexture;
 import renderEngine.Loader;
-import models.OBJLoader;
-import models.TexturedModel;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
-import models.RawModel;
 import sound.AudioMaster;
 import sound.Source;
 import terrain.Terrain;
-import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
-import toolbox.MousePicker;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,20 +48,14 @@ public class MainGameLoop {
         Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap, "heightmap");
         /** Terrain End */
 
-        /** Vegetation Start */
-
-        /** Vegetation End */
 
         /** GUI Start */
         List<GuiTexture> guis = new ArrayList<GuiTexture>();
         GuiTexture intro = new GuiTexture(loader.loadTexture("forest"), new Vector2f(0.5f, -0.2f), new Vector2f(1.5f, 1.5f));
-
         GuiTexture startmenu = new GuiTexture(loader.loadTexture("caveoffailes_menu"), new Vector2f(0.4f, -0.2f), new Vector2f(1.5f, 1.5f));
-
         GuiRenderer guiRenderer = new GuiRenderer(loader);
         // Add Intro
         guis.add(intro);
-
 
         int counter = 0;
         boolean escaped = true;
@@ -83,18 +63,16 @@ public class MainGameLoop {
 
 
         MasterRenderer renderer = new MasterRenderer(loader);
-
-
+        VegetationGameLoop.prepare(terrain, loader);
         EntityGameLoop.prepare(terrain, loader, renderer);
-
 
         boolean closeRequested = false;
         while (!Display.isCloseRequested() && !closeRequested) {
 
+            VegetationGameLoop.loop(renderer);
             EntityGameLoop.loop(renderer, terrain, !escaped);
 
             renderer.processTerrain(terrain);
-
 
 
             /** Show Intro */

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VegatationGameLoop {
+public class VegetationGameLoop {
 
     private static List<Entity> vegetation;
 
