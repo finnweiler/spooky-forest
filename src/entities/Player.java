@@ -121,6 +121,11 @@ public class Player extends Entity {
             } else {
                 this.currentSidewardsSpeed = 0;
             }
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+                this.currentForwardsSpeed *= 10;
+                verticalSpeed *= 5;
+            }
         }
     }
 
