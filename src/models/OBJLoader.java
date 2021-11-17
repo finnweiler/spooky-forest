@@ -2,6 +2,7 @@ package models;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import renderEngine.Loader;
 
 import java.io.BufferedReader;
 import java.io.File;

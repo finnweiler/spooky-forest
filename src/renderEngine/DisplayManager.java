@@ -70,7 +70,7 @@ public class DisplayManager {
      * Gibt die aktuelle Systemzeit zurück
      * @return Zeit in Millisekunden
      */
-    private static long getCurrentTime() {
+    public static long getCurrentTime() {
         return Sys.getTime() * 1000 / Sys.getTimerResolution();
     }
 }

@@ -76,6 +76,17 @@ public class Player extends Entity {
             verticalSpeed = 0;
             super.getPosition().setY(terrainHeight);
         }
+        // Wenn der Spieler sich in die Nähe des Kartenrandes begibt, stoppe ihn
+        if (getPosition().getX() < 35) {
+            getPosition().setX(35);
+        } else if (getPosition().getX() > 765) {
+            getPosition().setX(765);
+        }
+        if (getPosition().getZ() < 35) {
+            getPosition().setZ(35);
+        } else if (getPosition().getZ() > 765) {
+            getPosition().setZ(765);
+        }
     }
 
     /**

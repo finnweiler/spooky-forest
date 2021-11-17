@@ -6,7 +6,7 @@ import entities.Light;
 import entities.Player;
 import gui.GuiRenderer;
 import gui.GuiTexture;
-import models.Loader;
+import renderEngine.Loader;
 import models.OBJLoader;
 import models.TexturedModel;
 import org.lwjgl.input.Keyboard;
@@ -163,7 +163,7 @@ public class MainGameLoop {
         /** Terrain End */
 
         /** Vegetation Start */
-        List<Entity> vegetation = generateVegetation(terrain, loader, 0.015f);
+        List<Entity> vegetation = generateVegetation(terrain, loader, 0.017f);
         /** Vegetation End */
 
         /** Player Start */
@@ -221,6 +221,13 @@ public class MainGameLoop {
         Entity dino = new Entity(texturedModel, new Vector3f(0, 0, 0), 0, 0, 0, 18);
         /** Dino End */
 
+        /** House Start */
+        RawModel houseModel = OBJLoader.loadObjModel("assets/house", loader);
+        ModelTexture houseTexture = new ModelTexture(loader.loadTexture("assets/house"));
+        TexturedModel texturedHouseModel = new TexturedModel(houseModel, houseTexture);
+        Entity house = new Entity(texturedHouseModel,  new Vector3f(400, terrain.getHeight(400, 400), 400), 0, 180, 0, 18);
+        /** House End */
+
         /** Birds Start */
         ArrayList<Entity> birds = new ArrayList<>();
 
@@ -272,8 +279,6 @@ public class MainGameLoop {
         float rotation = 0;
         float radius = 130;
         float nightFade = 0;
-        int ticks = 0;
-        int treeColor = 0;
         boolean closeRequested = false;
 
         player.move(terrain);
@@ -286,10 +291,7 @@ public class MainGameLoop {
                 camera.update();
             }
 
-            System.out.println(player.getPosition());
-
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
-
 
             /** Dino Start */
             float dinoX = (float) Math.sin(rotation) * radius + 400;
@@ -297,7 +299,7 @@ public class MainGameLoop {
             float dinoY = terrain.getHeight(dinoX, dinoZ);
             dino.setPosition(new Vector3f(dinoX, dinoY, dinoZ));
             dino.setRotY((float) Math.toDegrees(rotation) + 90);
-            rotation += 0.002f;
+            rotation += 0.0002f * DisplayManager.getFrameTime();
             lights.get(1).setPosition(new Vector3f(dino.getPosition().getX(), dino.getPosition().getY() + 7, dino.getPosition().getZ()));
             /** Dino End */
 
@@ -327,9 +329,7 @@ public class MainGameLoop {
             /** Day / Night Start */
 
             if (nightFade == 1) {
-                if (ticks % 100 == 0) {
-                    treeColor++;
-                }
+                int treeColor = (int) DisplayManager.getCurrentTime() / 1000;
                 lights.get(3).setColor(new Vector3f(
                         treeColor % 3 == 0 ? 1f : 0f,
                         treeColor % 3 == 1 ? 1f : 0f,
@@ -346,7 +346,7 @@ public class MainGameLoop {
 
             /** Day / Night End */
 
-
+            renderer.processEntity(house);
             renderer.processTerrain(terrain);
             renderer.processEntity(dino);
             for (Entity vegetationEntity : vegetation) {
@@ -411,7 +411,6 @@ public class MainGameLoop {
                 }
             }
 
-            ticks++;
             DisplayManager.updateDisplay();
         }
 
