@@ -247,11 +247,11 @@ public class MainGameLoop {
 
         GuiRenderer guiRenderer = new GuiRenderer(loader);
         // Add Intro
-        // guis.add(intro);
+        guis.add(intro);
 
 
         int counter = 0;
-        boolean escaped = false;
+        boolean escaped = true;
         /** GUI End */
 
 
@@ -361,10 +361,10 @@ public class MainGameLoop {
             }
 
             /** Show Intro */
-            if (counter < 500) {
-                guiRenderer.render(guis);
+            if (counter < 200) {
                 counter++;
-            } else if (counter == 500) {
+            } else if (counter == 200) {
+                player.move(terrain);
                 counter = 501;
                 guis.clear();
                 guis.add(startmenu);
