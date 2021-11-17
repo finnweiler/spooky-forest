@@ -22,6 +22,7 @@ import terrain.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+import toolbox.MousePicker;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -214,14 +215,27 @@ public class MainGameLoop {
 
         GuiRenderer guiRenderer = new GuiRenderer(loader);
         // Add Intro
-        // guis.add(intro);
+        guis.add(intro);
 
 
         int counter = 0;
         boolean escaped = false;
         /** GUI End */
 
+
         MasterRenderer renderer = new MasterRenderer(loader);
+
+        /** Pick Objects */
+
+        MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
+        RawModel flowerModel = OBJLoader.loadObjModel("trees/flower", loader);
+        ModelTexture flowerTexture = new ModelTexture(loader.loadTexture("trees/flower"));
+        treeDecorationTexture.setShineDamper(15);
+        treeDecorationTexture.setReflectivity(1);
+        TexturedModel flowerDecorationTexturedModel = new TexturedModel(flowerModel, flowerTexture);
+        Entity flower = new Entity(flowerDecorationTexturedModel, new Vector3f(430, terrain.getHeight(430, 380), 380), 0, 0, 0, 18);
+        List<Entity> flowers = new ArrayList<Entity>();
+        /** End Pick Objects */
 
         float rotation = 0;
         float radius = 130;
@@ -239,7 +253,6 @@ public class MainGameLoop {
             camera.update();
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
 
-            System.out.println(Mouse.getX());
 
             /** Dino Start */
             float dinoX = (float) Math.sin(rotation) * radius + 400;
@@ -315,15 +328,28 @@ public class MainGameLoop {
                 stepping = false;
             }
 
-            // INTRO
-            // if (counter > 500) {
-            //    guis.clear();
-            //    guiRenderer.render(guis);
-            //    guis.add(startmenu);
-            //    counter++;
-            //}
+            /** Show Intro */
+            if (counter < 500) {
+                guiRenderer.render(guis);
+                counter++;
+            } else if (counter == 500) {
+                counter = 501;
+                guis.clear();
+                guis.add(startmenu);
+                escaped = true;
+                Mouse.setGrabbed(false);
+            }
 
-            // Render GUIs
+            /** Move one flower */
+            picker.update();
+            Vector3f terrainPoint = picker.getCurrentTerrainPoint();
+            if (terrainPoint != null && Mouse.isButtonDown(0) && !escaped) {
+                flower.setPosition(terrainPoint);
+            }
+            renderer.processEntity(flower);
+
+
+            /** Render GUIs */
             guiRenderer.render(guis);
 
             if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {

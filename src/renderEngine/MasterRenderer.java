@@ -161,4 +161,8 @@ public class MasterRenderer {
         this.nightFade = nightFade;
         skyboxRenderer.setFade(nightFade);
     }
+
+    public Matrix4f getProjectionMatrix() {
+        return projectionMatrix;
+    }
 }
