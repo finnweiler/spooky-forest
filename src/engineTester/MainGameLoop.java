@@ -198,6 +198,20 @@ public class MainGameLoop {
         vegetation.add(treeDecoration);
         /** Christmas Tree End */
 
+        /** Cave Start */
+        RawModel caveEntryModel = OBJLoader.loadObjModel("cavefinal", loader);
+        ModelTexture caveEntryTexture = new ModelTexture(loader.loadTexture("cavefinal"));
+        TexturedModel caveEntryTexturedModel = new TexturedModel(caveEntryModel, caveEntryTexture);
+        Entity caveEntry = new Entity(caveEntryTexturedModel, new Vector3f(430, terrain.getHeight(430, 380), 380), 0, 0, 0, 2);
+        vegetation.add(caveEntry);
+
+        RawModel caveModel = OBJLoader.loadObjModel("dickemap", loader);
+        ModelTexture caveTexture = new ModelTexture(loader.loadTexture("dickemap"));
+        TexturedModel caveTexturedModel = new TexturedModel(caveModel, caveTexture);
+        Entity cave = new Entity(caveTexturedModel, new Vector3f(430, terrain.getHeight(430, 600), 380), 0, 0, 0, 2);
+        vegetation.add(cave);
+        /** Cave End */
+
         /** Dino Start */
         RawModel model = OBJLoader.loadObjModel("assets/unsafedino", loader);
         ModelTexture texture = new ModelTexture(loader.loadTexture("assets/unsafedino"));
@@ -233,7 +247,7 @@ public class MainGameLoop {
 
         GuiRenderer guiRenderer = new GuiRenderer(loader);
         // Add Intro
-        guis.add(intro);
+        // guis.add(intro);
 
 
         int counter = 0;
@@ -397,10 +411,10 @@ public class MainGameLoop {
             DisplayManager.updateDisplay();
         }
 
+        AudioMaster.cleanUp();
         guiRenderer.cleanUp();
         renderer.cleanUp();
         loader.cleanUp();
-        AudioMaster.cleanUp();
         DisplayManager.closeDisplay();
     }
 }
