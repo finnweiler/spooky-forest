@@ -202,13 +202,13 @@ public class MainGameLoop {
         RawModel caveEntryModel = OBJLoader.loadObjModel("cavefinal", loader);
         ModelTexture caveEntryTexture = new ModelTexture(loader.loadTexture("cavefinal"));
         TexturedModel caveEntryTexturedModel = new TexturedModel(caveEntryModel, caveEntryTexture);
-        Entity caveEntry = new Entity(caveEntryTexturedModel, new Vector3f(430, terrain.getHeight(430, 380), 380), 0, 0, 0, 2);
+        Entity caveEntry = new Entity(caveEntryTexturedModel, new Vector3f(185, terrain.getHeight(185, 216), 216), 0, -30, 0, 1.8f);
         vegetation.add(caveEntry);
 
         RawModel caveModel = OBJLoader.loadObjModel("dickemap", loader);
         ModelTexture caveTexture = new ModelTexture(loader.loadTexture("dickemap"));
         TexturedModel caveTexturedModel = new TexturedModel(caveModel, caveTexture);
-        Entity cave = new Entity(caveTexturedModel, new Vector3f(430, terrain.getHeight(430, 600), 380), 0, 0, 0, 2);
+        Entity cave = new Entity(caveTexturedModel, new Vector3f(170, terrain.getHeight(185, 216) + 10, 210), 0, -30, 0, 1.8f);
         vegetation.add(cave);
         /** Cave End */
 
@@ -247,7 +247,7 @@ public class MainGameLoop {
 
         GuiRenderer guiRenderer = new GuiRenderer(loader);
         // Add Intro
-        guis.add(intro);
+        // guis.add(intro);
 
 
         int counter = 0;
@@ -281,6 +281,8 @@ public class MainGameLoop {
             if (!escaped) {
                 player.move(terrain);
             }
+
+            System.out.println(player.getPosition());
 
             camera.update();
             lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
