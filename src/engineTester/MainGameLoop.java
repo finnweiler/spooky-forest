@@ -62,6 +62,14 @@ public class MainGameLoop {
         ModelTexture flowerTexture = new ModelTexture(loader.loadTexture("trees/flower"));
         TexturedModel flowerTexturedModel = new TexturedModel(flowerModel, flowerTexture);
 
+        RawModel bushModel = OBJLoader.loadObjModel("assets/bush", loader);
+        ModelTexture bushTexture = new ModelTexture(loader.loadTexture("assets/bush"));
+        TexturedModel bushTexturedModel = new TexturedModel(bushModel, bushTexture);
+
+        RawModel grassModel = OBJLoader.loadObjModel("assets/grass", loader);
+        ModelTexture grassTexture = new ModelTexture(loader.loadTexture("assets/grass"));
+        TexturedModel grassTexturedModel = new TexturedModel(grassModel, grassTexture);
+
         for(int i=0;i<squareCount;i++){
             for(int j=0;j<squareCount;j++){
                 float percentage = getPercentage(j, i, vegetationMapImage);
@@ -70,18 +78,24 @@ public class MainGameLoop {
                     TexturedModel texturedModel = null;
                     float scale = 1;
                     float object = (float) Math.random();
-                    if (object < 0.3) {
+                    if (object < 0.1) {
                         texturedModel = tree1TexturedModel;
                         scale = (float) Math.random() * 2 + 2;
-                    } else if (object < 0.6) {
+                    } else if (object < 0.2) {
                         texturedModel = tree2TexturedModel;
                         scale = (float) Math.random() * 6 + 36;
-                    } else if (object < 0.65) {
+                    } else if (object < 0.25) {
                         texturedModel = tree3TexturedModel;
                         scale = (float) Math.random() * 6 + 25;
-                    } else {
+                    } else if (object < 0.35) {
                         texturedModel = flowerTexturedModel;
                         scale = (float) Math.random() * 4 + 15;
+                    }   else if (object < 0.4) {
+                        texturedModel = bushTexturedModel;
+                        scale = (float) Math.random() * 20 + 15;
+                    } else {
+                        texturedModel = grassTexturedModel;
+                        scale = (float) Math.random() * 10 + 8;
                     }
 
                     float offsetX = (float) Math.random() * 5 - 2.5f;
@@ -149,7 +163,7 @@ public class MainGameLoop {
         /** Terrain End */
 
         /** Vegetation Start */
-        List<Entity> vegetation = generateVegetation(terrain, loader, 0.005f);
+        List<Entity> vegetation = generateVegetation(terrain, loader, 0.015f);
         /** Vegetation End */
 
         /** Player Start */
@@ -383,6 +397,7 @@ public class MainGameLoop {
             DisplayManager.updateDisplay();
         }
 
+        guiRenderer.cleanUp();
         renderer.cleanUp();
         loader.cleanUp();
         DisplayManager.closeDisplay();
