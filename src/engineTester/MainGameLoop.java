@@ -19,6 +19,8 @@ import java.util.List;
 
 public class MainGameLoop {
 
+    private static boolean firstStart = true;
+
     public static void main(String[] args) {
 
         DisplayManager.createDisplay();
@@ -106,10 +108,14 @@ public class MainGameLoop {
                         escaped = false;
                         guis.clear();
                         Mouse.setGrabbed(true); // Enable mouse
+                        if (firstStart) {
+                            EntityGameLoop.resetPlayer(terrain);
+                            firstStart = false;
+                        }
                     } else if (mouseY < 360 && mouseY > 285) {
                         closeRequested = true;
                     }
-                    guis.remove(startmenu);
+
                 }
             }
 
