@@ -48,15 +48,19 @@ public class MainGameLoop {
 
         RawModel tree1Model = OBJLoader.loadObjModel("trees/bigtree1", loader);
         ModelTexture tree1Texture = new ModelTexture(loader.loadTexture("trees/bigtree1"));
+        TexturedModel tree1TexturedModel = new TexturedModel(tree1Model, tree1Texture);
 
         RawModel tree2Model = OBJLoader.loadObjModel("trees/oak1", loader);
         ModelTexture tree2Texture = new ModelTexture(loader.loadTexture("trees/oak1"));
+        TexturedModel tree2TexturedModel = new TexturedModel(tree2Model, tree2Texture);
 
         RawModel tree3Model = OBJLoader.loadObjModel("trees/christmastree", loader);
         ModelTexture tree3Texture = new ModelTexture(loader.loadTexture("trees/christmastree"));
+        TexturedModel tree3TexturedModel = new TexturedModel(tree3Model, tree3Texture);
 
         RawModel flowerModel = OBJLoader.loadObjModel("trees/flower", loader);
         ModelTexture flowerTexture = new ModelTexture(loader.loadTexture("trees/flower"));
+        TexturedModel flowerTexturedModel = new TexturedModel(flowerModel, flowerTexture);
 
         for(int i=0;i<squareCount;i++){
             for(int j=0;j<squareCount;j++){
@@ -67,16 +71,16 @@ public class MainGameLoop {
                     float scale = 1;
                     float object = (float) Math.random();
                     if (object < 0.3) {
-                        texturedModel = new TexturedModel(tree1Model, tree1Texture);
+                        texturedModel = tree1TexturedModel;
                         scale = (float) Math.random() * 2 + 2;
                     } else if (object < 0.6) {
-                        texturedModel = new TexturedModel(tree2Model, tree2Texture);
-                        scale = (float) Math.random() * 3 + 4;
+                        texturedModel = tree2TexturedModel;
+                        scale = (float) Math.random() * 6 + 36;
                     } else if (object < 0.65) {
-                        texturedModel = new TexturedModel(tree3Model, tree3Texture);
-                        scale = (float) Math.random() * 1 + 25;
+                        texturedModel = tree3TexturedModel;
+                        scale = (float) Math.random() * 6 + 25;
                     } else {
-                        texturedModel = new TexturedModel(flowerModel, flowerTexture);
+                        texturedModel = flowerTexturedModel;
                         scale = (float) Math.random() * 4 + 15;
                     }
 
