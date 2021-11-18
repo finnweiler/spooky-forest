@@ -140,15 +140,13 @@ public class Loader {
         int width = 0;
         int height = 0;
         ByteBuffer buffer = null;
-        try {
-            FileInputStream in = new FileInputStream(fileName);
+        try (FileInputStream in = new FileInputStream(fileName);) {
             PNGDecoder decoder = new PNGDecoder(in);
             width = decoder.getWidth();
             height = decoder.getHeight();
             buffer = BufferUtils.createByteBuffer(4 * width * height);
             decoder.decode(buffer, width * 4, Format.RGBA);
             buffer.flip();
-            in.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Could not load texture " + fileName);

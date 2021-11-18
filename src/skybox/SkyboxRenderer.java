@@ -14,57 +14,57 @@ public class SkyboxRenderer {
     private static final float SIZE = 500f;
 
     private static final float[] VERTICES = {
-        -SIZE,  SIZE, -SIZE,
-        -SIZE, -SIZE, -SIZE,
-        SIZE, -SIZE, -SIZE,
-        SIZE, -SIZE, -SIZE,
-        SIZE,  SIZE, -SIZE,
-        -SIZE,  SIZE, -SIZE,
+            -SIZE, SIZE, -SIZE,
+            -SIZE, -SIZE, -SIZE,
+            SIZE, -SIZE, -SIZE,
+            SIZE, -SIZE, -SIZE,
+            SIZE, SIZE, -SIZE,
+            -SIZE, SIZE, -SIZE,
 
-        -SIZE, -SIZE,  SIZE,
-        -SIZE, -SIZE, -SIZE,
-        -SIZE,  SIZE, -SIZE,
-        -SIZE,  SIZE, -SIZE,
-        -SIZE,  SIZE,  SIZE,
-        -SIZE, -SIZE,  SIZE,
+            -SIZE, -SIZE, SIZE,
+            -SIZE, -SIZE, -SIZE,
+            -SIZE, SIZE, -SIZE,
+            -SIZE, SIZE, -SIZE,
+            -SIZE, SIZE, SIZE,
+            -SIZE, -SIZE, SIZE,
 
-        SIZE, -SIZE, -SIZE,
-        SIZE, -SIZE,  SIZE,
-        SIZE,  SIZE,  SIZE,
-        SIZE,  SIZE,  SIZE,
-        SIZE,  SIZE, -SIZE,
-        SIZE, -SIZE, -SIZE,
+            SIZE, -SIZE, -SIZE,
+            SIZE, -SIZE, SIZE,
+            SIZE, SIZE, SIZE,
+            SIZE, SIZE, SIZE,
+            SIZE, SIZE, -SIZE,
+            SIZE, -SIZE, -SIZE,
 
-        -SIZE, -SIZE,  SIZE,
-        -SIZE,  SIZE,  SIZE,
-        SIZE,  SIZE,  SIZE,
-        SIZE,  SIZE,  SIZE,
-        SIZE, -SIZE,  SIZE,
-        -SIZE, -SIZE,  SIZE,
+            -SIZE, -SIZE, SIZE,
+            -SIZE, SIZE, SIZE,
+            SIZE, SIZE, SIZE,
+            SIZE, SIZE, SIZE,
+            SIZE, -SIZE, SIZE,
+            -SIZE, -SIZE, SIZE,
 
-        -SIZE,  SIZE, -SIZE,
-        SIZE,  SIZE, -SIZE,
-        SIZE,  SIZE,  SIZE,
-        SIZE,  SIZE,  SIZE,
-        -SIZE,  SIZE,  SIZE,
-        -SIZE,  SIZE, -SIZE,
+            -SIZE, SIZE, -SIZE,
+            SIZE, SIZE, -SIZE,
+            SIZE, SIZE, SIZE,
+            SIZE, SIZE, SIZE,
+            -SIZE, SIZE, SIZE,
+            -SIZE, SIZE, -SIZE,
 
-        -SIZE, -SIZE, -SIZE,
-        -SIZE, -SIZE,  SIZE,
-        SIZE, -SIZE, -SIZE,
-        SIZE, -SIZE, -SIZE,
-        -SIZE, -SIZE,  SIZE,
-        SIZE, -SIZE,  SIZE
+            -SIZE, -SIZE, -SIZE,
+            -SIZE, -SIZE, SIZE,
+            SIZE, -SIZE, -SIZE,
+            SIZE, -SIZE, -SIZE,
+            -SIZE, -SIZE, SIZE,
+            SIZE, -SIZE, SIZE
     };
 
-    private static String[] TEXTURE_FILES = {
+    private static final String[] TEXTURE_FILES = {
             "skybox/right",
             "skybox/left",
             "skybox/top",
             "skybox/bottom",
             "skybox/back",
             "skybox/front"};
-    private static String[] TEXTURE_FILES_NIGHT = {
+    private static final String[] TEXTURE_FILES_NIGHT = {
             "skyboxN/right",
             "skyboxN/left",
             "skyboxN/top",
@@ -73,10 +73,10 @@ public class SkyboxRenderer {
             "skyboxN/front"
     };
 
-    private RawModel cube;
-    private int texture;
-    private int textureNight;
-    private SkyboxShader shader;
+    private final RawModel cube;
+    private final int texture;
+    private final int textureNight;
+    private final SkyboxShader shader;
 
     private float fade = 0;
 
@@ -94,7 +94,7 @@ public class SkyboxRenderer {
     public void render(Camera camera, float r, float g, float b) {
         shader.start();
         shader.loadViewMatrix(camera);
-        shader.loadFogColor(r,g,b);
+        shader.loadFogColor(r, g, b);
         GL30.glBindVertexArray(cube.getVaoID());
         GL20.glEnableVertexAttribArray(0);
         bindTextures();

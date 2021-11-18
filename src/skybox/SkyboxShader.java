@@ -29,7 +29,7 @@ public class SkyboxShader extends ShaderProgram {
     }
 
     public void loadFogColor(float r, float g, float b) {
-        super.loadVector(locationFogColor, new Vector3f(r,g,b));
+        super.loadVector(locationFogColor, new Vector3f(r, g, b));
     }
 
     public void loadBlendFactor(float blend) {
@@ -41,17 +41,17 @@ public class SkyboxShader extends ShaderProgram {
         super.loadInt(locationCubeMap2, 1);
     }
 
-    public void loadProjectionMatrix(Matrix4f matrix){
+    public void loadProjectionMatrix(Matrix4f matrix) {
         super.loadMatrix(locationProjectionMatrix, matrix);
     }
 
-    public void loadViewMatrix(Camera camera){
+    public void loadViewMatrix(Camera camera) {
         Matrix4f matrix = Maths.createViewMatrix(camera);
         matrix.m30 = 0;
         matrix.m31 = 0;
         matrix.m32 = 0;
         currentRotation += ROTATE_SPEED * DisplayManager.getFrameTime();
-        Matrix4f.rotate((float) Math.toRadians(currentRotation), new Vector3f(0,1,0), matrix, matrix);
+        Matrix4f.rotate((float) Math.toRadians(currentRotation), new Vector3f(0, 1, 0), matrix, matrix);
         super.loadMatrix(locationViewMatrix, matrix);
     }
 
