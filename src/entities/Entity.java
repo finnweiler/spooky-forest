@@ -8,12 +8,13 @@ import toolbox.Maths;
 
 public class Entity {
 
-    private TexturedModel model;        // Texturiertes 3D Modell des Entities
+    private final static int TEXTURE_INDEX = 0;
+
+    private final TexturedModel model;        // Texturiertes 3D Modell des Entities
     private Vector3f position;          // Die globale Position des Entities
     private float rotX, rotY, rotZ;     // Die Rotation des Entities in Grad
-    private float scale;                // Die Skalierung des Entities
+    private final float scale;                // Die Skalierung des Entities
 
-    private int textureIndex = 0;
 
     public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         this.model = model;
@@ -26,6 +27,7 @@ public class Entity {
 
     /**
      * Diese Funktion verschiebt die Koordinaten des Entities um die übergebene Translation
+     *
      * @param dx Translation um die x-Achse
      * @param dy Translation um die y-Achse
      * @param dz Translation um die z-Achse
@@ -38,6 +40,7 @@ public class Entity {
 
     /**
      * Diese Funktion rotiert die Koordinaten des Entities um die übergebene Rotations
+     *
      * @param dx
      * @param dy
      * @param dz
@@ -51,12 +54,13 @@ public class Entity {
     /**
      * Diese Funktion gibt den Texture Offset für ein Object zurück.
      * Dieser wird benötigt, wenn mehrere Texturen für das gleiche Model in einem einzelnen PNG hinterlegt sind.
+     *
      * @return Texture Offset
      */
     public Vector2f getTextureOffset() {
-        int column = textureIndex % model.getTexture().getNumberOfRows();
+        int column = TEXTURE_INDEX % model.getTexture().getNumberOfRows();
         float x = (float) column / (float) model.getTexture().getNumberOfRows();
-        int row = textureIndex / model.getTexture().getNumberOfRows();
+        int row = TEXTURE_INDEX / model.getTexture().getNumberOfRows();
         float y = (float) row / (float) model.getTexture().getNumberOfRows();
         return new Vector2f(x, y);
     }
@@ -64,6 +68,7 @@ public class Entity {
     /**
      * Diese Funktion gibt die Transformationsmatrix des Entities zurück,
      * die zur Verarbeitung im Shader benötigt wird.
+     *
      * @return Transformationsmatrix
      */
     public Matrix4f getTransformationMatrix() {

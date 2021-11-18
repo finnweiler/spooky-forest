@@ -10,8 +10,9 @@ public class Light {
 
     /**
      * Erstellt ein neues Licht ohne Abschwächung.
+     *
      * @param position Position
-     * @param color Farbe
+     * @param color    Farbe
      */
     public Light(Vector3f position, Vector3f color) {
         this.position = position;
@@ -20,8 +21,9 @@ public class Light {
 
     /**
      * Erstellt ein neues Licht mit den übergebenen Abschwächungsparametern
-     * @param position Position
-     * @param color Farbe
+     *
+     * @param position    Position
+     * @param color       Farbe
      * @param attenuation Abschwächung
      */
     public Light(Vector3f position, Vector3f color, Vector3f attenuation) {
