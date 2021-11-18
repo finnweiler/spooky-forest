@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AudioMaster {
 
-    private static List<Integer> buffers =  new ArrayList<Integer>();
+    private static final List<Integer> buffers = new ArrayList();
 
     public static void init() {
         try {
@@ -32,10 +32,11 @@ public class AudioMaster {
 
     public static void setListenerData(float x, float y, float z) {
         AL10.alListener3f(AL10.AL_POSITION, x, y, z);
-        AL10.alListener3f(AL10.AL_VELOCITY, 0,0,0);
+        AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
     }
 
     public static void cleanUp() {
+        AL10.alSourceStop(AL10.alGenSources());
         for (int buffer : buffers) {
             AL10.alDeleteBuffers(buffer);
         }
