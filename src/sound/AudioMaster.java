@@ -35,10 +35,13 @@ public class AudioMaster {
         AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
     }
 
+    /**
+     * MUSS vor dem Beenden der Applikation ausgeführt werden! Beendet die Audio Sourcen und Buffer.
+     */
     public static void cleanUp() {
-        AL10.alSourceStop(AL10.alGenSources());
+        AL10.alSourceStop(AL10.alGenSources()); // close source
         for (int buffer : buffers) {
-            AL10.alDeleteBuffers(buffer);
+            AL10.alDeleteBuffers(buffer); // free buffers
         }
         AL.destroy();
     }
