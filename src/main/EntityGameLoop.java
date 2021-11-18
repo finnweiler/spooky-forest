@@ -22,6 +22,9 @@ import toolbox.MousePicker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Der GameLoop zur Generierung und zum Rendern der Entities.
+ */
 public class EntityGameLoop {
 
     private static Camera camera;
@@ -62,6 +65,14 @@ public class EntityGameLoop {
     private static int bufferFootsteps;
     private static Source source;
 
+    /**
+     * Unter Nutzung des Terrains, eines Loaders und des Renderers
+     * werden alle Entities (außerhalb der Vegetation) erstellt.
+     *
+     * @param terrain  {@link Terrain}
+     * @param loader   {@link Loader}
+     * @param renderer {@link MasterRenderer}
+     */
     public static void prepare(Terrain terrain, Loader loader, MasterRenderer renderer) {
         /** Player Start */
         RawModel playerModel = OBJLoader.loadObjModel("assets/player", loader);
@@ -204,22 +215,32 @@ public class EntityGameLoop {
         source = new Source();
         source.setLooping(true);
 
-        // Update Positions
-        // player.move(terrain);
         player.setPosition(new Vector3f(389, 124, 542));
         camera.update();
     }
 
+    /**
+     * Die Player-Figur wird auf die Ausgangsposition (x: 400, z: 400) zurückgesetzt.
+     *
+     * @param terrain {@link Terrain} der genutzten Map zur Bestimmung der y-Position
+     */
     public static void resetPlayer(Terrain terrain) {
         player.setPosition(new Vector3f(400, terrain.getHeight(400, 400), 400));
     }
 
+
+    /**
+     * Unter Nutzung des Renderers werden alle Entities sowie Spielerbewegungen verarbeitet.
+     *
+     * @param renderer   {@link MasterRenderer}
+     * @param terrain    {@link Terrain}
+     * @param movePlayer Information, ob eine Bewegung des Spielers verarbeitet werden muss
+     */
     public static void loop(MasterRenderer renderer, Terrain terrain, boolean movePlayer) {
         if (movePlayer) {
             player.move(terrain);
             camera.update();
         }
-
 
         renderer.processEntity(christmasTree);
         renderer.processEntity(treeDecoration);
