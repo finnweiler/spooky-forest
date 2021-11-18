@@ -19,14 +19,14 @@ public class Terrain {
     private static final float MAX_HEIGHT = 30;
     private static final float MAX_PIXEL_COLOR = (float) Math.pow(256, 3);
 
-    private float x;
-    private float z;
-    private RawModel model;
-    private TerrainTexturePack texturePack;
-    private TerrainTexture blendMap;
+    private final float x;
+    private final float z;
+    private final RawModel model;
+    private final TerrainTexturePack texturePack;
+    private final TerrainTexture blendMap;
 
-    private float heights[][];
-    private Vector3f normals[][];
+    private float[][] heights;
+    private Vector3f[][] normals;
 
     public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightMapFile) {
         this.texturePack = texturePack;
@@ -60,7 +60,7 @@ public class Terrain {
 
         BufferedImage heightMapImage = null;
         try {
-            heightMapImage = ImageIO.read(new File("res/"+heightMapFile+".png"));
+            heightMapImage = ImageIO.read(new File("res/" + heightMapFile + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,32 +72,32 @@ public class Terrain {
         int count = VERTEX_COUNT * VERTEX_COUNT;
         float[] vertices = new float[count * 3];
         float[] normals = new float[count * 3];
-        float[] textureCoords = new float[count*2];
-        int[] indices = new int[6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1)];
+        float[] textureCoords = new float[count * 2];
+        int[] indices = new int[6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1)];
         int vertexPointer = 0;
-        for(int i=0;i<VERTEX_COUNT;i++){
-            for(int j=0;j<VERTEX_COUNT;j++){
-                vertices[vertexPointer*3] = (float)j/((float)VERTEX_COUNT - 1) * SIZE;
+        for (int i = 0; i < VERTEX_COUNT; i++) {
+            for (int j = 0; j < VERTEX_COUNT; j++) {
+                vertices[vertexPointer * 3] = (float) j / ((float) VERTEX_COUNT - 1) * SIZE;
                 float height = getHeight(j, i, heightMapImage);
                 heights[j][i] = height;
-                vertices[vertexPointer*3+1] = height;
-                vertices[vertexPointer*3+2] = (float)i/((float)VERTEX_COUNT - 1) * SIZE;
+                vertices[vertexPointer * 3 + 1] = height;
+                vertices[vertexPointer * 3 + 2] = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
                 Vector3f normal = calculateNormal(j, i, heightMapImage);
                 this.normals[j][i] = normal;
-                normals[vertexPointer*3] = normal.x;
-                normals[vertexPointer*3+1] = normal.y;
-                normals[vertexPointer*3+2] = normal.z;
-                textureCoords[vertexPointer*2] = (float)j/((float)VERTEX_COUNT - 1);
-                textureCoords[vertexPointer*2+1] = (float)i/((float)VERTEX_COUNT - 1);
+                normals[vertexPointer * 3] = normal.x;
+                normals[vertexPointer * 3 + 1] = normal.y;
+                normals[vertexPointer * 3 + 2] = normal.z;
+                textureCoords[vertexPointer * 2] = (float) j / ((float) VERTEX_COUNT - 1);
+                textureCoords[vertexPointer * 2 + 1] = (float) i / ((float) VERTEX_COUNT - 1);
                 vertexPointer++;
             }
         }
         int pointer = 0;
-        for(int gz=0;gz<VERTEX_COUNT-1;gz++){
-            for(int gx=0;gx<VERTEX_COUNT-1;gx++){
-                int topLeft = (gz*VERTEX_COUNT)+gx;
+        for (int gz = 0; gz < VERTEX_COUNT - 1; gz++) {
+            for (int gx = 0; gx < VERTEX_COUNT - 1; gx++) {
+                int topLeft = (gz * VERTEX_COUNT) + gx;
                 int topRight = topLeft + 1;
-                int bottomLeft = ((gz+1)*VERTEX_COUNT)+gx;
+                int bottomLeft = ((gz + 1) * VERTEX_COUNT) + gx;
                 int bottomRight = bottomLeft + 1;
                 indices[pointer++] = topLeft;
                 indices[pointer++] = bottomLeft;
@@ -111,10 +111,10 @@ public class Terrain {
     }
 
     private Vector3f calculateNormal(int x, int y, BufferedImage heightmap) {
-        float heightL = getHeight(x-1, y, heightmap);
-        float heightR = getHeight(x+1, y, heightmap);
-        float heightD = getHeight(x, y-1, heightmap);
-        float heightU = getHeight(x, y+1, heightmap);
+        float heightL = getHeight(x - 1, y, heightmap);
+        float heightR = getHeight(x + 1, y, heightmap);
+        float heightD = getHeight(x, y - 1, heightmap);
+        float heightU = getHeight(x, y + 1, heightmap);
         Vector3f normal = new Vector3f(heightL - heightR, 2f, heightD - heightU);
         normal.normalise();
         return normal;
@@ -130,18 +130,14 @@ public class Terrain {
         return height;
     }
 
-    public Vector3f getNormal(float worldX, float worldZ) {
-        float terrainX = worldX - this.x;
-        float terrainZ = worldZ - this.z;
-        float gridSquareSize = SIZE / ((float) heights.length - 1);
-        int gridX = (int) Math.floor(terrainX / gridSquareSize);
-        int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
-        if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
-            return new Vector3f(0, 1, 0);
-        }
-        return normals[gridX][gridZ];
-    }
 
+    /**
+     * Mithilfe der x- und z-Koordinate der Welt übergibt diese Funktion die Höhe an dieser Stelle.
+     *
+     * @param worldX x-Koordinate der Welt
+     * @param worldZ z-Koordinate der Welt
+     * @return Höhe (y)
+     */
     public float getHeight(float worldX, float worldZ) {
         float terrainX = worldX - this.x;
         float terrainZ = worldZ - this.z;
@@ -154,14 +150,14 @@ public class Terrain {
         float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
         float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
         float finalHeight;
-        if (xCoord <= (1-zCoord)) {
+        if (xCoord <= (1 - zCoord)) {
             finalHeight = Maths.barryCentric(new Vector3f(0, heights[gridX][gridZ], 0), new Vector3f(1,
-                            heights[gridX + 1][gridZ], 0), new Vector3f(0,
-                            heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
+                    heights[gridX + 1][gridZ], 0), new Vector3f(0,
+                    heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
         } else {
             finalHeight = Maths.barryCentric(new Vector3f(1, heights[gridX + 1][gridZ], 0), new Vector3f(1,
-                            heights[gridX + 1][gridZ + 1], 1), new Vector3f(0,
-                            heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
+                    heights[gridX + 1][gridZ + 1], 1), new Vector3f(0,
+                    heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
         }
         return finalHeight;
     }
