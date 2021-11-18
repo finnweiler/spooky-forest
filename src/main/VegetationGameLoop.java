@@ -1,4 +1,4 @@
-package engineTester;
+package main;
 
 import entities.Entity;
 import models.OBJLoader;
@@ -21,7 +21,7 @@ public class VegetationGameLoop {
 
     private static List<Entity> vegetation;
 
-    private static List<Entity> generateVegetation(Terrain terrain, Loader loader, float density) {
+    private static List<Entity> generateVegetation(Terrain terrain, Loader loader, float vegetationDensity) {
         ArrayList<Entity> vegetation = new ArrayList<>();
 
         BufferedImage vegetationMapImage = null;
@@ -61,7 +61,7 @@ public class VegetationGameLoop {
         for(int i=0;i<squareCount;i++){
             for(int j=0;j<squareCount;j++){
                 float percentage = getPercentage(j, i, vegetationMapImage);
-                if ((1 - percentage) * density > Math.random()) {
+                if ((1 - percentage) * vegetationDensity > Math.random()) {
 
                     TexturedModel texturedModel = null;
                     float scale = 1;

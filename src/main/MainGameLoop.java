@@ -1,4 +1,4 @@
-package engineTester;
+package main;
 
 import gui.GuiRenderer;
 import gui.GuiTexture;
@@ -32,7 +32,7 @@ public class MainGameLoop {
 
         int bufferBackgroundMusic = AudioMaster.loadSound("sound/music_short_short.wav");
         Source source = new Source();
-        source.setVolume(0.4f);
+        source.setVolume(0.25f);
         source.setLooping(true);
         source.play(bufferBackgroundMusic);
         /** Music End */
