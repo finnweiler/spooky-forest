@@ -17,11 +17,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Der GameLoop zur Generierung und zum Rendern der Vegetation.
+ */
 public class VegetationGameLoop {
 
     private static List<Entity> vegetation;
 
-
+    /**
+     * Unter Nutzung des Terrains und eines Loaders wird die Vegetation erstellt.
+     *
+     * @param terrain           {@link Terrain}
+     * @param loader            {@link Loader}
+     * @param vegetationDensity Dichte der Vegetation
+     */
     private static List<Entity> generateVegetation(Terrain terrain, Loader loader, float vegetationDensity) {
         ArrayList<Entity> vegetation = new ArrayList<>();
 
@@ -96,7 +105,7 @@ public class VegetationGameLoop {
                     float y = terrain.getHeight(worldX, worldZ);
                     Entity treeEntity =
                             new Entity(texturedModel, new Vector3f(worldX, y, worldZ),
-                            0, (float) Math.random() * 360, 0, scale);
+                                    0, (float) Math.random() * 360, 0, scale);
                     vegetation.add(treeEntity);
                 }
             }
@@ -105,10 +114,18 @@ public class VegetationGameLoop {
         return vegetation;
     }
 
+    /**
+     * Diese Funktion berechnet die Helligkeit eines Punktes in einem Bild.
+     *
+     * @param x     x-Koordinate
+     * @param y     y-Koordinate
+     * @param image Bild
+     * @return Helligkeit des Punktes
+     */
     private static float getPercentage(int x, int y, BufferedImage image) {
         float MAX_PIXEL_COLOR = (float) Math.pow(256, 3);
 
-        if (x < 0 || x >= image.getHeight() || y < 0 || y >= image.getHeight()) {
+        if (x < 0 || x >= image.getWidth() || y < 0 || y >= image.getHeight()) {
             return 0;
         }
         float percentage = -image.getRGB(x, y);
@@ -116,10 +133,22 @@ public class VegetationGameLoop {
         return percentage;
     }
 
+    /**
+     * Unter Nutzung des Terrains und eines Loaders wird die Vegetation erstellt.
+     * (Nutzt Funktion generateVegetation intern.)
+     *
+     * @param terrain {@link Terrain}
+     * @param loader  {@link Loader}
+     */
     public static void prepare(Terrain terrain, Loader loader) {
         vegetation = generateVegetation(terrain, loader, 0.017f);
     }
 
+    /**
+     * Unter Nutzung des Renderers werden alle Vegetationseinträge verarbeitet.
+     *
+     * @param renderer {@link MasterRenderer}
+     */
     public static void loop(MasterRenderer renderer) {
         for (Entity vegetationEntity : vegetation) {
             renderer.processEntity(vegetationEntity);
