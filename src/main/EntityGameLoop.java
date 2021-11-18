@@ -239,7 +239,7 @@ public class EntityGameLoop {
         renderer.render(lights, camera);
 
         diamond.rotate(0, DisplayManager.getFrameTime() * 0.01f, 0);
-        lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY() + 7, camera.getPosition().getZ()));
+        lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY(), camera.getPosition().getZ()));
 
         if (player.getWalkingSpeed() != 0) {
             if (!stepping) {
