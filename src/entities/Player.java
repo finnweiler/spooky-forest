@@ -25,12 +25,13 @@ public class Player extends Entity {
 
     /**
      * Erstellt einen neuen Spieler
-     * @param model Das Modell, das den Spieler repräsentieren soll
+     *
+     * @param model    Das Modell, das den Spieler repräsentieren soll
      * @param position Die Position des Spielers im Raum
-     * @param rotX Die x-Rotation des Spielers
-     * @param rotY Die y-Rotation des Spielers
-     * @param rotZ Die z-Rotation des Spielers
-     * @param scale Die Skalierung des Spielers
+     * @param rotX     Die x-Rotation des Spielers
+     * @param rotY     Die y-Rotation des Spielers
+     * @param rotZ     Die z-Rotation des Spielers
+     * @param scale    Die Skalierung des Spielers
      */
     public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(model, position, rotX, rotY, rotZ, scale);
@@ -43,6 +44,7 @@ public class Player extends Entity {
     /**
      * Diese Funktion updated die Position und Rotation des Spielers auf Grundlage der Tastatur- und Mauseingaben.
      * Diese Funktion berücksichtigt dabei den Untergrund auf dem Spiele steht, um die Höhe dementsprechend anzupassen.
+     *
      * @param terrain Untergrund
      */
     public void move(Terrain terrain) {
@@ -71,7 +73,7 @@ public class Player extends Entity {
             verticalSpeed = 0;
             flying = false;
             super.getPosition().setY(terrainHeight);
-        // Wenn der Spieler einen flachen Hang hinabläuft, soll dieser nicht in den zustand "fliegen" kommen
+            // Wenn der Spieler einen flachen Hang hinabläuft, soll dieser nicht in den zustand "fliegen" kommen
         } else if (flying == false || getPosition().getY() < terrainHeight + DOWN_WALK_DISTANCE) {
             verticalSpeed = 0;
             super.getPosition().setY(terrainHeight);
@@ -134,12 +136,13 @@ public class Player extends Entity {
      */
     private void checkMouse() {
         float dx = -Mouse.getDX() * 0.1f;
-        rotate(0,dx,0);
+        rotate(0, dx, 0);
         headPitch -= Mouse.getDY() * 0.1f;
     }
 
     /**
      * Gibt die absolute Gehgeschwindigkeit des Spielers auf der xz-Ebene zurück.
+     *
      * @return Gehgeschwindigkeit des Spielers
      */
     public float getWalkingSpeed() {
