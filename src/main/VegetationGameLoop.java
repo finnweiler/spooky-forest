@@ -21,6 +21,7 @@ public class VegetationGameLoop {
 
     private static List<Entity> vegetation;
 
+
     private static List<Entity> generateVegetation(Terrain terrain, Loader loader, float vegetationDensity) {
         ArrayList<Entity> vegetation = new ArrayList<>();
 
@@ -58,12 +59,12 @@ public class VegetationGameLoop {
         ModelTexture grassTexture = new ModelTexture(loader.loadTexture("assets/grass"));
         TexturedModel grassTexturedModel = new TexturedModel(grassModel, grassTexture);
 
-        for(int i=0;i<squareCount;i++){
-            for(int j=0;j<squareCount;j++){
+        for (int i = 0; i < squareCount; i++) {
+            for (int j = 0; j < squareCount; j++) {
                 float percentage = getPercentage(j, i, vegetationMapImage);
                 if ((1 - percentage) * vegetationDensity > Math.random()) {
 
-                    TexturedModel texturedModel = null;
+                    TexturedModel texturedModel;
                     float scale = 1;
                     float object = (float) Math.random();
                     if (object < 0.1) {
@@ -78,7 +79,7 @@ public class VegetationGameLoop {
                     } else if (object < 0.35) {
                         texturedModel = flowerTexturedModel;
                         scale = (float) Math.random() * 4 + 15;
-                    }   else if (object < 0.4) {
+                    } else if (object < 0.4) {
                         texturedModel = bushTexturedModel;
                         scale = (float) Math.random() * 20 + 15;
                     } else {
@@ -93,10 +94,9 @@ public class VegetationGameLoop {
                     float worldZ = scalingFactor * i + offsetZ;
 
                     float y = terrain.getHeight(worldX, worldZ);
-                    Entity treeEntity = new Entity(texturedModel,
-                            new Vector3f(worldX, y, worldZ),
-                            0, (float) Math.random() * 360, 0,
-                            scale);
+                    Entity treeEntity =
+                            new Entity(texturedModel, new Vector3f(worldX, y, worldZ),
+                            0, (float) Math.random() * 360, 0, scale);
                     vegetation.add(treeEntity);
                 }
             }

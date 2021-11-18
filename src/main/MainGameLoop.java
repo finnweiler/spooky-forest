@@ -2,12 +2,13 @@ package main;
 
 import gui.GuiRenderer;
 import gui.GuiTexture;
-import renderEngine.Loader;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
-import renderEngine.*;
+import renderEngine.DisplayManager;
+import renderEngine.Loader;
+import renderEngine.MasterRenderer;
 import sound.AudioMaster;
 import sound.Source;
 import terrain.Terrain;
@@ -21,8 +22,12 @@ public class MainGameLoop {
 
     private static boolean firstStart = true;
 
+    /**
+     * Der main loop der gesamten Anwendung.
+     *
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
-
         DisplayManager.createDisplay();
         Loader loader = new Loader();
 

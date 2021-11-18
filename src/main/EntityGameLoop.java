@@ -132,7 +132,7 @@ public class EntityGameLoop {
         RawModel houseModel = OBJLoader.loadObjModel("assets/house", loader);
         ModelTexture houseTexture = new ModelTexture(loader.loadTexture("assets/house"));
         TexturedModel texturedHouseModel = new TexturedModel(houseModel, houseTexture);
-        house = new Entity(texturedHouseModel,  new Vector3f(400, terrain.getHeight(400, 400), 400), 0, 180, 0, 18);
+        house = new Entity(texturedHouseModel, new Vector3f(400, terrain.getHeight(400, 400), 400), 0, 180, 0, 18);
         /** House End */
 
         /** FAILES Start */
@@ -140,27 +140,27 @@ public class EntityGameLoop {
         RawModel colorBirdModel = OBJLoader.loadObjModel("failes/birdcolor", loader);
         ModelTexture colorBirdTexture = new ModelTexture(loader.loadTexture("failes/birdcolor"));
         TexturedModel texturedcolorBirdModel = new TexturedModel(colorBirdModel, colorBirdTexture);
-        colorBird = new Entity(texturedcolorBirdModel,  new Vector3f(190, terrain.getHeight(190, 130) +20, 130), 0, 0, 0, 18);
+        colorBird = new Entity(texturedcolorBirdModel, new Vector3f(190, terrain.getHeight(190, 130) + 20, 130), 0, 0, 0, 18);
 
         RawModel forestFailesModel = OBJLoader.loadObjModel("failes/forestfailes", loader);
         ModelTexture forestFailesTexture = new ModelTexture(loader.loadTexture("failes/forestfailes"));
         TexturedModel texturedforestFailesModel = new TexturedModel(forestFailesModel, forestFailesTexture);
-        forestFailes = new Entity(texturedforestFailesModel,  new Vector3f(210, terrain.getHeight(210, 110) +20, 90), 0, 0, 0, 18);
+        forestFailes = new Entity(texturedforestFailesModel, new Vector3f(210, terrain.getHeight(210, 110) + 20, 90), 0, 0, 0, 18);
 
         RawModel newPlayerModel = OBJLoader.loadObjModel("failes/newplayer", loader);
         ModelTexture newPlayerTexture = new ModelTexture(loader.loadTexture("failes/newplayer"));
         TexturedModel texturednewPlayerModel = new TexturedModel(newPlayerModel, newPlayerTexture);
-        newPlayer = new Entity(texturednewPlayerModel,  new Vector3f(210, terrain.getHeight(210, 130) +10,130), 0, 0, 0, 18);
+        newPlayer = new Entity(texturednewPlayerModel, new Vector3f(210, terrain.getHeight(210, 130) + 10, 130), 0, 0, 0, 18);
 
         RawModel oldUserModel = OBJLoader.loadObjModel("failes/olduser", loader);
         ModelTexture oldUserTexture = new ModelTexture(loader.loadTexture("failes/olduser"));
         TexturedModel texturedoldUserModel = new TexturedModel(oldUserModel, oldUserTexture);
-        oldUser = new Entity(texturedoldUserModel,  new Vector3f(210, terrain.getHeight(210, 110) +15, 110), 0, 0, 0, 18);
+        oldUser = new Entity(texturedoldUserModel, new Vector3f(210, terrain.getHeight(210, 110) + 15, 110), 0, 0, 0, 18);
 
         RawModel runTreeModel = OBJLoader.loadObjModel("failes/runtree", loader);
         ModelTexture runTreeTexture = new ModelTexture(loader.loadTexture("failes/runtree"));
         TexturedModel texturedrunTreeModel = new TexturedModel(runTreeModel, runTreeTexture);
-        runTree = new Entity(texturedrunTreeModel,  new Vector3f(220, terrain.getHeight(220, 110) +12.5f, 110), 0, 0, 0, 18);
+        runTree = new Entity(texturedrunTreeModel, new Vector3f(220, terrain.getHeight(220, 110) + 12.5f, 110), 0, 0, 0, 18);
 
         /** FAILES End */
 
@@ -169,7 +169,7 @@ public class EntityGameLoop {
         RawModel spawnTreeModel = OBJLoader.loadObjModel("trees/parrottree", loader);
         ModelTexture spawnTreeTexture = new ModelTexture(loader.loadTexture("trees/parrottree"));
         TexturedModel texturedspawnTreeModel = new TexturedModel(spawnTreeModel, spawnTreeTexture);
-        spawnTree = new Entity(texturedspawnTreeModel,  new Vector3f(390, terrain.getHeight(390, 370), 370), 0, 0, 0, 18);
+        spawnTree = new Entity(texturedspawnTreeModel, new Vector3f(390, terrain.getHeight(390, 370), 370), 0, 0, 0, 18);
 
         /** Spawn Tree End */
 
