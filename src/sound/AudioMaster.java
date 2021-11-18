@@ -8,6 +8,9 @@ import org.lwjgl.util.WaveData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Diese Klasse ermöglicht das Laden, Abspielen und korrekte Beenden der Audio Quellen.
+ */
 public class AudioMaster {
 
     private static final List<Integer> buffers = new ArrayList();
@@ -55,7 +58,7 @@ public class AudioMaster {
 
 
     /**
-     * Beendet die Audio Sourcen und Buffer. (MUSS vor dem Beenden der Applikation ausgeführt werden!)
+     * Beendet die Audio Quellen und Buffer. (MUSS vor dem Beenden der Applikation ausgeführt werden!)
      */
     public static void cleanUp() {
         AL10.alSourceStop(AL10.alGenSources()); // close source

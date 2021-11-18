@@ -2,6 +2,10 @@ package sound;
 
 import org.lwjgl.openal.AL10;
 
+
+/**
+ * Diese Klasse fungiert als Wrapper für Audio Quellen.
+ */
 public class Source {
 
     private final int sourceId;
