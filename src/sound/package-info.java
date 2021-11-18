@@ -1,4 +1,4 @@
 /**
- * Diese Paket umfasst den gesamten Umgang mit Audio Dateien und Quellen.
+ * Dieses Paket umfasst den gesamten Umgang mit Audio Dateien und Quellen.
  */
 package sound;
