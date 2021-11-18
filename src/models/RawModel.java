@@ -1,7 +1,7 @@
 package models;
 
 /**
- * Diese Klasse repräsentiert ein in OpenGL geladenes Vertex Array Objekt (VAO)
+ * Diese Klasse repräsentiert ein in OpenGL geladenes Vertex Array Objekt (VAO).
  */
 public class RawModel {
 
