@@ -14,10 +14,10 @@ import java.util.List;
 public class GuiRenderer {
 
     private final RawModel quad;
-    private GuiShader shader;
+    private final GuiShader shader;
 
     public GuiRenderer(Loader loader) {
-        float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1 };
+        float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1};
         quad = loader.loadToVAO(positions);
         shader = new GuiShader();
     }
@@ -27,7 +27,7 @@ public class GuiRenderer {
         GL30.glBindVertexArray(quad.getVaoID());
         GL20.glEnableVertexAttribArray(0);
 
-        for (GuiTexture gui: guis) {
+        for (GuiTexture gui : guis) {
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
