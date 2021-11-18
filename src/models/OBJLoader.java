@@ -63,12 +63,12 @@ public class OBJLoader {
 
         String name = fileName.endsWith(".obj") ? fileName : fileName + ".obj";
 
-        // Auslesen der Datei aus dem Speicher
+        // Auslesen der Datei
         try (BufferedReader reader = new BufferedReader(new FileReader(RESOURCES + name))) {
             String line;
             vertexLoop: while (true) {
                 line = reader.readLine();
-                // Liest alle Vertex-, Texturkoordinaten und Normalenvektoren aus.
+                // Einlesen der Vertex-, Texturkoordinaten und Normalenvektoren aus.
                 switch (line.substring(0, 2)) {
                     case "v ":
                         vertices.add(convertToVector3f(line));
@@ -79,7 +79,7 @@ public class OBJLoader {
                     case "vn":
                         normals.add(convertToVector3f(line));
                         break;
-                    case "f ": // begin of faces
+                    case "f ": // Beginn der Flächen-Definitionen
                         textureArray = new float[vertices.size() * 2];
                         normalsArray = new float[vertices.size() * 3];
                         break vertexLoop;
