@@ -4,10 +4,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.Loader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,90 +13,83 @@ import java.util.List;
  */
 public class OBJLoader {
 
+    private static final String RESOURCES = "res/";
+
+
+    private static Vector3f convertToVector3f(String line) {
+        String[] lineArray = line.split(" ");
+        return new Vector3f(
+                Float.parseFloat(lineArray[1]),
+                Float.parseFloat(lineArray[2]),
+                Float.parseFloat(lineArray[3]));
+    }
+
+    private static Vector2f convertToVector2f(String line) {
+        String[] lineArray = line.split(" ");
+        return new Vector2f(
+                Float.parseFloat(lineArray[1]),
+                Float.parseFloat(lineArray[2]));
+    }
+
+
     /**
-     * Diese Funktion läd ein OBJ Objekt aus einer Datei in OpenGL und gibt ein RawModel Objekt zurück,
-     * dass die in OpenGL geladenen Daten repräsentiert.
+     * Diese Funktion lädt ein OBJ Objekt aus einer Datei und gibt ein RawModel Objekt zurück,
+     * das die in OpenGL geladenen Daten repräsentiert.
      *
      * @param fileName
      * @param loader
      * @return
      */
     public static RawModel loadObjModel(String fileName, Loader loader) {
-        // Auslesen der Datei aus dem Speicher
-        FileReader fr = null;
-        try {
-            fr = new FileReader("res/" + fileName + ".obj");
-        } catch (FileNotFoundException e) {
-            System.err.println("Could not load OBJ file!");
-            e.printStackTrace();
-        }
+        List<Vector3f> vertices = new ArrayList();
+        List<Vector2f> textures = new ArrayList();
+        List<Vector3f> normals = new ArrayList();
+        List<Integer> indices = new ArrayList();
 
-        BufferedReader reader = new BufferedReader(fr);
-        String line;
-        List<Vector3f> vertices = new ArrayList<Vector3f>();
-        List<Vector2f> textures = new ArrayList<Vector2f>();
-        List<Vector3f> normals = new ArrayList<Vector3f>();
-        List<Integer> indices = new ArrayList<Integer>();
-
-        float[] verticesArray = null;
         float[] normalsArray = null;
         float[] textureArray = null;
-        int[] indicesArray = null;
 
-        try {
+        String name = fileName.endsWith(".obj") ? fileName : fileName + ".obj";
 
+        // Auslesen der Datei aus dem Speicher
+        try (BufferedReader reader = new BufferedReader(new FileReader(RESOURCES + name))) {
+            String line;
+            vertexLoop:
             while (true) {
-                // Liest alle Vertex-, Texturkoordinaten und Normalenvektoren aus.
                 line = reader.readLine();
-                String[] currentLine = line.split(" ");
-
-                if (line.startsWith("v ")) {
-                    Vector3f vertex = new Vector3f(
-                            Float.parseFloat(currentLine[1]),
-                            Float.parseFloat(currentLine[2]),
-                            Float.parseFloat(currentLine[3]));
-                    vertices.add(vertex);
-                } else if (line.startsWith("vt ")) {
-                    Vector2f texture = new Vector2f(
-                            Float.parseFloat(currentLine[1]),
-                            Float.parseFloat(currentLine[2]));
-                    textures.add(texture);
-                } else if (line.startsWith("vn ")) {
-                    Vector3f normal = new Vector3f(
-                            Float.parseFloat(currentLine[1]),
-                            Float.parseFloat(currentLine[2]),
-                            Float.parseFloat(currentLine[3]));
-                    normals.add(normal);
-                } else if (line.startsWith("f ")) {
-                    textureArray = new float[vertices.size() * 2];
-                    normalsArray = new float[vertices.size() * 3];
-                    break;
+                // Liest alle Vertex-, Texturkoordinaten und Normalenvektoren aus.
+                switch (line.substring(0, 2)) {
+                    case "v ":
+                        vertices.add(convertToVector3f(line));
+                        break;
+                    case "vt":
+                        textures.add(convertToVector2f(line));
+                        break;
+                    case "vn":
+                        normals.add(convertToVector3f(line));
+                        break;
+                    case "f ": // begin of faces
+                        textureArray = new float[vertices.size() * 2];
+                        normalsArray = new float[vertices.size() * 3];
+                        break vertexLoop;
                 }
             }
 
             while (line != null) {
-                if (!line.startsWith("f ")) {
-                    line = reader.readLine();
-                    continue;
+                if (line.startsWith("f ")) {
+                    convertFace(line, indices, textures, normals, textureArray, normalsArray);
                 }
-                String[] currentLine = line.split(" ");
-                String[] vertex1 = currentLine[1].split("/");
-                String[] vertex2 = currentLine[2].split("/");
-                String[] vertex3 = currentLine[3].split("/");
-
-                processVertex(vertex1, indices, textures, normals, textureArray, normalsArray);
-                processVertex(vertex2, indices, textures, normals, textureArray, normalsArray);
-                processVertex(vertex3, indices, textures, normals, textureArray, normalsArray);
                 line = reader.readLine();
             }
-
-            reader.close();
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            System.err.println("Could not load OBJ file!");
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        verticesArray = new float[vertices.size() * 3];
-        indicesArray = new int[indices.size()];
+        float[] verticesArray = new float[vertices.size() * 3];
+        int[] indicesArray = new int[indices.size()];
 
         int vertexPointer = 0;
         for (Vector3f vertex : vertices) {
@@ -114,7 +104,17 @@ public class OBJLoader {
         return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
     }
 
-    private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
+
+    private static void convertFace(String face, List<Integer> indices, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
+        String[] vertices = face.split(" ");
+        processFaceVertex(vertices[1], indices, textures, normals, textureArray, normalsArray);
+        processFaceVertex(vertices[2], indices, textures, normals, textureArray, normalsArray);
+        processFaceVertex(vertices[3], indices, textures, normals, textureArray, normalsArray);
+    }
+
+
+    private static void processFaceVertex(String vertex, List<Integer> indices, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
+        String[] vertexData = vertex.split("/");
         int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
         indices.add(currentVertexPointer);
         Vector2f currentTexture = textures.get(Integer.parseInt(vertexData[1]) - 1);
