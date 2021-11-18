@@ -44,29 +44,13 @@ public class VegetationGameLoop {
         int squareCount = vegetationMapImage.getHeight();
         float scalingFactor = 800 / (float) squareCount;
 
-        RawModel tree1Model = OBJLoader.loadObjModel("trees/bigtree1", loader);
-        ModelTexture tree1Texture = new ModelTexture(loader.loadTexture("trees/bigtree1"));
-        TexturedModel tree1TexturedModel = new TexturedModel(tree1Model, tree1Texture);
+        TexturedModel tree1TexturedModel = getTexturedModel(loader, "trees/bigtree1");
+        TexturedModel tree2TexturedModel = getTexturedModel(loader, "trees/oak1");
+        TexturedModel tree3TexturedModel = getTexturedModel(loader, "trees/christmastree");
 
-        RawModel tree2Model = OBJLoader.loadObjModel("trees/oak1", loader);
-        ModelTexture tree2Texture = new ModelTexture(loader.loadTexture("trees/oak1"));
-        TexturedModel tree2TexturedModel = new TexturedModel(tree2Model, tree2Texture);
-
-        RawModel tree3Model = OBJLoader.loadObjModel("trees/christmastree", loader);
-        ModelTexture tree3Texture = new ModelTexture(loader.loadTexture("trees/christmastree"));
-        TexturedModel tree3TexturedModel = new TexturedModel(tree3Model, tree3Texture);
-
-        RawModel flowerModel = OBJLoader.loadObjModel("trees/flower", loader);
-        ModelTexture flowerTexture = new ModelTexture(loader.loadTexture("trees/flower"));
-        TexturedModel flowerTexturedModel = new TexturedModel(flowerModel, flowerTexture);
-
-        RawModel bushModel = OBJLoader.loadObjModel("assets/bush", loader);
-        ModelTexture bushTexture = new ModelTexture(loader.loadTexture("assets/bush"));
-        TexturedModel bushTexturedModel = new TexturedModel(bushModel, bushTexture);
-
-        RawModel grassModel = OBJLoader.loadObjModel("assets/grass", loader);
-        ModelTexture grassTexture = new ModelTexture(loader.loadTexture("assets/grass"));
-        TexturedModel grassTexturedModel = new TexturedModel(grassModel, grassTexture);
+        TexturedModel flowerTexturedModel = getTexturedModel(loader, "trees/flower");
+        TexturedModel bushTexturedModel = getTexturedModel(loader, "assets/bush");
+        TexturedModel grassTexturedModel = getTexturedModel(loader, "assets/grass");
 
         for (int i = 0; i < squareCount; i++) {
             for (int j = 0; j < squareCount; j++) {
@@ -74,7 +58,7 @@ public class VegetationGameLoop {
                 if ((1 - percentage) * vegetationDensity > Math.random()) {
 
                     TexturedModel texturedModel;
-                    float scale = 1;
+                    float scale;
                     float object = (float) Math.random();
                     if (object < 0.1) {
                         texturedModel = tree1TexturedModel;
@@ -112,6 +96,18 @@ public class VegetationGameLoop {
         }
 
         return vegetation;
+    }
+
+    /**
+     * Diese Funktion lädt ein texturiertes Modell.
+     * @param loader {@link Loader} zum Laden des Modells
+     * @param modelName Name des Modells
+     * @return {@link TexturedModel}
+     */
+    private static TexturedModel getTexturedModel(Loader loader, String modelName) {
+        RawModel tree1Model = OBJLoader.loadObjModel(modelName, loader);
+        ModelTexture tree1Texture = new ModelTexture(loader.loadTexture(modelName));
+        return new TexturedModel(tree1Model, tree1Texture);
     }
 
     /**
