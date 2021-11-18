@@ -24,16 +24,18 @@ import java.util.List;
  */
 public class Loader {
 
-    private List<Integer> vaos = new ArrayList<Integer>();
-    private List<Integer> vbos = new ArrayList<Integer>();
-    private List<Integer> textures = new ArrayList<Integer>();
+    private static final String RESOURCES = "res/";
+
+    private final List<Integer> vaos = new ArrayList();
+    private final List<Integer> vbos = new ArrayList();
+    private final List<Integer> textures = new ArrayList();
+
 
     /**
-     *
-     * @param positions Vertex Positionen des 3D Modells
+     * @param positions         Vertex Positionen des 3D Modells
      * @param textureCoordinate Textur Koordinaten des 3D Modells
-     * @param normals Normalenvektoren des 3D Modells
-     * @param indices Indizes des
+     * @param normals           Normalenvektoren des 3D Modells
+     * @param indices           Indizes des
      * @return
      */
     public RawModel loadToVAO(float[] positions, float[] textureCoordinate, float[] normals, int[] indices) {
@@ -62,13 +64,13 @@ public class Loader {
 
     public int loadTexture(String fileName) {
         Texture texture = null;
+
+        String name = fileName.endsWith(".png") ? fileName : fileName + ".png";
         try {
-            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/"+fileName+".png"));
+            texture = TextureLoader.getTexture("PNG", new FileInputStream(RESOURCES + name));
             GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
             GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, -1);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,13 +84,13 @@ public class Loader {
      * Nachdem die Anwendung beendet wurde, sollten die gebundenen Ressourcen wieder freigegeben werden.
      */
     public void cleanUp() {
-        for(int vao: vaos) {
+        for (int vao : vaos) {
             GL30.glDeleteVertexArrays(vao);
         }
-        for(int vbo: vbos) {
+        for (int vbo : vbos) {
             GL15.glDeleteBuffers(vbo);
         }
-        for (int texture: textures) {
+        for (int texture : textures) {
             GL11.glDeleteTextures(texture);
         }
     }
@@ -96,6 +98,7 @@ public class Loader {
     /**
      * Diese Funktion läd eine CubeMap Textur, bestehend aus mehreren Texturdateien in den Texturspeicher.
      * CubeMaps werden für die Quadratische Skybox benötigt.
+     *
      * @param textureFiles Name der Texturen
      * @return Id zur Referenz auf die geladenen Texturen.
      */
@@ -105,7 +108,8 @@ public class Loader {
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texId);
 
         for (int i = 0; i < textureFiles.length; i++) {
-            TextureData data =  decodeTextureFile("res/" + textureFiles[i] + ".png");
+            String textureName = textureFiles[i].endsWith(".png") ? textureFiles[i] : textureFiles[i] + ".png";
+            TextureData data = decodeTextureFile(RESOURCES + textureName);
             GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                     0,
                     GL11.GL_RGBA,
@@ -128,6 +132,7 @@ public class Loader {
 
     /**
      * Diese Funktion läd mithilfe einer PNG-Decoder-Library PNG Daten in ein Buffer Objekt.
+     *
      * @param fileName Dateiname der Textur, die dekodiert werden soll.
      * @return Texturdaten
      */
@@ -154,6 +159,7 @@ public class Loader {
 
     /**
      * Erstellt einen neuen Vertex Array Buffer und gibt dessen Id zurück.
+     *
      * @return VAO Id
      */
     private int createVAO() {
@@ -166,9 +172,10 @@ public class Loader {
     /**
      * Speichert ein Float Array, welches Vektoren variabler Größe repräsentiert in einem Vertex Buffer Object (VBO) und legt diese unter eine Attribut-Nummer ab.
      * Die AttributNummer repräsentiert hierbei um welche Daten es sich handelt. Z.B.: Vertex Positionen, Texturkoordinaten, o.Ä.
+     *
      * @param attributeNumber Unter welchem Index im Vertex Array Object (VAO), das Vertex Buffer Object (VBO) gespeichert werden soll.
-     * @param coordinateSize Dimensionen der Vektoren im Float Array.
-     * @param data Daten, z.B. Vertex Positionen, Texturkoordinaten, o.Ä.
+     * @param coordinateSize  Dimensionen der Vektoren im Float Array.
+     * @param data            Daten, z.B. Vertex Positionen, Texturkoordinaten, o.Ä.
      */
     private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
         int vboId = GL15.glGenBuffers();
@@ -194,6 +201,7 @@ public class Loader {
 
     /**
      * Erstellt aus einem Integer Array ein Buffer mit den Daten aus dem Array.
+     *
      * @param data
      * @return Buffer Objekt
      */
@@ -206,6 +214,7 @@ public class Loader {
 
     /**
      * Erstellt aus einem Float Array ein Buffer mit den Daten aus dem Array.
+     *
      * @param data
      * @return Buffer Objekt
      */
