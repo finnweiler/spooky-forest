@@ -19,6 +19,7 @@ public class OBJLoader {
     /**
      * Diese Funktion läd ein OBJ Objekt aus einer Datei in OpenGL und gibt ein RawModel Objekt zurück,
      * dass die in OpenGL geladenen Daten repräsentiert.
+     *
      * @param fileName
      * @param loader
      * @return
@@ -27,7 +28,7 @@ public class OBJLoader {
         // Auslesen der Datei aus dem Speicher
         FileReader fr = null;
         try {
-            fr = new FileReader(new File("res/"+fileName+".obj"));
+            fr = new FileReader("res/" + fileName + ".obj");
         } catch (FileNotFoundException e) {
             System.err.println("Could not load OBJ file!");
             e.printStackTrace();
@@ -76,7 +77,7 @@ public class OBJLoader {
                 }
             }
 
-            while (line!=null) {
+            while (line != null) {
                 if (!line.startsWith("f ")) {
                     line = reader.readLine();
                     continue;
@@ -101,13 +102,13 @@ public class OBJLoader {
         indicesArray = new int[indices.size()];
 
         int vertexPointer = 0;
-        for(Vector3f vertex:vertices) {
+        for (Vector3f vertex : vertices) {
             verticesArray[vertexPointer++] = vertex.x;
             verticesArray[vertexPointer++] = vertex.y;
             verticesArray[vertexPointer++] = vertex.z;
         }
 
-        for (int i=0; i<indices.size(); i++) {
+        for (int i = 0; i < indices.size(); i++) {
             indicesArray[i] = indices.get(i);
         }
         return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
