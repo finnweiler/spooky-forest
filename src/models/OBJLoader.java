@@ -4,7 +4,10 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.Loader;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +16,9 @@ import java.util.List;
  */
 public class OBJLoader {
 
+    /**
+     * Pfad zum Ressourcen-Verzeichnis
+     */
     private static final String RESOURCES = "res/";
 
 
@@ -20,7 +26,7 @@ public class OBJLoader {
      * Übersetzen einer Zeile der Form "vt {float} {float}" in ein {@link Vector2f}.
      *
      * @param line Zeile zum Übersetzen
-     * @return {@link Vector2f}
+     * @return übersetzter {@link Vector2f}
      */
     private static Vector2f convertToVector2f(String line) {
         String[] lineArray = line.split(" ");
@@ -33,7 +39,7 @@ public class OBJLoader {
      * Übersetzen einer Zeile der Form "v_ {float} {float} {float}" in ein {@link Vector3f}.
      *
      * @param line Zeile zum Übersetzen
-     * @return {@link Vector3f}
+     * @return übersetzter {@link Vector3f}
      */
     private static Vector3f convertToVector3f(String line) {
         String[] lineArray = line.split(" ");
@@ -66,7 +72,8 @@ public class OBJLoader {
         // Auslesen der Datei
         try (BufferedReader reader = new BufferedReader(new FileReader(RESOURCES + name))) {
             String line;
-            vertexLoop: while (true) {
+            vertexLoop:
+            while (true) {
                 line = reader.readLine();
                 // Einlesen der Vertex-, Texturkoordinaten und Normalenvektoren aus.
                 switch (line.substring(0, 2)) {
@@ -119,7 +126,12 @@ public class OBJLoader {
     /**
      * Diese Funktion bearbeitet die Informationen einer Face-Zeile in der OBJ-Datei.
      *
-     * @param face Zeile der OBJ-Datei beginnend mit "f "
+     * @param face         Zeile der OBJ-Datei beginnend mit "f "
+     * @param indices      {@link List} aus {@link Integer} der Indizes
+     * @param textures     {@link List} aus {@link Integer} der Texturen
+     * @param normals      {@link List} aus {@link Integer} der Normalenvektoren
+     * @param textureArray FloatArray der Texturen
+     * @param normalsArray FloatArray der Normalenvektoren
      */
     private static void convertFace(String face, List<Integer> indices, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
         String[] vertices = face.split(" "); // Aufteilen in 3 Eckpunkte
@@ -131,6 +143,13 @@ public class OBJLoader {
 
     /**
      * Diese Funktion teilt einen Eckpunkt einer Fläche in den Vertex-Index und die Texture- und Normalen-Indizes auf.
+     *
+     * @param vertex       Eckpunkt einer Fläche
+     * @param indices      {@link List} aus {@link Integer} der Indizes
+     * @param textures     {@link List} aus {@link Integer} der Texturen
+     * @param normals      {@link List} aus {@link Integer} der Normalenvektoren
+     * @param textureArray FloatArray der Texturen
+     * @param normalsArray FloatArray der Normalenvektoren
      */
     private static void processFaceVertex(String vertex, List<Integer> indices, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
         String[] vertexData = vertex.split("/");
