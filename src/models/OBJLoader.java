@@ -36,9 +36,9 @@ public class OBJLoader {
      * Diese Funktion lädt ein OBJ Objekt aus einer Datei und gibt ein RawModel Objekt zurück,
      * das die in OpenGL geladenen Daten repräsentiert.
      *
-     * @param fileName
-     * @param loader
-     * @return
+     * @param fileName Name der zuladenden Datei
+     * @param loader Loader zum konvertieren der Daten in ein {@link RawModel}
+     * @return {@link RawModel} des Objektes
      */
     public static RawModel loadObjModel(String fileName, Loader loader) {
         List<Vector3f> vertices = new ArrayList();
@@ -105,6 +105,10 @@ public class OBJLoader {
     }
 
 
+    /**
+     * Diese Funktion bearbeitet die Informationen einer Face-Zeile in der OBJ-Datei.
+     * @param face Zeile der OBJ-Datei beginnend mit "f "
+     */
     private static void convertFace(String face, List<Integer> indices, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
         String[] vertices = face.split(" ");
         processFaceVertex(vertices[1], indices, textures, normals, textureArray, normalsArray);
