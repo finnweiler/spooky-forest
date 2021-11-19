@@ -8,6 +8,9 @@ import org.lwjgl.openal.AL10;
  */
 public class Source {
 
+    /**
+     * ID der Audio Quelle für {@link AL10}
+     */
     private final int sourceId;
 
     /**
@@ -39,6 +42,11 @@ public class Source {
         AL10.alSourcef(sourceId, AL10.AL_GAIN, volume);
     }
 
+    /**
+     * Mithilfe dieser Funktion wird eingestellt, ob die Audio Quelle am Ende der Audiospur wieder von Beginn an abspielt.
+     *
+     * @param loop Information, ob die Audio Quelle loopen soll
+     */
     public void setLooping(boolean loop) {
         AL10.alSourcei(sourceId, AL10.AL_LOOPING, loop ? AL10.AL_TRUE : AL10.AL_FALSE);
     }
