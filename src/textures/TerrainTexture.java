@@ -5,13 +5,27 @@ package textures;
  */
 public class TerrainTexture {
 
-    private int textureId;
+    /**
+     * Referenz zur geladenen Textur
+     */
+    private final int textureId;
 
+
+    /**
+     * Eine Terraintextur wird mithilfe der Referenz zur Textur erstellt.
+     *
+     * @param textureId Referenz zur geladenen Textur
+     */
     public TerrainTexture(int textureId) {
         this.textureId = textureId;
     }
 
-    public int getTextureId() {
+    /**
+     * Diese Funktion übergibt die Referenz zur Textur.
+     *
+     * @return Referenz zur geladenen Textur
+     */
+    public int getId() {
         return textureId;
     }
 }
