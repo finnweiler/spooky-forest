@@ -24,7 +24,7 @@ public class ModelTexture {
      */
     private boolean isTransparent = false;
     /**
-     * Information, ob alle Normalenvektoren des Models nach oben zeigen sollen
+     * Information, ob pysikalisch richtige Beleuchtung genutzt werden soll
      */
     private boolean isFakeLit = false;
 
@@ -125,9 +125,9 @@ public class ModelTexture {
     }
 
     /**
-     * Diese Funktion hinterlegt die Information, ob alle Normalenvektoren des Models nach oben zeigen sollen.
+     * Diese Funktion hinterlegt die Information, ob pysikalisch richtige Beleuchtung genutzt werden soll.
      *
-     * @param fakeLit Information, ob alle Normalenvektoren des Models nach oben zeigen sollen
+     * @param fakeLit Information, ob pysikalisch richtige Beleuchtung genutzt werden soll
      */
     public void setFakeLit(boolean fakeLit) {
         isFakeLit = fakeLit;
