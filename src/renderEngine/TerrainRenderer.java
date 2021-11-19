@@ -49,15 +49,15 @@ public class TerrainRenderer {
     private void bindTextures(Terrain terrain) {
         TerrainTexturePack texturePack = terrain.getTexturePack();
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getBackgroundTexture().getTextureId());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getBackgroundTexture().getId());
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getrTexture().getTextureId());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getRTexture().getId());
         GL13.glActiveTexture(GL13.GL_TEXTURE2);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getgTexture().getTextureId());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getGTexture().getId());
         GL13.glActiveTexture(GL13.GL_TEXTURE3);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getbTexture().getTextureId());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getBTexture().getId());
         GL13.glActiveTexture(GL13.GL_TEXTURE4);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getBlendMap().getTextureId());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getBlendMap().getId());
     }
 
     private void unbindTexturedModel() {
