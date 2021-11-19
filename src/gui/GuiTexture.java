@@ -8,16 +8,20 @@ import org.lwjgl.util.vector.Vector2f;
  */
 public class GuiTexture {
 
+    // Speicher Textur Id
+    // Position und Scale
     private final int texture;
     private final Vector2f position;
     private final Vector2f scale;
 
+    // Constructor
     public GuiTexture(int texture, Vector2f position, Vector2f scale) {
         this.texture = texture;
         this.position = position;
         this.scale = scale;
     }
 
+    // getter
     public int getTexture() {
         return texture;
     }
