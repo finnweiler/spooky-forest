@@ -27,6 +27,7 @@ public class GuiRenderer {
 
     /**
      * Ein Renderer für die GUI mit dem dazugehörigen Shader wird erstellt.
+     *
      * @param loader {@link Loader} zum Laden des Quadrates
      */
     public GuiRenderer(Loader loader) {
@@ -38,6 +39,7 @@ public class GuiRenderer {
 
     /**
      * Diese Funktion rendert die 2D-{@link GuiTexture}n.
+     *
      * @param guis zu rendernden Texturen
      */
     public void render(List<GuiTexture> guis) {
