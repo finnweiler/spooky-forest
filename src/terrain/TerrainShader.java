@@ -51,7 +51,7 @@ public class TerrainShader extends ShaderProgram {
      */
     private int[] locationAttenuation;
     /**
-     * Referenz auf die Stärke mit der das Glanzlicht für größere Winkel gedämpft wird
+     * Referenz auf die Stärke, mit der das Glanzlicht für größere Winkel gedämpft wird
      */
     private int locationShineDamper;
     /**
@@ -197,9 +197,9 @@ public class TerrainShader extends ShaderProgram {
     }
 
     /**
-     * Diese Funktion hinterlegt die Größe und Stärke des Glanzes der Lichter.
+     * Diese Funktion hinterlegt die Stärke des Glanzes der Lichter.
      *
-     * @param damper     Stärke mit der das Glanzlicht für größere Winkel gedämpft wird
+     * @param damper     Stärke, mit der das Glanzlicht für größere Winkel gedämpft wird
      * @param reflection Reflektionsstärke der Oberfläche
      */
     public void loadShineVariables(float damper, float reflection) {
