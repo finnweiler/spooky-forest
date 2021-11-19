@@ -25,22 +25,74 @@ public class TerrainShader extends ShaderProgram {
      */
     private static final String FRAGMENT_FILE = "src/terrain/terrainFragmentShader";
 
+    /**
+     * Referenz auf die Transformationsmatrix in dem Shader Programm
+     */
     private int locationTransformationMatrix;
+    /**
+     * Referenz auf die Projektionsmatrix in dem Shader Programm
+     */
     private int locationProjectionMatrix;
+    /**
+     * Referenz auf die Ansichtsmatrix in dem Shader Programm
+     */
     private int locationViewMatrix;
-    private int locationLightPosition[];
-    private int locationLightColor[];
-    private int locationAttenuation[];
+
+    /**
+     * Referenz auf die Positionen der Lichtquellen in dem Shader Programm
+     */
+    private int[] locationLightPosition;
+    /**
+     * Referenz auf die Farben der Lichtquellen in dem Shader Programm
+     */
+    private int[] locationLightColor;
+    /**
+     * Referenz auf die Abschwächung der Lichtquellen in dem Shader Programm
+     */
+    private int[] locationAttenuation;
+    /**
+     * Referenz auf die Größe des Glanzes der Lichter in dem Shader Programm
+     */
     private int locationShineDamper;
+    /**
+     * Referenz auf die Stärke des Glanzes der Lichter in dem Shader Programm
+     */
     private int locationReflectivity;
+
+    /**
+     * Referenz auf die Himmelfarbe in dem Shader Programm
+     */
     private int locationSkyColor;
+    /**
+     * Referenz auf die Dichte des Nebels in dem Shader Programm
+     */
     private int locationFogDensity;
+    /**
+     * Referenz auf den Gradienten des Nebels in dem Shader Programm
+     */
     private int locationFogGradient;
+
+    /**
+     * Referenz auf die Hintergrundtexture in dem Shader Programm
+     */
     private int locationBackgroundTexture;
+    /**
+     * Referenz auf den R-Kanal der Textur in dem Shader Programm
+     */
     private int locationRTexture;
+    /**
+     * Referenz auf den G-Kanal der Textur in dem Shader Programm
+     */
     private int locationGTexture;
+    /**
+     * Referenz auf den B-Kanal der Textur in dem Shader Programm
+     */
     private int locationBTexture;
+    /**
+     * Referenz auf die BlendMap in dem Shader Programm
+     */
     private int locationBlendMap;
+
 
     /**
      * Es wird eine Shaderrepräsentation mit den zugehörigen Vertex- und Fragmentshadern
@@ -49,6 +101,7 @@ public class TerrainShader extends ShaderProgram {
     public TerrainShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
     }
+
 
     /**
      * Diese Funktion macht die Positionen, Texturkoordinaten und Normalenvektoren der Verticies im Shader zugängig.
@@ -89,6 +142,7 @@ public class TerrainShader extends ShaderProgram {
         }
     }
 
+
     /**
      * Diese Funktion hinterlegt das {@link TerrainTexturePack} und die dazugehörige BlendMap.
      */
@@ -100,10 +154,9 @@ public class TerrainShader extends ShaderProgram {
         super.loadInt(locationBlendMap, 4);
 
     }
-
-
+    
     /**
-     * Diese Funktion hinterlegt alle Positionen, Farben und Dämpfung der Lichtquellen.
+     * Diese Funktion hinterlegt alle Positionen, Farben und Abschwächung der Lichtquellen.
      *
      * @param lights die darzustellenden Lichtquellen
      */
@@ -122,10 +175,10 @@ public class TerrainShader extends ShaderProgram {
     }
 
     /**
-     * Diese Funktion hinterlegt die Dichte und das Gefälle des Nebels.
+     * Diese Funktion hinterlegt die Dichte und den Gradienten des Nebels.
      *
      * @param density  Dichte des Nebels
-     * @param gradient Gefälle des Nebels
+     * @param gradient Gradient des Nebels
      */
     public void loadFog(float density, float gradient) {
         super.loadFloat(locationFogDensity, density);
@@ -144,10 +197,10 @@ public class TerrainShader extends ShaderProgram {
     }
 
     /**
-     * Diese Funktion hinterlegt die Werte der Glanzreduktion und Reflektion.
+     * Diese Funktion hinterlegt die Größe und Stärke des Glanzes der Lichter.
      *
-     * @param damper     Wert der Glanzreduktion
-     * @param reflection Wert der Reflektion
+     * @param damper     Größe des Glanzes der Lichter
+     * @param reflection Stärke des Glanzes der Lichter
      */
     public void loadShineVariables(float damper, float reflection) {
         super.loadFloat(locationShineDamper, damper);
