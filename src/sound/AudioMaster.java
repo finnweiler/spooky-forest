@@ -13,6 +13,9 @@ import java.util.List;
  */
 public class AudioMaster {
 
+    /**
+     * Buffer der geladenen Audiospuren
+     */
     private static final List<Integer> buffers = new ArrayList();
 
 
