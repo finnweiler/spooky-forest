@@ -17,16 +17,25 @@ public class GuiRenderer {
     private final GuiShader shader;
 
     public GuiRenderer(Loader loader) {
-        float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1};
+        float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1}; // Positionen, wo das GUI angezeigt werden soll (Matrix)
         quad = loader.loadToVAO(positions);
-        shader = new GuiShader();
+        shader = new GuiShader(); // Shadeer = Das was im GPU RAM ist
     }
 
+    // Binded VAO
+    // Kriegt nur VAO Slot 0, weil brauchen nur die Positionen
+    // Texture laden wir ganz normal über den Loader
     public void render(List<GuiTexture> guis) {
         shader.start();
         GL30.glBindVertexArray(quad.getVaoID());
         GL20.glEnableVertexAttribArray(0);
 
+        // Loop durch alle GUIs
+        // Machen schieben die Textur auf unsere Fläche
+        // Machen ALpha blending an, damit durchsichtige Pixel nicht schwarz gerednered werden
+        // Mit Transformationsmatrix können wir skalieren (größer, kleiner, position)
+        // Am ende matrix mit Triangle Strips anstatt triangles drawen
+        // TRIANGLE STRIPS: generieren mit menge an punkten automatisch dreiecke
         for (GuiTexture gui : guis) {
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
             GL11.glEnable(GL11.GL_BLEND);
@@ -43,6 +52,7 @@ public class GuiRenderer {
         shader.stop();
     }
 
+    // Shader cleanen
     public void cleanUp() {
         shader.cleanUp();
     }
