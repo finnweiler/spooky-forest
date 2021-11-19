@@ -49,6 +49,8 @@ public class EntityGameLoop {
     private static Entity oldUser;
     private static Entity runTree;
 
+    private static Entity dragon;
+
     private static Entity spawnTree;
 
     private static List<Entity> birds;
@@ -64,6 +66,8 @@ public class EntityGameLoop {
 
     private static int bufferFootsteps;
     private static Source source;
+
+    private static boolean dragonVisible = false;
 
     /**
      * Unter Nutzung des Terrains, eines Loaders und des Renderers
@@ -175,6 +179,16 @@ public class EntityGameLoop {
 
         /** FAILES End */
 
+        /** Add Benchmark Dragon */
+        RawModel dragonModel = OBJLoader.loadObjModel("dragon", loader);
+        ModelTexture dragonTexture = new ModelTexture(loader.loadTexture("blue"));
+        TexturedModel texturedrdragonModel = new TexturedModel(dragonModel, dragonTexture);
+        dragonTexture.setShineDamper(15);
+        dragonTexture.setReflectivity(1);
+        dragon = new Entity(texturedrdragonModel, new Vector3f(410, terrain.getHeight(410, 375), 375), 0, 0, 0, 1);
+
+        /** End Benchmark Dragon /
+
         /** Spawn Tree Start */
 
         RawModel spawnTreeModel = OBJLoader.loadObjModel("trees/parrottree", loader);
@@ -258,6 +272,16 @@ public class EntityGameLoop {
         renderer.processEntity(player);
         renderer.processEntity(diamond);
         renderer.render(lights, camera);
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_I)) {
+            dragonVisible = true;
+        }
+
+        if (dragonVisible) {
+            renderer.processEntity(dragon);
+            dragon.rotate(0, DisplayManager.getFrameTime() * 0.02f, 0);
+        }
+
 
         diamond.rotate(0, DisplayManager.getFrameTime() * 0.01f, 0);
         lights.get(0).setPosition(new Vector3f(camera.getPosition().getX(), camera.getPosition().getY(), camera.getPosition().getZ()));
