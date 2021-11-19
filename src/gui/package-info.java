@@ -1,4 +1,4 @@
 /**
- * GUI Render & Texture fehlt
+ * GUI Render + Texture fehlt
  */
 package gui;
