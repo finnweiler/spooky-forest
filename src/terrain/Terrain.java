@@ -265,11 +265,11 @@ public class Terrain {
         float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
         float finalHeight;
         if (xCoord <= (1 - zCoord)) {
-            finalHeight = Maths.barryCentric(new Vector3f(0, heights[gridX][gridZ], 0), new Vector3f(1,
+            finalHeight = Maths.baryCentric(new Vector3f(0, heights[gridX][gridZ], 0), new Vector3f(1,
                     heights[gridX + 1][gridZ], 0), new Vector3f(0,
                     heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
         } else {
-            finalHeight = Maths.barryCentric(new Vector3f(1, heights[gridX + 1][gridZ], 0), new Vector3f(1,
+            finalHeight = Maths.baryCentric(new Vector3f(1, heights[gridX + 1][gridZ], 0), new Vector3f(1,
                     heights[gridX + 1][gridZ + 1], 1), new Vector3f(0,
                     heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
         }
