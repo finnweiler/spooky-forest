@@ -10,21 +10,35 @@ import org.lwjgl.opengl.*;
  */
 public class DisplayManager {
 
-    private static final int WIDTH = 1920;  // Breite des Fensters
-    private static final int HEIGHT = 1080; // Höhe des Fensters
-    private static final int FPS_CAP = 120; // Maximale FPS
-
-    private static long lastFrameTime;      // Zeitpunkt zudem das letzte Bild gerendert wurde in Millisekunden
-    private static float delta;             // Differenz zwischen letztem Bild und aktuellem Bild in Millisekunden
+    /**
+     * Breite des Fensters
+     */
+    private static final int WIDTH = 1920;
+    /**
+     * Höhe des Fensters
+     */
+    private static final int HEIGHT = 1080;
+    /**
+     * maximale FramesProSeconds (Bildwiederholungsrate)
+     */
+    private static final int FPS_CAP = 120;
 
     /**
-     * Erstellt ein Fenster, in dem die OpenGL Anwendung läuft.
+     * Zeitpunkt, zu dem das letzte Bild gerendert wurde (Millisekunden)
+     */
+    private static long lastFrameTime;
+    /**
+     * Differenz zwischen letztem Bild und aktuellem Bild (Millisekunden)
+     */
+    private static float delta;
+
+    /**
+     * Diese Funktion erstellt ein Fenster, in dem die OpenGL-Anwendung läuft.
      */
     public static void createDisplay() {
-
-        ContextAttribs attribs = new ContextAttribs(3,2)
-        .withForwardCompatible(true)
-        .withProfileCore(true);
+        ContextAttribs attribs = new ContextAttribs(3, 2)
+                .withForwardCompatible(true)
+                .withProfileCore(true);
 
         try {
             Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
@@ -41,7 +55,7 @@ public class DisplayManager {
     }
 
     /**
-     * Aktualisiert den Inhalt des Fensters
+     * Diese Funktion aktualisiert den Inhalt des Fensters.
      */
     public static void updateDisplay() {
         Display.sync(FPS_CAP);
@@ -52,7 +66,8 @@ public class DisplayManager {
     }
 
     /**
-     * Gibt die Zeit zurück, wie lange das letzte Bild gezeigt worden ist.
+     * Diese Funktion gibt die Zeit zurück, wie lange das letzte Bild gezeigt worden ist.
+     *
      * @return Differenz in Millisekunden
      */
     public static float getFrameTime() {
@@ -60,14 +75,15 @@ public class DisplayManager {
     }
 
     /**
-     * Schließt das Fenster, in dem die OpenGL Anwendung läuft.
+     * Diese Funktion schließt das Fenster, in dem die OpenGL-Anwendung läuft.
      */
     public static void closeDisplay() {
         Display.destroy();
     }
 
     /**
-     * Gibt die aktuelle Systemzeit zurück
+     * Diese Funktion gibt die aktuelle Systemzeit zurück.
+     *
      * @return Zeit in Millisekunden
      */
     public static long getCurrentTime() {

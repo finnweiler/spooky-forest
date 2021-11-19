@@ -1,16 +1,15 @@
 package renderEngine;
 
+import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import models.RawModel;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
-import de.matthiasmann.twl.utils.PNGDecoder;
-import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import textures.TextureData;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -19,15 +18,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Diese Klasse läd die 3D Objekt-Modelle und Texturen in die Vertex Array Buffers (VAO)
+ * Diese Klasse lädt die 3D Objekt-Modelle und Texturen in die Vertex Array Buffers (VAO)
  * bzw. Vertex Buffer Object (VBO), damit diese von der GPU verwendet werden können.
  */
 public class Loader {
 
+    /**
+     * Pfad zum Ressourcen-Verzeichnis
+     */
     private static final String RESOURCES = "res/";
 
+    /**
+     * Vertex Array Buffers
+     */
     private final List<Integer> vaos = new ArrayList();
+    /**
+     * Vertex Buffer Objects
+     */
     private final List<Integer> vbos = new ArrayList();
+    /**
+     * Texturen
+     */
     private final List<Integer> textures = new ArrayList();
 
 
