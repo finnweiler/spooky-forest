@@ -6,16 +6,44 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import toolbox.Maths;
 
+/**
+ * Diese Klasse repräsentiert eine bewegliches Objekt in der Szene mit dem dazugehörigen Modell.
+ */
 public class Entity {
 
+    /**
+     * Index der Textur
+     */
     private final static int TEXTURE_INDEX = 0;
 
-    private final TexturedModel model;        // Texturiertes 3D Modell des Entities
-    private Vector3f position;          // Die globale Position des Entities
-    private float rotX, rotY, rotZ;     // Die Rotation des Entities in Grad
-    private final float scale;                // Die Skalierung des Entities
+    /**
+     * texturiertes 3D Modell der Entität
+     */
+    private final TexturedModel model;
+    /**
+     * globale Position der Entität
+     */
+    private Vector3f position;
+    /**
+     * Rotation der Entität
+     */
+    private float rotX, rotY, rotZ;
+    /**
+     * Skalierung der Entität
+     */
+    private final float scale;
 
 
+    /**
+     * Eine Entität bestehend aus dem {@link TexturedModel}, seiner Position, Rotation und Skalierung wird erstellt.
+     *
+     * @param model    Modell der Entität
+     * @param position Position der Entität
+     * @param rotX     Rotation der Entität um die x-Achse
+     * @param rotY     Rotation der Entität um die y-Achse
+     * @param rotZ     Rotation der Entität um die z-Achse
+     * @param scale    Skalierung der Entität
+     */
     public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         this.model = model;
         this.position = position;
@@ -26,7 +54,7 @@ public class Entity {
     }
 
     /**
-     * Diese Funktion verschiebt die Koordinaten des Entities um die übergebene Translation
+     * Diese Funktion verschiebt die Koordinaten des Entities um die übergebene Translation.
      *
      * @param dx Translation um die x-Achse
      * @param dy Translation um die y-Achse
@@ -39,11 +67,11 @@ public class Entity {
     }
 
     /**
-     * Diese Funktion rotiert die Koordinaten des Entities um die übergebene Rotations
+     * Diese Funktion rotiert die Koordinaten der Entität um die übergebene Rotation.
      *
-     * @param dx
-     * @param dy
-     * @param dz
+     * @param dx Rotation um die x-Achse
+     * @param dy Rotation um die y-Achse
+     * @param dz Rotation um die z-Achse
      */
     public void rotate(float dx, float dy, float dz) {
         this.rotX += dx;
@@ -66,7 +94,7 @@ public class Entity {
     }
 
     /**
-     * Diese Funktion gibt die Transformationsmatrix des Entities zurück,
+     * Diese Funktion gibt die Transformationsmatrix der Entität zurück,
      * die zur Verarbeitung im Shader benötigt wird.
      *
      * @return Transformationsmatrix
@@ -75,22 +103,47 @@ public class Entity {
         return Maths.createTransformationMatrix(position, rotX, rotY, rotZ, scale);
     }
 
+    /**
+     * Diese Funktion übergibt das texturierte 3d-Modell der Entität.
+     *
+     * @return texturiertes 3d-Modell
+     */
     public TexturedModel getModel() {
         return model;
     }
 
+    /**
+     * Diese Funktion übergibt die globale Position der Entität.
+     *
+     * @return Position der Entität
+     */
     public Vector3f getPosition() {
         return position;
     }
 
+    /**
+     * Diese Funktion hinterlegt eine neue Position der Entität.
+     *
+     * @param position Position
+     */
     public void setPosition(Vector3f position) {
         this.position = position;
     }
 
+    /**
+     * Diese Funktion übergibt die Rotation der Entität um die y-Achse.
+     *
+     * @return Rotation um die y-Achse
+     */
     public float getRotY() {
         return rotY;
     }
 
+    /**
+     * Diese Funktion hinterlegt eine neue Rotation der Entität um die y-Achse.
+     *
+     * @param rotY Rotation um die y-Achse
+     */
     public void setRotY(float rotY) {
         this.rotY = rotY;
     }

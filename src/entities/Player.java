@@ -7,24 +7,57 @@ import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import terrain.Terrain;
 
+/**
+ * Diese Klasse repräsentiert einen Spieler mit Bewegungsprofilen.
+ */
 public class Player extends Entity {
 
-    private static final float FORWARDS_SPEED = 0.015f; // Geschwindigkeit des Spielers bei der Vorwärtsbewegung
-    private static final float SIDEWARDS_SPEED = 0.01f; // Geschwindigkeit des Spielers bei der Seitwärtsbewegung
-    private static final float GRAVITY = -0.00015f; // Erdbeschleunigung, die auf den Spieler wirkt
-    private static final float JUMP_POWER = 0.04f;  // Sprungkraft des Spielers
-    private static final float DOWN_WALK_DISTANCE = 0.04f; // Die Distanz, die ein Spieler pro Frame einen Hügel hinablaufen kann, ohne zu fallen.
-
-    private float currentForwardsSpeed = 0; // Aktuelle Vorwärtsbewegung des Spielers
-    private float currentSidewardsSpeed = 0; // Aktuelle Seitwärtsbewegung des Spielers
-    private float verticalSpeed = 0; // Aktuelle Vertikalbewegung des Spielers
-
-    private boolean flying = false; // Gibt an, ob der Spieler gerade in der Luft ist, z.B. durch Springen oder Fallen
-
-    private float headPitch = 0; // Aktuelle Neigung des Spielerkopfs
+    /**
+     * Geschwindigkeit des Spielers bei der Vorwärtsbewegung
+     */
+    private static final float FORWARDS_SPEED = 0.015f;
+    /**
+     * Geschwindigkeit des Spielers bei der Seitwärtsbewegung
+     */
+    private static final float SIDEWARDS_SPEED = 0.01f;
 
     /**
-     * Erstellt einen neuen Spieler
+     * Erdbeschleunigung, die auf den Spieler wirkt
+     */
+    private static final float GRAVITY = -0.00015f;
+    /**
+     * Sprungkraft des Spielers
+     */
+    private static final float JUMP_POWER = 0.04f;
+    /**
+     * Distanz, die ein Spieler pro Frame einen Hügel hinablaufen kann, ohne zu fallen
+     */
+    private static final float DOWN_WALK_DISTANCE = 0.04f;
+
+    /**
+     * aktuelle Vorwärtsbewegung des Spielers
+     */
+    private float currentForwardsSpeed = 0;
+    /**
+     * aktuelle Seitwärtsbewegung des Spielers
+     */
+    private float currentSidewardsSpeed = 0;
+    /**
+     * aktuelle Vertikalbewegung des Spielers
+     */
+    private float verticalSpeed = 0;
+
+    /**
+     * Information, ob der Spieler gerade auf Höhe des Terrains ist
+     */
+    private boolean flying = false;
+    /**
+     * aktuelle Neigung des Spielerkopfs
+     */
+    private float headPitch = 0;
+
+    /**
+     * Erstellt einen neuen Spieler.
      *
      * @param model    Das Modell, das den Spieler repräsentieren soll
      * @param position Die Position des Spielers im Raum
@@ -37,12 +70,17 @@ public class Player extends Entity {
         super(model, position, rotX, rotY, rotZ, scale);
     }
 
+    /**
+     * Diese Funktion übergibt die aktuelle Neigung des Spielerkopfs.
+     *
+     * @return aktuelle Neigung des Spielerkopfs
+     */
     public float getHeadPitch() {
         return headPitch;
     }
 
     /**
-     * Diese Funktion updated die Position und Rotation des Spielers auf Grundlage der Tastatur- und Mauseingaben.
+     * Diese Funktion aktualisiert die Position und Rotation des Spielers auf Grundlage der Tastatur- und Mauseingaben.
      * Diese Funktion berücksichtigt dabei den Untergrund auf dem Spiele steht, um die Höhe dementsprechend anzupassen.
      *
      * @param terrain Untergrund
@@ -50,15 +88,18 @@ public class Player extends Entity {
     public void move(Terrain terrain) {
         checkInputs();
         checkMouse();
+
         float passedTime = DisplayManager.getFrameTime();
         float distanceForwards = currentForwardsSpeed * passedTime;
         float distanceSidewards = currentSidewardsSpeed * passedTime;
-        float dx = 0, dz = 0;
+
+        float dx, dz;
         // Berechne die Translation abhängig von der Blickrichtung des Spielers
         dx = (float) (Math.sin(Math.toRadians(super.getRotY())) * distanceForwards);
         dz = (float) (Math.cos(Math.toRadians(super.getRotY())) * distanceForwards);
         dx += (float) (Math.cos(Math.toRadians(super.getRotY())) * distanceSidewards);
         dz += -(float) (Math.sin(Math.toRadians(super.getRotY())) * distanceSidewards);
+
         // Wenn der Spieler sich gleichzeitig vorwärts und seitwärts bewegt, bremse diesen etwas.
         if (distanceForwards != 0 && distanceSidewards != 0) {
             dx *= 0.7;
@@ -68,16 +109,18 @@ public class Player extends Entity {
         float distanceVertical = verticalSpeed * passedTime;
         super.translate(-dx, distanceVertical, -dz);
         float terrainHeight = terrain.getHeight(getPosition().getX(), getPosition().getZ());
+
         // Wenn der Spieler unter den Boden fällt, setze diesen zurück auf den Boden
         if (getPosition().getY() < terrainHeight) {
             verticalSpeed = 0;
             flying = false;
             super.getPosition().setY(terrainHeight);
             // Wenn der Spieler einen flachen Hang hinabläuft, soll dieser nicht in den zustand "fliegen" kommen
-        } else if (flying == false || getPosition().getY() < terrainHeight + DOWN_WALK_DISTANCE) {
+        } else if (!flying || getPosition().getY() < terrainHeight + DOWN_WALK_DISTANCE) {
             verticalSpeed = 0;
             super.getPosition().setY(terrainHeight);
         }
+
         // Wenn der Spieler sich in die Nähe des Kartenrandes begibt, stoppe ihn
         if (getPosition().getX() < 35) {
             getPosition().setX(35);
@@ -92,7 +135,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Lasst den Spieler springen.
+     * Diese Funktion lässt den Spieler springen.
      */
     private void jump() {
         flying = true;
@@ -100,7 +143,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Überprüft die Tastatureingaben und passt ggf. die aktuelle Geschwindigkeit des Spielers an.
+     * Diese Funktion überprüft die Tastatureingaben und passt ggf. die aktuelle Geschwindigkeit des Spielers an.
      */
     private void checkInputs() {
         if (!flying) {
@@ -132,7 +175,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Überprüft die Mausbewegung und passt ggf. die aktuelle Rotation des Spielers und dessen Kopfes an.
+     * Diese Funktion überprüft die Mausbewegung und passt ggf. die aktuelle Rotation des Spielers und dessen Kopfes an.
      */
     private void checkMouse() {
         float dx = -Mouse.getDX() * 0.1f;
@@ -141,7 +184,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Gibt die absolute Gehgeschwindigkeit des Spielers auf der xz-Ebene zurück.
+     * Diese Funktion übergibt die absolute Gehgeschwindigkeit des Spielers auf der xz-Ebene zurück.
      *
      * @return Gehgeschwindigkeit des Spielers
      */
