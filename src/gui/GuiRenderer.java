@@ -11,31 +11,40 @@ import toolbox.Maths;
 
 import java.util.List;
 
+/**
+ * Diese Klasse ist ein Renderer zum Darstellen der GUI-Elemente.
+ */
 public class GuiRenderer {
 
+    /**
+     * Quadrat zum Darstellen des Bilds
+     */
     private final RawModel quad;
+    /**
+     * Shader der GUI
+     */
     private final GuiShader shader;
 
+    /**
+     * Ein Renderer für die GUI mit dem dazugehörigen Shader wird erstellt.
+     * @param loader {@link Loader} zum Laden des Quadrates
+     */
     public GuiRenderer(Loader loader) {
-        float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1}; // Positionen, wo das GUI angezeigt werden soll (Matrix)
+        float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1};
         quad = loader.loadToVAO(positions);
-        shader = new GuiShader(); // Shadeer = Das was im GPU RAM ist
+        shader = new GuiShader();
     }
 
-    // Binded VAO
-    // Kriegt nur VAO Slot 0, weil brauchen nur die Positionen
-    // Texture laden wir ganz normal über den Loader
+
+    /**
+     * Diese Funktion rendert die 2D-{@link GuiTexture}n.
+     * @param guis zu rendernden Texturen
+     */
     public void render(List<GuiTexture> guis) {
         shader.start();
         GL30.glBindVertexArray(quad.getVaoID());
         GL20.glEnableVertexAttribArray(0);
 
-        // Loop durch alle GUIs
-        // Machen schieben die Textur auf unsere Fläche
-        // Machen ALpha blending an, damit durchsichtige Pixel nicht schwarz gerednered werden
-        // Mit Transformationsmatrix können wir skalieren (größer, kleiner, position)
-        // Am ende matrix mit Triangle Strips anstatt triangles drawen
-        // TRIANGLE STRIPS: generieren mit menge an punkten automatisch dreiecke
         for (GuiTexture gui : guis) {
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
             GL11.glEnable(GL11.GL_BLEND);
@@ -52,7 +61,10 @@ public class GuiRenderer {
         shader.stop();
     }
 
-    // Shader cleanen
+    /**
+     * Diese Funktion räumt den Renderer und unterliegenden Shader auf.
+     * (MUSS vor dem Beenden der Applikation ausgeführt werden!)
+     */
     public void cleanUp() {
         shader.cleanUp();
     }
