@@ -22,6 +22,9 @@ import java.util.List;
  */
 public class VegetationGameLoop {
 
+    /**
+     * Alle Vegetations Entities, die vom {@link renderEngine.EntityRenderer} gerendert werden sollen.
+     */
     private static List<Entity> vegetation;
 
     /**
