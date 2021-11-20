@@ -58,7 +58,7 @@ public class EntityRenderer {
     }
 
     /**
-     * Diese Funktion binded die Modell- und Texturdaten für ein TexturedModel Objekt in OpenGl,
+     * Diese Funktion bindet die Modell- und Texturdaten für ein TexturedModel Objekt in OpenGl,
      * um dieses danach rendern zu können.
      *
      * @param texturedModel Texturiertes Modell

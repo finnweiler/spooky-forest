@@ -43,6 +43,10 @@ public class Loader {
 
 
     /**
+     * Läd ein Array aus Positionen, Texturkoordinaten, Normalenvektoren und Indizes als ein VAO auf die GPU
+     *
+     * Wird für 3D Modelle verwendet.
+     *
      * @param positions         Vertex Positionen des 3D Modells
      * @param textureCoordinate Textur Koordinaten des 3D Modells
      * @param normals           Normalenvektoren des 3D Modells
@@ -59,6 +63,15 @@ public class Loader {
         return new RawModel(vaoId, indices.length);
     }
 
+    /**
+     * Läd ein Array aus Positionen beliebiger Dimensionen als ein VAO auf die GPU
+     *
+     * Wird beispielsweise für das 2D Gui verwendet.
+     *
+     * @param positions Positionen [x1, y1, x2, y2] oder [x1, y1, z1, x2, y2, z2]
+     * @param dimensions Dimensionen der Positionsvektoren 2 oder 3
+     * @return
+     */
     public RawModel loadToVAO(float[] positions, int dimensions) {
         int vaoId = createVAO();
         this.storeDataInAttributeList(0, dimensions, positions);
@@ -66,13 +79,11 @@ public class Loader {
         return new RawModel(vaoId, positions.length / dimensions);
     }
 
-    public RawModel loadToVAO(float[] positions) {
-        int vaoId = createVAO();
-        this.storeDataInAttributeList(0, 2, positions);
-        unbindVAO();
-        return new RawModel(vaoId, positions.length / 2);
-    }
-
+    /**
+     * Läd eine Texturdatei im PNG Format in die GPU
+     * @param fileName Dateiname der Textur
+     * @return Referenz auf die Textur in der GPU
+     */
     public int loadTexture(String fileName) {
         Texture texture = null;
 
@@ -196,10 +207,17 @@ public class Loader {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 
+    /**
+     * Entbindet das VAO
+     */
     private void unbindVAO() {
         GL30.glBindVertexArray(0);
     }
 
+    /**
+     *
+     * @param indices
+     */
     private void bindIndicesBuffer(int[] indices) {
         int vboId = GL15.glGenBuffers();
         vbos.add(vboId);

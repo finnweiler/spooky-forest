@@ -18,12 +18,21 @@ import textures.TerrainTexturePack;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Diese Klasse beinhaltet die Main Funktion der Anwendung und die Hauptschleife.
+ * Von hier werden der {@link EntityGameLoop}, der {@link VegetationGameLoop}, die Skybox, der Sound und das GUI verwaltet.
+ */
 public class MainGameLoop {
 
+    /**
+     * Diese Variable ist im ersten Durchlaufs des true um bedingte initiale Konfigurationen vorzunehmen.
+     */
     private static boolean firstStart = true;
 
     /**
-     * Der main loop der gesamten Anwendung.
+     * Die Main Funktion der Anwendung.
+     *
+     * Sie beinhaltet die Hauptschleife zu Verwaltung der gesamten Szene.
      *
      * @param args command line arguments
      */
