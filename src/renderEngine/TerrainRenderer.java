@@ -19,6 +19,9 @@ import java.util.List;
  */
 public class TerrainRenderer {
 
+    /**
+     * Shader zum Darstellen von Terrain
+     */
     private TerrainShader shader;
 
     /**
