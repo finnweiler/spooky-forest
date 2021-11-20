@@ -27,46 +27,134 @@ import java.util.List;
  */
 public class EntityGameLoop {
 
+    /**
+     * Das Kamera Objekt der Szene.
+     */
     private static Camera camera;
+    /**
+     * Das Spieler Objekt der Szene.
+     */
     private static Player player;
+    /**
+     * Die Liste mit den Lichtern der Szene
+     * Bis zu vier Lichter werden aktuell unterstützt, ist aber bei ausreichend Rechenleistung
+     * beliebig erweiterbar.
+     */
     private static List<Light> lights;
 
+    /**
+     * Das Weihnachtsbaum Objekt in der Szene
+     */
     private static Entity christmasTree;
+    /**
+     * Die Dekoration des Weihnachtsbaums Objekt in der Szene
+     */
     private static Entity treeDecoration;
 
+    /**
+     * Der Höhleneingang der "Cave of Fails"
+     */
     private static Entity caveEntry;
+    /**
+     * Die Höhle "Cave of Fails"
+     */
     private static Entity cave;
 
+    /**
+     * Der lilafarbende Diamant in der "Cave of Fails"
+     */
     private static Entity diamond;
+    /**
+     * Der Ständer über dem der Diamant schwebt
+     */
     private static Entity stand;
 
+    /**
+     * Der Dinosaurier, der auf einem Einrad durch den Wald fährt
+     */
     private static Entity dino;
+    /**
+     * Das Haus, in dem der Spieler erscheint
+     */
     private static Entity house;
 
+    /**
+     * Der überdimensionierte Vogel in der Höhle
+     */
     private static Entity colorBird;
+    /**
+     * Der Schriftzug "Forest of Fails" in der Höhle
+     */
     private static Entity forestFailes;
+    /**
+     * Das neue Playermodel, dass die zum Einsatz kam, weil es zu viel
+     * von der Kamerasicht blockiert hat.
+     */
     private static Entity newPlayer;
+    /**
+     * Das alte Playermodel, dass die zum Einsatz kam
+     */
     private static Entity oldUser;
+    /**
+     * Ein Baum mit wurzeln, die man sowieso nicht gesehen hätte und deshalb nicht zum Einsatz kam
+     */
     private static Entity runTree;
 
+    /**
+     * Der Drache, der nicht zur Szene gehört und über "I" eingeblendet werden kann
+     */
     private static Entity dragon;
 
+    /**
+     * Der tote Baum mit dem Papagei auf dem Ast
+     */
     private static Entity spawnTree;
 
+    /**
+     * Die Vögel, die über dem Wald fliegen
+     */
     private static List<Entity> birds;
 
+    /**
+     * Gibt an, ob der Spieler gerade Stritte macht
+     */
     private static boolean stepping = false;
+    /**
+     * Gibt an, wie weit die Nacht Fortgeschritten ist
+     */
     private static float nightFade = 0;
 
+    /**
+     * Gibt die Rotation an, die der Fährende Dino schon zurückgelegt hat
+     */
     private static float rotation = 0;
+    /**
+     * Gibt den Radius an, mit dem der Dino um das Zentrum des Waldes fährt
+     */
     private static float radius = 130;
 
+    /**
+     * Rechnet aus, wo sich ein Strahl aus der Kamera und der Boden schneiden
+     */
     private static MousePicker picker;
+    /**
+     * Die Blume, die der Spieler mit Linksklick platzieren kann
+     */
     private static Entity flower;
 
+    /**
+     * Der Toneffektbuffer für die Schritte des Spielers
+     */
     private static int bufferFootsteps;
+    /**
+     * Die Quelle auf der die Toneffekte abgespielt werden können.
+     */
     private static Source source;
 
+    /**
+     * Gibt an, ob der Stanford Drache eingeblendet werden soll.
+     * Wird über "I" aktiviert.
+     */
     private static boolean dragonVisible = false;
 
     /**
