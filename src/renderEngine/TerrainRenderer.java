@@ -7,8 +7,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import terrain.TerrainShader;
 import terrain.Terrain;
+import terrain.TerrainShader;
 import textures.TerrainTexturePack;
 import toolbox.Maths;
 
@@ -18,7 +18,7 @@ public class TerrainRenderer {
 
     private TerrainShader shader;
 
-    public  TerrainRenderer(TerrainShader shader, Matrix4f projectionMatrix) {
+    public TerrainRenderer(TerrainShader shader, Matrix4f projectionMatrix) {
         this.shader = shader;
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
@@ -27,7 +27,7 @@ public class TerrainRenderer {
     }
 
     public void render(List<Terrain> terrains) {
-        for(Terrain terrain: terrains) {
+        for (Terrain terrain : terrains) {
             prepareTerrain(terrain);
             loadTranslationMatrix(terrain);
             GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
@@ -71,7 +71,7 @@ public class TerrainRenderer {
         Matrix4f transformationMatrix =
                 Maths.createTransformationMatrix(
                         new Vector3f(terrain.getX(), 0, terrain.getZ()),
-                        0,0,0, 1);
+                        0, 0, 0, 1);
         shader.loadTransformationMatrix(transformationMatrix);
     }
 }
